@@ -41,17 +41,15 @@ O bloco `FOUNDING` no topo de `app/page.jsx` controla o estado da campanha:
 const FOUNDING = { slotsOpen: true, slotsLeft: 6 };
 ```
 
-Ele dirige, em toda a página, os CTAs, o badge de vagas, as headlines, o
-destaque da lista de espera e o aviso do agendador. Quando `slotsLeft` chega a
-`0`, a lista de espera libera automaticamente (mesmo com `slotsOpen: true`). Na
-fase de produção, esse estado deve vir do CMS ou do inventário de vagas.
+Ele dirige, em toda a página, os CTAs, o badge de vagas e o aviso do agendador.
+Quando `slotsLeft` chega a `0` (ou `slotsOpen` é `false`), o CTA passa a apontar
+para o WhatsApp e o agendador mostra o aviso de turma completa. Na fase de
+produção, esse estado deve vir do CMS ou do inventário de vagas.
 
 ## Integrações
 
 - **Agendador HubSpot Meetings** — embed real (agenda de lançamento EGESCON,
-  `diego-rodrigues4/lancamentoegescon`) no Caminho A, carregado via
-  `next/script` (`MeetingsEmbedCode.js`).
-- **Lista de espera** — form visual (Caminho B). Ainda como stub: ligar o
-  `onWaitlistSubmit` ao POST da Forms Submission API v3 do HubSpot.
+  `diego-rodrigues4/lancamentoegescon`), único caminho de conversão, carregado
+  via `next/script` (`MeetingsEmbedCode.js`).
 
 GTM / GA4 / UTM ainda a instrumentar.

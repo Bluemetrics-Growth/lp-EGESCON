@@ -15,6 +15,8 @@ import RadarCard from "./components/RadarCard";
  * ------------------------------------------------------------------ */
 const FOUNDING = { slotsOpen: true, slotsLeft: 6 };
 
+const WHATSAPP_URL = "https://wa.me/5551926343014";
+
 const svgProps = {
   width: 22,
   height: 22,
@@ -198,38 +200,19 @@ export default function Page() {
   const [openFaq, setOpenFaq] = useState(0);
   const toggleFaq = (i) => setOpenFaq((cur) => (cur === i ? null : i));
 
-  // Lista de espera libera automaticamente quando as 15 vagas encerram.
   const slotsOpenEff = FOUNDING.slotsOpen && FOUNDING.slotsLeft > 0;
+  const schedulerClosed = !slotsOpenEff;
 
+  // Quando a turma fecha, o CTA vira contato pelo WhatsApp.
   const heroCtaLabel = slotsOpenEff
     ? "Reservar minha vaga fundadora"
-    : "Entrar na lista de espera";
-  const heroCtaHref = slotsOpenEff ? "#agendador" : "#lista-espera";
-  const headerCtaLabel = slotsOpenEff ? "Reservar vaga" : "Lista de espera";
+    : "Falar no WhatsApp";
+  const heroCtaHref = slotsOpenEff ? "#agendador" : WHATSAPP_URL;
+  const headerCtaLabel = slotsOpenEff ? "Reservar vaga" : "Falar no WhatsApp";
 
   const slotsBadge = slotsOpenEff
     ? `Restam ${FOUNDING.slotsLeft} de 15 vagas fundadoras`
-    : "Turma fundadora completa · 2ª turma em fila";
-
-  const pathsHeadline = slotsOpenEff
-    ? "Reserve agora — ou entre na fila da próxima."
-    : "Turma fundadora completa. Garanta a 2ª turma.";
-
-  const waitlistHeadline = slotsOpenEff
-    ? "Quer decidir depois? Fique na fila."
-    : "Vagas esgotadas? Garanta seu lugar.";
-
-  const waitlistBorder = slotsOpenEff
-    ? "1px solid var(--border-on-light)"
-    : "1.5px solid color-mix(in oklab, var(--ciano) 55%, transparent)";
-
-  const showWaitlistLink = slotsOpenEff;
-  const schedulerClosed = !slotsOpenEff;
-
-  // HOOK (fase Code): ligar ao POST da Forms Submission API v3 do HubSpot.
-  const onWaitlistSubmit = (e) => {
-    e.preventDefault();
-  };
+    : "Turma fundadora completa";
 
   return (
     <div
@@ -318,20 +301,6 @@ export default function Page() {
                 >
                   {heroCtaLabel}
                 </a>
-                {showWaitlistLink && (
-                  <a
-                    href="#lista-espera"
-                    style={{
-                      fontSize: 14,
-                      fontWeight: 500,
-                      color: "var(--cinza-texto)",
-                      textDecoration: "underline",
-                      textUnderlineOffset: 3,
-                    }}
-                  >
-                    Prefiro entrar na lista de espera da 2ª turma
-                  </a>
-                )}
               </div>
             </div>
             <div>
@@ -670,69 +639,37 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 6. DOIS CAMINHOS: Agendador (A) + Lista de espera (B) */}
+      {/* 6. AGENDADOR — embed do HubSpot Meetings */}
       <section className="lp-section" style={{ background: "var(--branco)" }}>
         <div className="lp-shell">
-          <div style={{ maxWidth: 720, marginBottom: 40 }}>
+          <div style={{ maxWidth: 820, margin: "0 auto", textAlign: "center" }}>
             <div className="eyebrow" style={{ marginBottom: 18 }}>
-              <span className="dot-cyan" /> Dois caminhos
+              <span className="dot-cyan" /> Reserve sua vaga
             </div>
-            <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)" }}>{pathsHeadline}</h2>
-          </div>
-          <div className="lp-paths">
-            {/* Caminho A · Agendador — embed do HubSpot Meetings (agenda de
-                lançamento EGESCON), carregado via next/script. */}
+            <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)" }}>
+              Escolha o horário do seu Setup de Teste.
+            </h2>
+            <p
+              className="lead"
+              style={{ margin: "16px auto 36px", maxWidth: 620, fontSize: 18 }}
+            >
+              Sem compromisso. A gente monta o Setup de Teste e você vê rodando
+              nos seus números antes de decidir.
+            </p>
+
+            {/* Agendador — embed do HubSpot Meetings (agenda de lançamento
+                EGESCON), carregado via next/script. */}
             <div
               id="agendador"
               style={{
-                padding: 28,
+                padding: "clamp(16px, 3vw, 28px)",
                 borderRadius: 20,
                 background: "var(--cinza-claro)",
                 border: "1px solid var(--border-on-light)",
+                textAlign: "left",
+                scrollMarginTop: 96,
               }}
             >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  gap: 12,
-                  marginBottom: 20,
-                }}
-              >
-                <span
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: 11,
-                    fontWeight: 700,
-                    letterSpacing: "0.08em",
-                    textTransform: "uppercase",
-                    color: "var(--cinza-texto)",
-                  }}
-                >
-                  Caminho A · Reservar
-                </span>
-                {slotsOpenEff && (
-                  <span
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: 10,
-                      fontWeight: 700,
-                      letterSpacing: "0.06em",
-                      textTransform: "uppercase",
-                      padding: "5px 10px",
-                      borderRadius: 99,
-                      background: "var(--ciano)",
-                      color: "var(--azul-profundo)",
-                    }}
-                  >
-                    Recomendado
-                  </span>
-                )}
-              </div>
-              <h3 style={{ fontSize: 22, letterSpacing: "-0.02em", marginBottom: 18 }}>
-                Escolha o horário do seu Setup de Teste.
-              </h3>
 
               {schedulerClosed && (
                 <div
@@ -762,7 +699,14 @@ export default function Page() {
                     <path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z" />
                   </svg>
                   <div style={{ fontSize: 14, color: "var(--antes-tag-fg)", fontWeight: 600 }}>
-                    Turma fundadora completa — entre na fila da 2ª turma.
+                    Turma fundadora completa —{" "}
+                    <a
+                      href={WHATSAPP_URL}
+                      style={{ color: "var(--antes-tag-fg)", textDecoration: "underline" }}
+                    >
+                      fale com a gente pelo WhatsApp
+                    </a>{" "}
+                    para a próxima.
                   </div>
                 </div>
               )}
@@ -777,117 +721,16 @@ export default function Page() {
                 src="https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js"
                 strategy="afterInteractive"
               />
-              <p
-                style={{
-                  fontSize: 14,
-                  color: "var(--cinza-texto)",
-                  margin: "16px 4px 0",
-                  textAlign: "center",
-                }}
-              >
-                Sem cartão. Você só decide pagar depois de ver funcionando.
-              </p>
             </div>
-
-            {/* Caminho B · Lista de espera — form visual, sem submit ligado */}
-            <div
-              id="lista-espera"
+            <p
               style={{
-                padding: 28,
-                borderRadius: 20,
-                background: "var(--branco)",
-                border: waitlistBorder,
+                fontSize: 14,
+                color: "var(--cinza-texto)",
+                margin: "16px auto 0",
               }}
             >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  gap: 12,
-                  marginBottom: 20,
-                }}
-              >
-                <span
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: 11,
-                    fontWeight: 700,
-                    letterSpacing: "0.08em",
-                    textTransform: "uppercase",
-                    color: "var(--cinza-texto)",
-                  }}
-                >
-                  Caminho B · 2ª turma
-                </span>
-                {schedulerClosed && (
-                  <span
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: 10,
-                      fontWeight: 700,
-                      letterSpacing: "0.06em",
-                      textTransform: "uppercase",
-                      padding: "5px 10px",
-                      borderRadius: 99,
-                      background: "var(--ciano)",
-                      color: "var(--azul-profundo)",
-                    }}
-                  >
-                    Vagas abertas
-                  </span>
-                )}
-              </div>
-              <h3 style={{ fontSize: 22, letterSpacing: "-0.02em", marginBottom: 6 }}>
-                {waitlistHeadline}
-              </h3>
-              <p style={{ fontSize: 14.5, color: "var(--cinza-escuro)", margin: "0 0 20px" }}>
-                Garanta seu lugar na 2ª turma. A gente avisa quando abrir.
-              </p>
-              <form onSubmit={onWaitlistSubmit}>
-                <div className="f-field">
-                  <label htmlFor="wl-nome">Nome</label>
-                  <input id="wl-nome" type="text" placeholder="Seu nome" />
-                </div>
-                <div className="f-row">
-                  <div className="f-field">
-                    <label htmlFor="wl-escritorio">Escritório</label>
-                    <input id="wl-escritorio" type="text" placeholder="Nome do escritório" />
-                  </div>
-                  <div className="f-field">
-                    <label htmlFor="wl-cidade">Cidade</label>
-                    <input id="wl-cidade" type="text" placeholder="Cidade / UF" />
-                  </div>
-                </div>
-                <div className="f-row">
-                  <div className="f-field">
-                    <label htmlFor="wl-whats">WhatsApp</label>
-                    <input id="wl-whats" type="tel" placeholder="(00) 90000-0000" />
-                  </div>
-                  <div className="f-field">
-                    <label htmlFor="wl-email">E-mail</label>
-                    <input id="wl-email" type="email" placeholder="voce@escritorio.com.br" />
-                  </div>
-                </div>
-                <div className="f-field">
-                  <label htmlFor="wl-clientes">Quantos clientes ativos?</label>
-                  <select id="wl-clientes" defaultValue="">
-                    <option value="">Selecione</option>
-                    <option value="ate-30">até 30</option>
-                    <option value="31-100">31–100</option>
-                    <option value="101-300">101–300</option>
-                    <option value="300+">300+</option>
-                  </select>
-                </div>
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  style={{ width: "100%", padding: 16, fontSize: 16, marginTop: 6 }}
-                >
-                  Entrar na lista de espera
-                </button>
-              </form>
-            </div>
+              Sem cartão. Você só decide pagar depois de ver funcionando.
+            </p>
           </div>
         </div>
       </section>
