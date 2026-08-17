@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/kontiva-design-system-59d8c415-a314-4faf-b719-f726132f9df5/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/kontiva-design-system-59d8c415-a314-4faf-b719-f726132f9df5/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/kontiva-design-system-59d8c415-a314-4faf-b719-f726132f9df5/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/kontiva-design-system-59d8c415-a314-4faf-b719-f726132f9df5/tokens/effects.css">
+  <link rel="stylesheet" href="_ds/kontiva-design-system-59d8c415-a314-4faf-b719-f726132f9df5/css/landing.css">
+  <link rel="stylesheet" href="_ds/kontiva-design-system-59d8c415-a314-4faf-b719-f726132f9df5/css/components.css">
+  <link rel="stylesheet" href="_ds/kontiva-design-system-59d8c415-a314-4faf-b719-f726132f9df5/styles.css">
+  <script src="_ds/kontiva-design-system-59d8c415-a314-4faf-b719-f726132f9df5/_ds_bundle.js"></script>
+  <style>
+    a { color: var(--azul-profundo); }
+    a:hover { color: var(--ciano); }
+    .lp-section { padding: 88px 0; }
+    @media (max-width: 720px) { .lp-section { padding: 56px 0; } }
+    .lp-shell { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+    .lp-narrow { max-width: 760px; }
+    .lp-grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 56px; align-items: center; }
+    .lp-grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 18px; }
+    .lp-grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+    .lp-grid-stat { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; }
+    .lp-paths { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 24px; align-items: start; }
+  </style>
+</helmet>
+
+<div style="background: var(--branco); color: var(--azul-profundo); font-family: var(--font-body); overflow-x: hidden;">
+
+  <!-- STICKY HEADER -->
+  <nav class="nav">
+    <div class="lp-shell nav-inner">
+      <span class="brand-lockup"><span class="k">Kontiva</span><span class="dot">.</span><span class="ai">ai</span></span>
+      <a class="btn btn-primary" style="padding: 10px 16px; font-size: 14px;" href="{{ heroCtaHref }}">{{ headerCtaLabel }}</a>
+    </div>
+  </nav>
+
+  <!-- 1. HERO -->
+  <section class="lp-section" style="background: var(--branco); padding-top: 48px;">
+    <div class="lp-shell">
+      <div class="lp-grid-2">
+        <div>
+          <div style="display: inline-flex; align-items: center; gap: 9px; padding: 7px 14px; border-radius: 99px; background: var(--ciano-suave); border: 1px solid color-mix(in oklab, var(--ciano) 35%, transparent); margin-bottom: 26px;">
+            <span style="width: 7px; height: 7px; border-radius: 50%; background: var(--ciano); box-shadow: 0 0 0 4px color-mix(in oklab, var(--ciano) 20%, transparent);"></span>
+            <span style="font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.02em; color: var(--azul-profundo);">{{ slotsBadge }}</span>
+          </div>
+          <h1 style="font-size: clamp(38px, 5.6vw, 62px); line-height: 1.02; letter-spacing: -0.03em; margin: 0 0 22px;">O Hub de agentes de IA que <span class="serif-accent" style="color: var(--azul-profundo); font-size: 1.06em;">acha</span> o dinheiro que o seu escritório deixa na mesa.</h1>
+          <p class="lead" style="margin: 0 0 32px; max-width: 520px;">Estamos selecionando os escritórios fundadores do Hub. Vagas limitadas.</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 14px; align-items: center;">
+            <a class="btn btn-primary" style="padding: 17px 26px; font-size: 16px;" href="{{ heroCtaHref }}">{{ heroCtaLabel }}</a>
+            <sc-if value="{{ showWaitlistLink }}" hint-placeholder-val="{{ true }}">
+              <a href="#lista-espera" style="font-size: 14px; font-weight: 500; color: var(--cinza-texto); text-decoration: underline; text-underline-offset: 3px;">Prefiro entrar na lista de espera da 2ª turma</a>
+            </sc-if>
+          </div>
+        </div>
+        <div>
+          <x-import component-from-global-scope="KontivaDesignSystem_59d8c4.RadarCard" title="Conciliação de honorários" live="Varredura ativa" rows="{{ radarRows }}" summary-label="Receita encontrada / ano" summary-value="R$ 29 mil" hint-size="100%,520px"></x-import>
+          <p style="font-size: 13px; color: var(--cinza-texto); margin: 14px 4px 0; text-align: center;">Amostra ilustrativa. No Setup de Teste, roda nos seus números.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. TRÊS EIXOS DE BENEFÍCIO -->
+  <section class="lp-section" style="background: var(--cinza-claro);">
+    <div class="lp-shell">
+      <div style="max-width: 720px; margin-bottom: 44px;">
+        <div class="eyebrow" style="margin-bottom: 18px;"><span class="dot-cyan"></span> Por que agora</div>
+        <h2 style="font-size: clamp(30px, 4.2vw, 46px);">Três coisas que mudam no dia seguinte.</h2>
+      </div>
+      <div class="lp-grid-3">
+        <sc-for list="{{ benefits }}" as="b" hint-placeholder-count="3">
+          <div class="card" style="display: flex; flex-direction: column; gap: 14px; padding: 28px; height: 100%;">
+            <span style="width: 44px; height: 44px; border-radius: 12px; background: color-mix(in oklab, var(--ciano) 16%, transparent); color: var(--azul-profundo); display: inline-flex; align-items: center; justify-content: center;" data-om-raster>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" dangerouslySetInnerHTML="{{ b.icon }}"></svg>
+            </span>
+            <h3 style="font-size: 20px; letter-spacing: -0.02em;">{{ b.title }}</h3>
+            <p style="font-size: 15.5px; margin: 0;">{{ b.body }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. COMO FUNCIONA A VAGA FUNDADORA -->
+  <section class="lp-section" id="como-funciona" style="background: var(--branco);">
+    <div class="lp-shell">
+      <div style="max-width: 720px; margin-bottom: 44px;">
+        <div class="eyebrow" style="margin-bottom: 18px;"><span class="dot-cyan"></span> Como funciona a vaga fundadora</div>
+        <h2 style="font-size: clamp(30px, 4.2vw, 46px);">Você <span class="serif-accent" style="color: var(--azul-profundo);">vê</span> funcionando antes de pagar.</h2>
+      </div>
+      <div class="lp-grid-4">
+        <sc-for list="{{ steps }}" as="s" hint-placeholder-count="4">
+          <div style="display: flex; flex-direction: column; gap: 14px; padding: 26px; border: 1px solid var(--border-on-light); border-radius: 16px; background: var(--branco); height: 100%;">
+            <span style="width: 40px; height: 40px; border-radius: 10px; background: var(--azul-profundo); color: var(--ciano); font-family: var(--font-mono); font-weight: 700; font-size: 15px; display: inline-flex; align-items: center; justify-content: center;">{{ s.n }}</span>
+            <div>
+              <h3 style="font-size: 17px; margin: 0 0 8px; letter-spacing: -0.02em;">{{ s.title }}</h3>
+              <p style="font-size: 14.5px; margin: 0;">{{ s.body }}</p>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. ROADMAP DO HUB -->
+  <section class="lp-section" id="roadmap" style="background: var(--azul-profundo); color: var(--claro-escuro); position: relative; overflow: hidden;">
+    <div style="position: absolute; inset: 0; background: radial-gradient(700px circle at 80% 0%, color-mix(in oklab, var(--ciano) 12%, transparent), transparent 60%); pointer-events: none;"></div>
+    <div class="lp-shell" style="position: relative;">
+      <div style="max-width: 640px; margin-bottom: 40px;">
+        <div class="eyebrow light" style="margin-bottom: 18px; color: rgba(234,246,255,0.66);"><span class="dot-cyan"></span> Roadmap do Hub</div>
+        <h2 style="font-size: clamp(30px, 4.2vw, 46px); color: var(--branco); margin-bottom: 12px;">Dois agentes rodando hoje. Mais chegando.</h2>
+        <p style="color: rgba(234,246,255,0.7); font-size: 16px; margin: 0;">Quem entra agora influencia quais agentes vêm depois.</p>
+      </div>
+      <div class="lp-grid-3">
+        <sc-for list="{{ roadmap }}" as="r" hint-placeholder-count="4">
+          <div style="display: flex; flex-direction: column; gap: 16px; padding: 24px; border-radius: 16px; background: {{ r.bg }}; border: {{ r.border }}; opacity: {{ r.opacity }}; height: 100%;">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+              <span style="flex: none; width: 44px; height: 44px; border-radius: 12px; background: {{ r.iconBg }}; color: {{ r.iconColor }}; display: inline-flex; align-items: center; justify-content: center;" data-om-raster>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" dangerouslySetInnerHTML="{{ r.icon }}"></svg>
+              </span>
+              <span style="flex: none; font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 5px 10px; border-radius: 99px; background: {{ r.tagBg }}; color: {{ r.tagColor }}; border: {{ r.tagBorder }};">{{ r.tag }}</span>
+            </div>
+            <div>
+              <div style="font-size: 17px; font-weight: 600; color: {{ r.titleColor }}; letter-spacing: -0.01em;">{{ r.name }}</div>
+              <div style="font-size: 13.5px; color: rgba(234,246,255,0.55); margin-top: 6px; line-height: 1.5;">{{ r.desc }}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. PROVA / QUEM SOMOS -->
+  <section class="lp-section" style="background: var(--ciano-suave);">
+    <div class="lp-shell">
+      <div style="max-width: 720px; margin-bottom: 40px;">
+        <div class="eyebrow" style="margin-bottom: 18px;"><span class="dot-cyan"></span> Quem está por trás</div>
+        <h2 style="font-size: clamp(28px, 4vw, 44px);">Kontiva é da BlueMetrics.</h2>
+      </div>
+      <div class="lp-grid-stat" style="margin-bottom: 20px;">
+        <sc-for list="{{ proof }}" as="p" hint-placeholder-count="4">
+          <div style="padding: 24px; border: 1px solid var(--border-on-light); border-radius: 14px; background: var(--branco);">
+            <div style="font-family: var(--font-mono); font-size: 24px; font-weight: 700; color: var(--azul-profundo); letter-spacing: -0.02em;">{{ p.stat }}</div>
+            <div style="font-size: 13px; color: var(--cinza-texto); margin-top: 6px;">{{ p.label }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="padding: 28px; border-radius: 18px; background: var(--azul-profundo); position: relative; overflow: hidden;">
+        <div style="position: absolute; inset: 0; background: radial-gradient(420px circle at 100% 0%, color-mix(in oklab, var(--ciano) 18%, transparent), transparent 65%); pointer-events: none;"></div>
+        <div style="position: relative; max-width: 720px;">
+          <div style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ciano); margin-bottom: 12px;">Resultado real</div>
+          <p style="margin: 0; font-size: clamp(19px, 2.4vw, 26px); line-height: 1.4; color: var(--branco); letter-spacing: -0.01em;">Num escritório de 20 clientes no Sul, achamos <strong style="color: var(--ciano);">R$ 29 mil por ano</strong> em honorário não cobrado.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. DOIS CAMINHOS: Agendador (A) + Lista de espera (B) -->
+  <section class="lp-section" style="background: var(--branco);">
+    <div class="lp-shell">
+      <div style="max-width: 720px; margin-bottom: 40px;">
+        <div class="eyebrow" style="margin-bottom: 18px;"><span class="dot-cyan"></span> Dois caminhos</div>
+        <h2 style="font-size: clamp(28px, 4vw, 44px);">{{ pathsHeadline }}</h2>
+      </div>
+      <div class="lp-paths">
+
+        <!-- Caminho A · Agendador — STUB -->
+        <!-- HOOK (fase Code): substituir o card stub abaixo pelo embed do HubSpot Meetings via next/script. Não carregar script externo aqui. -->
+        <div id="agendador" style="padding: 28px; border-radius: 20px; background: var(--cinza-claro); border: 1px solid var(--border-on-light);">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px;">
+            <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--cinza-texto);">Caminho A · Reservar</span>
+            <sc-if value="{{ slotsOpenEff }}" hint-placeholder-val="{{ true }}"><span style="font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 5px 10px; border-radius: 99px; background: var(--ciano); color: var(--azul-profundo);">Recomendado</span></sc-if>
+          </div>
+          <h3 style="font-size: 22px; letter-spacing: -0.02em; margin-bottom: 18px;">Escolha o horário do seu Setup de Teste.</h3>
+
+          <sc-if value="{{ schedulerClosed }}" hint-placeholder-val="{{ false }}">
+            <div style="display: flex; gap: 12px; align-items: flex-start; padding: 16px; border-radius: 14px; background: #FFF1EC; border: 1px solid rgba(162,64,26,0.2); margin-bottom: 18px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A3401A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 1px;"><path d="M12 9v4M12 17h.01"></path><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path></svg>
+              <div style="font-size: 14px; color: #A3401A; font-weight: 600;">Turma fundadora completa — entre na fila da 2ª turma.</div>
+            </div>
+          </sc-if>
+
+          <div style="position: relative; border: 1.5px dashed color-mix(in oklab, var(--ciano) 55%, var(--border-on-light-strong)); border-radius: 16px; background: linear-gradient(135deg, var(--ciano-suave), var(--branco)); min-height: 260px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 36px 20px; text-align: center;">
+            <span style="width: 52px; height: 52px; border-radius: 14px; background: var(--azul-profundo); color: var(--ciano); display: inline-flex; align-items: center; justify-content: center;">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg>
+            </span>
+            <div style="font-family: var(--font-mono); font-size: 13px; color: var(--azul-profundo); font-weight: 600; background: var(--branco); padding: 8px 14px; border-radius: 8px; border: 1px solid var(--border-on-light);">[ Agendador HubSpot — integração na fase Code ]</div>
+            <div style="font-size: 13px; color: var(--cinza-texto); max-width: 320px;">Seleção de dia e horário aparece aqui quando o embed for conectado.</div>
+          </div>
+          <p style="font-size: 14px; color: var(--cinza-texto); margin: 16px 4px 0; text-align: center;">Sem cartão. Você só decide pagar depois de ver funcionando.</p>
+        </div>
+
+        <!-- Caminho B · Lista de espera — form visual, sem submit ligado -->
+        <div id="lista-espera" style="padding: 28px; border-radius: 20px; background: var(--branco); border: {{ waitlistBorder }};">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px;">
+            <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--cinza-texto);">Caminho B · 2ª turma</span>
+            <sc-if value="{{ schedulerClosed }}" hint-placeholder-val="{{ false }}"><span style="font-family: var(--font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 5px 10px; border-radius: 99px; background: var(--ciano); color: var(--azul-profundo);">Vagas abertas</span></sc-if>
+          </div>
+          <h3 style="font-size: 22px; letter-spacing: -0.02em; margin-bottom: 6px;">{{ waitlistHeadline }}</h3>
+          <p style="font-size: 14.5px; color: var(--cinza-escuro); margin: 0 0 20px;">Garanta seu lugar na 2ª turma. A gente avisa quando abrir.</p>
+          <form onSubmit="{{ onWaitlistSubmit }}">
+            <div class="f-field">
+              <label for="wl-nome">Nome</label>
+              <input id="wl-nome" type="text" placeholder="Seu nome" />
+            </div>
+            <div class="f-row">
+              <div class="f-field">
+                <label for="wl-escritorio">Escritório</label>
+                <input id="wl-escritorio" type="text" placeholder="Nome do escritório" />
+              </div>
+              <div class="f-field">
+                <label for="wl-cidade">Cidade</label>
+                <input id="wl-cidade" type="text" placeholder="Cidade / UF" />
+              </div>
+            </div>
+            <div class="f-row">
+              <div class="f-field">
+                <label for="wl-whats">WhatsApp</label>
+                <input id="wl-whats" type="tel" placeholder="(00) 90000-0000" />
+              </div>
+              <div class="f-field">
+                <label for="wl-email">E-mail</label>
+                <input id="wl-email" type="email" placeholder="voce@escritorio.com.br" />
+              </div>
+            </div>
+            <div class="f-field">
+              <label for="wl-clientes">Quantos clientes ativos?</label>
+              <select id="wl-clientes">
+                <option value="">Selecione</option>
+                <option value="ate-30">até 30</option>
+                <option value="31-100">31–100</option>
+                <option value="101-300">101–300</option>
+                <option value="300+">300+</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 16px; font-size: 16px; margin-top: 6px;">Entrar na lista de espera</button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. FAQ -->
+  <section class="lp-section" id="faq" style="background: var(--cinza-claro);">
+    <div class="lp-shell lp-narrow">
+      <div class="eyebrow" style="margin-bottom: 18px;"><span class="dot-cyan"></span> Perguntas frequentes</div>
+      <h2 style="font-size: clamp(28px, 4vw, 44px); margin-bottom: 28px;">O que fica de dúvida.</h2>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <sc-for list="{{ faqs }}" as="f" hint-placeholder-count="5">
+          <div style="border: 1px solid var(--border-on-light); border-radius: 14px; overflow: hidden; background: var(--branco);">
+            <button type="button" onClick="{{ f.toggle }}" style="width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px; background: transparent; border: none; cursor: pointer; text-align: left; font-family: inherit;">
+              <span style="font-size: 16px; font-weight: 600; color: var(--azul-profundo); letter-spacing: -0.01em;">{{ f.q }}</span>
+              <span style="flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--cinza-claro); color: var(--azul-profundo); display: inline-flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 500;">{{ f.sign }}</span>
+            </button>
+            <sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}">
+              <div style="padding: 0 20px 20px; font-size: 15px; line-height: 1.55; color: var(--cinza-escuro);">{{ f.a }}</div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. RODAPÉ -->
+  <footer style="background: var(--azul-profundo); color: rgba(234,246,255,0.65); padding: 56px 0 48px;">
+    <div class="lp-shell" style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; justify-content: space-between;">
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <span class="brand-lockup" style="font-size: 18px;"><span class="k" style="color: #EAF6FF;">Kontiva</span><span class="dot" style="color: var(--ciano);">.</span><span class="ai" style="color: var(--ciano);">ai</span></span>
+        <div style="font-size: 14px; color: rgba(234,246,255,0.7);">Kontiva by BlueMetrics</div>
+        <div style="font-size: 13px; color: rgba(234,246,255,0.55); max-width: 320px;">LGPD by design · dados no seu ambiente de nuvem</div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px;">
+        <a href="mailto:contato@kontiva.ai" style="color: rgba(234,246,255,0.8);">contato@kontiva.ai</a>
+        <a href="https://wa.me/5551926343014" style="color: rgba(234,246,255,0.8);">WhatsApp</a>
+      </div>
+    </div>
+    <div class="lp-shell" style="font-size: 12px; color: rgba(234,246,255,0.4); border-top: 1px solid rgba(255,255,255,0.08); padding-top: 20px; margin-top: 36px;">© 2026 Kontiva.ai · 9º EGESCON</div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;slotsOpen&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Estado da turma&quot;},&quot;slotsLeft&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:6,&quot;min&quot;:0,&quot;max&quot;:15,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Estado da turma&quot;}}">
+class Component extends DCLogic {
+  state = { openFaq: 0 };
+
+  renderVals() {
+    const slotsOpenProp = this.props.slotsOpen ?? true;
+    const slotsLeft = this.props.slotsLeft ?? 6;
+    // Lista de espera libera automaticamente quando as 15 vagas encerram (contador em 0).
+    const slotsOpenEff = slotsOpenProp && slotsLeft > 0;
+
+    const heroCtaLabel = slotsOpenEff ? 'Reservar minha vaga fundadora' : 'Entrar na lista de espera';
+    const heroCtaHref = slotsOpenEff ? '#agendador' : '#lista-espera';
+    const headerCtaLabel = slotsOpenEff ? 'Reservar vaga' : 'Lista de espera';
+
+    const slotsBadge = slotsOpenEff
+      ? `Restam ${slotsLeft} de 15 vagas fundadoras`
+      : 'Turma fundadora completa · 2ª turma em fila';
+
+    const pathsHeadline = slotsOpenEff
+      ? 'Reserve agora — ou entre na fila da próxima.'
+      : 'Turma fundadora completa. Garanta a 2ª turma.';
+
+    const waitlistHeadline = slotsOpenEff
+      ? 'Quer decidir depois? Fique na fila.'
+      : 'Vagas esgotadas? Garanta seu lugar.';
+
+    const toggleFaq = (i) => this.setState(s => ({ openFaq: s.openFaq === i ? null : i }));
+
+    // hook Forms API v3 — fase Code: ligar o submit ao POST Forms Submission API v3
+    const onWaitlistSubmit = (e) => { e.preventDefault(); };
+
+    const svg = (d) => ({ __html: d });
+
+    const benefits = [
+      { title: 'Achar dinheiro', body: 'A conciliação de honorários acha receita que o escritório deixa de cobrar — contrato por contrato.', icon: svg('<circle cx="11" cy="11" r="7"></circle><path d="M11 7v4l2.5 1.5"></path><path d="m20 20-3.5-3.5"></path>') },
+      { title: 'Multiplicar capacidade', body: 'Mais clientes atendidos com as mesmas pessoas. O agente faz o trabalho repetitivo.', icon: svg('<path d="M3 7l9-4 9 4-9 4-9-4z"></path><path d="M3 12l9 4 9-4"></path><path d="M3 17l9 4 9-4"></path>') },
+      { title: 'Vitrine de IA de verdade', body: 'O escritório mostra à carteira dele que opera com agentes reais — não com promessa.', icon: svg('<rect x="3" y="4" width="18" height="13" rx="2"></rect><path d="M8 21h8M12 17v4"></path><path d="m8 11 2 2 4-4"></path>') },
+    ];
+
+    const steps = [
+      { n: '01', title: 'Reserva a vaga', body: 'Sem cartão, sem assinar nada agora. Você só garante o lugar na turma fundadora.' },
+      { n: '02', title: 'A gente faz o Setup de Teste', body: 'Gratuito, com uma amostra dos seus dados. A equipe Kontiva monta e roda.' },
+      { n: '03', title: 'Você vê rodando nos SEUS números', body: 'O Kontiva funcionando na sua carteira, antes de pagar qualquer coisa.' },
+      { n: '04', title: '7 dias para decidir', body: 'Após o setup. Se não seguir, a vaga volta pra fila — sem ruído.' },
+    ];
+
+    const activeBg = 'color-mix(in oklab, var(--ciano) 8%, transparent)';
+    const activeBorder = '1px solid color-mix(in oklab, var(--ciano) 55%, transparent)';
+    const softBorder = '1px dashed rgba(255,255,255,0.14)';
+    const roadmap = [
+      { name: 'Conciliador de Honorários', desc: 'Cruza contrato e cobrança, acha o que faltou.', tag: 'Ativo', active: true, icon: svg('<circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path><path d="M11 8v6M8 11h6"></path>') },
+      { name: 'Tributário / ICMS', desc: 'Confere apuração e regime contra o que foi lançado.', tag: 'Ativo', active: true, icon: svg('<path d="M4 4h16v4H4z"></path><path d="M4 12h10M4 16h10M4 20h6"></path><path d="m16 15 2 2 4-4"></path>') },
+      { name: 'Simulação em Massa da carteira', desc: 'Roda cenários tributários em toda a base de clientes.', tag: 'Est. Q4 2026', active: false, icon: svg('<path d="M3 3v18h18"></path><path d="m7 14 3-4 3 3 4-6"></path>') },
+      { name: 'Próximo agente', desc: 'Definido com os escritórios fundadores.', tag: 'Est. Q1 2027', active: false, icon: svg('<circle cx="12" cy="12" r="9" stroke-dasharray="3 3"></circle><path d="M12 8v4"></path><path d="M12 16h.01"></path>') },
+    ].map(r => ({
+      ...r,
+      bg: r.active ? activeBg : 'rgba(255,255,255,0.02)',
+      border: r.active ? activeBorder : softBorder,
+      opacity: r.active ? '1' : '0.62',
+      iconBg: r.active ? 'var(--ciano)' : 'rgba(255,255,255,0.06)',
+      iconColor: r.active ? 'var(--azul-profundo)' : 'rgba(234,246,255,0.55)',
+      titleColor: r.active ? 'var(--branco)' : 'rgba(234,246,255,0.75)',
+      tagBg: r.active ? 'var(--ciano)' : 'transparent',
+      tagColor: r.active ? 'var(--azul-profundo)' : 'rgba(234,246,255,0.6)',
+      tagBorder: r.active ? 'none' : '1px solid rgba(255,255,255,0.16)',
+    }));
+
+    const proof = [
+      { stat: '10 anos', label: 'de estrada em IA aplicada' },
+      { stat: '200+', label: 'projetos de IA entregues' },
+      { stat: 'AWS', label: 'Advanced Partner' },
+      { stat: 'LGPD', label: 'by design, desde a origem' },
+    ];
+
+    const faqData = [
+      { q: 'Já tenho sistema (Domínio / Alterdata)?', a: 'A gente lê os dados dele. Seu sistema executa a cobrança; o Kontiva confere se está certa contra o contrato.' },
+      { q: 'Quanto custa depois do beta?', a: 'Tabela a partir de R$ 900/mês. Fundador mantém a condição por 12 meses.' },
+      { q: 'Preciso pagar ou assinar algo agora?', a: 'Nada. Você reserva a vaga e marca o setup. O pagamento vai por link depois, e confirma a vaga em até 7 dias.' },
+      { q: 'Não tenho tempo pra implantar?', a: 'Por isso a turma é de 15: nós fazemos o setup. Você participa de 2 reuniões de 1h.' },
+      { q: 'Meus dados estão seguros?', a: 'Dados no seu ambiente de nuvem, termo de confidencialidade no contrato, LGPD by design.' },
+    ];
+    const faqs = faqData.map((f, i) => ({
+      ...f,
+      open: this.state.openFaq === i,
+      sign: this.state.openFaq === i ? '\u2212' : '+',
+      toggle: () => toggleFaq(i),
+    }));
+
+    const radarRows = [
+      { idx: '01', name: 'Contrato · Cliente A', amount: 'R$ 890', badge: 'ok', flagged: false },
+      { idx: '02', name: 'Honorário · Cliente B', amount: '+R$ 420', badge: 'a cobrar', flagged: true },
+      { idx: '03', name: 'Contrato · Cliente C', amount: 'R$ 1.240', badge: 'ok', flagged: false },
+      { idx: '04', name: 'Serviço extra · Cliente D', amount: '+R$ 310', badge: 'a cobrar', flagged: true },
+      { idx: '05', name: 'Contrato · Cliente E', amount: 'R$ 640', badge: 'ok', flagged: false },
+    ];
+
+    return {
+      slotsBadge, slotsOpenEff,
+      heroCtaLabel, heroCtaHref, headerCtaLabel,
+      pathsHeadline, waitlistHeadline,
+      waitlistBorder: slotsOpenEff ? '1px solid var(--border-on-light)' : '1.5px solid color-mix(in oklab, var(--ciano) 55%, transparent)',
+      showWaitlistLink: slotsOpenEff,
+      schedulerClosed: !slotsOpenEff,
+      benefits, steps, roadmap, proof, faqs, radarRows,
+      onWaitlistSubmit,
+    };
+  }
+}
+</script>
+</body>
+</html>
