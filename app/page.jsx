@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Script from "next/script";
 import RadarCard from "./components/RadarCard";
 
 /* ------------------------------------------------------------------ *
@@ -303,14 +304,8 @@ export default function Page() {
                   margin: "0 0 22px",
                 }}
               >
-                O Hub de agentes de IA que{" "}
-                <span
-                  className="serif-accent"
-                  style={{ color: "var(--azul-profundo)", fontSize: "1.06em" }}
-                >
-                  acha
-                </span>{" "}
-                o dinheiro que o seu escritório deixa na mesa.
+                O Hub de agentes de IA que recupera o dinheiro que o seu
+                escritório deixa na mesa.
               </h1>
               <p className="lead" style={{ margin: "0 0 32px", maxWidth: 520 }}>
                 Estamos selecionando os escritórios fundadores do Hub. Vagas limitadas.
@@ -416,11 +411,7 @@ export default function Page() {
               <span className="dot-cyan" /> Como funciona a vaga fundadora
             </div>
             <h2 style={{ fontSize: "clamp(30px, 4.2vw, 46px)" }}>
-              Você{" "}
-              <span className="serif-accent" style={{ color: "var(--azul-profundo)" }}>
-                vê
-              </span>{" "}
-              funcionando antes de pagar.
+              Você vê funcionando antes de pagar.
             </h2>
           </div>
           <div className="lp-grid-4">
@@ -689,9 +680,8 @@ export default function Page() {
             <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)" }}>{pathsHeadline}</h2>
           </div>
           <div className="lp-paths">
-            {/* Caminho A · Agendador — STUB.
-                HOOK (fase Code): substituir o card stub abaixo pelo embed do
-                HubSpot Meetings via next/script. Não carregar script externo aqui. */}
+            {/* Caminho A · Agendador — embed do HubSpot Meetings (agenda de
+                lançamento EGESCON), carregado via next/script. */}
             <div
               id="agendador"
               style={{
@@ -777,66 +767,16 @@ export default function Page() {
                 </div>
               )}
 
+              {/* HubSpot Meetings — agenda de lançamento EGESCON */}
               <div
-                style={{
-                  position: "relative",
-                  border: "1.5px dashed color-mix(in oklab, var(--ciano) 55%, var(--border-on-light-strong))",
-                  borderRadius: 16,
-                  background: "linear-gradient(135deg, var(--ciano-suave), var(--branco))",
-                  minHeight: 260,
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 16,
-                  padding: "36px 20px",
-                  textAlign: "center",
-                }}
-              >
-                <span
-                  style={{
-                    width: 52,
-                    height: 52,
-                    borderRadius: 14,
-                    background: "var(--azul-profundo)",
-                    color: "var(--ciano)",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <svg
-                    width="26"
-                    height="26"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <rect x="3" y="4" width="18" height="18" rx="2" />
-                    <path d="M16 2v4M8 2v4M3 10h18" />
-                  </svg>
-                </span>
-                <div
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: 13,
-                    color: "var(--azul-profundo)",
-                    fontWeight: 600,
-                    background: "var(--branco)",
-                    padding: "8px 14px",
-                    borderRadius: 8,
-                    border: "1px solid var(--border-on-light)",
-                  }}
-                >
-                  [ Agendador HubSpot — integração na fase Code ]
-                </div>
-                <div style={{ fontSize: 13, color: "var(--cinza-texto)", maxWidth: 320 }}>
-                  Seleção de dia e horário aparece aqui quando o embed for conectado.
-                </div>
-              </div>
+                className="meetings-iframe-container"
+                data-src="https://meetings.hubspot.com/diego-rodrigues4/lancamentoegescon?embed=true"
+                style={{ minHeight: 620 }}
+              />
+              <Script
+                src="https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js"
+                strategy="afterInteractive"
+              />
               <p
                 style={{
                   fontSize: 14,

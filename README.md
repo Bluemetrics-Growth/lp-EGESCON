@@ -46,14 +46,12 @@ destaque da lista de espera e o aviso do agendador. Quando `slotsLeft` chega a
 `0`, a lista de espera libera automaticamente (mesmo com `slotsOpen: true`). Na
 fase de produção, esse estado deve vir do CMS ou do inventário de vagas.
 
-## Integrações (fase Code)
+## Integrações
 
-Duas integrações ficaram como stubs visuais na marca, com hooks marcados no
-código:
-
-- **Agendador HubSpot Meetings** — card placeholder em `app/page.jsx` (Caminho
-  A). Substituir pelo embed via `next/script`.
-- **Lista de espera** — form visual (Caminho B). Ligar o `onWaitlistSubmit` ao
-  POST da Forms Submission API v3 do HubSpot.
+- **Agendador HubSpot Meetings** — embed real (agenda de lançamento EGESCON,
+  `diego-rodrigues4/lancamentoegescon`) no Caminho A, carregado via
+  `next/script` (`MeetingsEmbedCode.js`).
+- **Lista de espera** — form visual (Caminho B). Ainda como stub: ligar o
+  `onWaitlistSubmit` ao POST da Forms Submission API v3 do HubSpot.
 
 GTM / GA4 / UTM ainda a instrumentar.
