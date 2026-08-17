@@ -48,8 +48,8 @@ produção, esse estado deve vir do CMS ou do inventário de vagas.
 
 ## Integrações
 
-- **Agendador HubSpot Meetings** — embed real (agenda de lançamento EGESCON,
-  `diego-rodrigues4/lancamentoegescon`), único caminho de conversão, carregado
-  via `next/script` (`MeetingsEmbedCode.js`).
+- **Agendador** — Google Calendar Appointment Scheduling (iframe), único
+  caminho de conversão, embutido na seção do Setup de Teste. O CTA do header e
+  do hero apontam para `#agendador`.
 
 GTM / GA4 / UTM ainda a instrumentar.

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Script from "next/script";
 import RadarCard from "./components/RadarCard";
 
 /* ------------------------------------------------------------------ *
@@ -203,12 +202,11 @@ export default function Page() {
   const slotsOpenEff = FOUNDING.slotsOpen && FOUNDING.slotsLeft > 0;
   const schedulerClosed = !slotsOpenEff;
 
-  // Quando a turma fecha, o CTA vira contato pelo WhatsApp.
+  // Quando a turma fecha, o CTA do hero vira contato pelo WhatsApp.
   const heroCtaLabel = slotsOpenEff
     ? "Reservar minha vaga fundadora"
     : "Falar no WhatsApp";
   const heroCtaHref = slotsOpenEff ? "#agendador" : WHATSAPP_URL;
-  const headerCtaLabel = slotsOpenEff ? "Reservar vaga" : "Falar no WhatsApp";
 
   const slotsBadge = slotsOpenEff
     ? `Restam ${FOUNDING.slotsLeft} de 15 vagas fundadoras`
@@ -221,22 +219,41 @@ export default function Page() {
         color: "var(--azul-profundo)",
         fontFamily: "var(--font-body)",
         overflowX: "hidden",
+        paddingTop: 72,
       }}
     >
-      {/* STICKY HEADER */}
-      <nav className="nav">
+      {/* HEADER FIXO — escuro, como o site oficial */}
+      <nav
+        className="nav"
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          background: "var(--azul-profundo)",
+          backdropFilter: "none",
+          WebkitBackdropFilter: "none",
+          borderBottom: "1px solid rgba(255,255,255,0.08)",
+        }}
+      >
         <div className="lp-shell nav-inner">
           <span className="brand-lockup">
-            <span className="k">Kontiva</span>
-            <span className="dot">.</span>
-            <span className="ai">ai</span>
+            <span className="k" style={{ color: "#EAF6FF" }}>
+              Kontiva
+            </span>
+            <span className="dot" style={{ color: "var(--ciano)" }}>
+              .
+            </span>
+            <span className="ai" style={{ color: "var(--ciano)" }}>
+              ai
+            </span>
           </span>
           <a
             className="btn btn-primary"
-            style={{ padding: "10px 16px", fontSize: 14 }}
-            href={heroCtaHref}
+            style={{ padding: "10px 18px", fontSize: 14 }}
+            href="#agendador"
           >
-            {headerCtaLabel}
+            Reservar vaga
           </a>
         </div>
       </nav>
@@ -639,7 +656,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 6. AGENDADOR — embed do HubSpot Meetings */}
+      {/* 6. AGENDADOR — Google Calendar Appointment Scheduling */}
       <section className="lp-section" style={{ background: "var(--branco)" }}>
         <div className="lp-shell">
           <div style={{ maxWidth: 820, margin: "0 auto", textAlign: "center" }}>
@@ -657,8 +674,7 @@ export default function Page() {
               nos seus números antes de decidir.
             </p>
 
-            {/* Agendador — embed do HubSpot Meetings (agenda de lançamento
-                EGESCON), carregado via next/script. */}
+            {/* Agendador — Google Calendar Appointment Scheduling (iframe). */}
             <div
               id="agendador"
               style={{
@@ -711,15 +727,18 @@ export default function Page() {
                 </div>
               )}
 
-              {/* HubSpot Meetings — agenda de lançamento EGESCON */}
-              <div
-                className="meetings-iframe-container"
-                data-src="https://meetings.hubspot.com/diego-rodrigues4/lancamentoegescon?embed=true"
-                style={{ minHeight: 620 }}
-              />
-              <Script
-                src="https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js"
-                strategy="afterInteractive"
+              {/* Agenda do Setup de Teste — Google Calendar Appointment Scheduling */}
+              <iframe
+                src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ2-qsOojrD73dO48zSXLJ_hiu91ZSD5fNqo0s24NOJq4zc6n7XtKrQUF_2rECb8Gm50l258XovZ?gv=true"
+                title="Agenda do Setup de Teste — Kontiva"
+                frameBorder="0"
+                style={{
+                  border: 0,
+                  width: "100%",
+                  height: 620,
+                  borderRadius: 12,
+                  background: "var(--branco)",
+                }}
               />
             </div>
             <p
