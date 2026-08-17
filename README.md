@@ -1,25 +1,59 @@
-# CODING AGENTS: READ THIS FIRST
+# lp-EGESCON — Kontiva.ai
 
-This is a **handoff bundle** from Claude Design (claude.ai/design).
+Landing page da **Kontiva.ai** (by BlueMetrics) para o 9º EGESCON: seleção dos
+escritórios contábeis fundadores do Hub de agentes de IA.
 
-A user mocked up designs in HTML/CSS/JS using an AI design tool, then exported this bundle so a coding agent can implement the designs for real.
+Construída em **Next.js (App Router)** a partir do design exportado do Claude
+Design, recriando o protótipo fiel ao pixel e herdando o design system Kontiva
+(lockup, ciano como acento único, RadarCard, tipografia Inter / Instrument Serif
+/ JetBrains Mono).
 
-## What you should do — IMPORTANT
+## Rodar localmente
 
-**Read the chat transcripts first.** There are 1 chat transcript(s) in `chats/`. The transcripts show the full back-and-forth between the user and the design assistant — they tell you **what the user actually wants** and **where they landed** after iterating. Don't skip them. The final HTML files are the output, but the chat is where the intent lives.
+```bash
+npm install
+npm run dev      # http://localhost:3000
+```
 
-**Read `project/Kontiva EGESCON.dc.html` in full.** The user had this file open when they triggered the handoff, so it's almost certainly the primary design they want built. Read it top to bottom — don't skim. Then **follow its imports**: open every file it pulls in (shared components, CSS, scripts) so you understand how the pieces fit together before you start implementing.
+```bash
+npm run build && npm start   # build de produção
+```
 
-**If anything is ambiguous, ask the user to confirm before you start implementing.** It's much cheaper to clarify scope up front than to build the wrong thing.
+## Estrutura
 
-## About the design files
+```
+app/
+  layout.jsx            # metadata + <html>/<body>, importa globals.css
+  page.jsx              # a landing inteira (client component)
+  globals.css           # importa o design system + estilos da página
+  components/
+    RadarCard.jsx        # mock escuro de varredura do hero
+  ds/                    # design system Kontiva (tokens + css)
+project/                 # bundle de design original (referência)
+chats/                   # transcrições do design (provenance)
+```
 
-The design medium is **HTML/CSS/JS** — these are prototypes, not production code. Your job is to **recreate them pixel-perfectly** in whatever technology makes sense for the target codebase (React, Vue, native, whatever fits). Match the visual output; don't copy the prototype's internal structure unless it happens to fit.
+## Estado da turma fundadora
 
-**Don't render these files in a browser or take screenshots unless the user asks you to.** Everything you need — dimensions, colors, layout rules — is spelled out in the source. Read the HTML and CSS directly; a screenshot won't tell you anything they don't.
+O bloco `FOUNDING` no topo de `app/page.jsx` controla o estado da campanha:
 
-## Bundle contents
+```js
+const FOUNDING = { slotsOpen: true, slotsLeft: 6 };
+```
 
-- `README.md` — this file
-- `chats/` — conversation transcripts (read these!)
-- `project/` — the `Kontiva EGESCON landing page` project files (HTML prototypes, assets, components)
+Ele dirige, em toda a página, os CTAs, o badge de vagas, as headlines, o
+destaque da lista de espera e o aviso do agendador. Quando `slotsLeft` chega a
+`0`, a lista de espera libera automaticamente (mesmo com `slotsOpen: true`). Na
+fase de produção, esse estado deve vir do CMS ou do inventário de vagas.
+
+## Integrações (fase Code)
+
+Duas integrações ficaram como stubs visuais na marca, com hooks marcados no
+código:
+
+- **Agendador HubSpot Meetings** — card placeholder em `app/page.jsx` (Caminho
+  A). Substituir pelo embed via `next/script`.
+- **Lista de espera** — form visual (Caminho B). Ligar o `onWaitlistSubmit` ao
+  POST da Forms Submission API v3 do HubSpot.
+
+GTM / GA4 / UTM ainda a instrumentar.
