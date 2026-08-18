@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RadarCard from "./components/RadarCard";
 
 /* ------------------------------------------------------------------ *
@@ -213,6 +213,28 @@ export default function Page() {
   const headerCtaLabel = "Reservar vaga";
   const slotsBadge = `Restam ${FOUNDING.slotsLeft} de 15 vagas · Turma Fundadora EGESCON`;
 
+  /* Modal do agendador: abre o Google Calendar num iframe, sem sair da página.
+     O href é mantido como fallback caso o JS esteja desabilitado. */
+  const [schedulerOpen, setSchedulerOpen] = useState(false);
+  const openScheduler = (e) => {
+    e.preventDefault();
+    setSchedulerOpen(true);
+  };
+
+  useEffect(() => {
+    if (!schedulerOpen) return;
+    const onKey = (e) => {
+      if (e.key === "Escape") setSchedulerOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [schedulerOpen]);
+
   return (
     <div
       style={{
@@ -236,6 +258,7 @@ export default function Page() {
             href={heroCtaHref}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={openScheduler}
           >
             {headerCtaLabel}
           </a>
@@ -301,6 +324,7 @@ export default function Page() {
                   href={heroCtaHref}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={openScheduler}
                 >
                   {heroCtaLabel}
                 </a>
@@ -952,6 +976,7 @@ export default function Page() {
         href={SCHEDULER_URL}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={openScheduler}
         aria-label="Reservar minha Vaga Fundadora EGESCON"
       >
         <svg
@@ -970,6 +995,49 @@ export default function Page() {
         </svg>
         <span>Reservar vaga</span>
       </a>
+
+      {/* Modal do agendador — abre o Google Calendar num iframe, sem sair da página */}
+      {schedulerOpen && (
+        <div
+          className="modal-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Agendar Setup de Teste"
+          onClick={() => setSchedulerOpen(false)}
+        >
+          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-head">
+              <span>Agende seu Setup de Teste</span>
+              <button
+                type="button"
+                className="modal-close"
+                onClick={() => setSchedulerOpen(false)}
+                aria-label="Fechar"
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M18 6 6 18M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <iframe
+              className="modal-frame"
+              src={SCHEDULER_URL}
+              title="Agendar Setup de Teste"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
