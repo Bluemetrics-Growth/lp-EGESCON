@@ -158,13 +158,6 @@ const ROADMAP = ROADMAP_BASE.map((r) => ({
   tagBorder: r.active ? "none" : "1px solid rgba(255,255,255,0.16)",
 }));
 
-const PROOF = [
-  { stat: "10 anos", label: "de estrada em IA aplicada" },
-  { stat: "200+", label: "projetos de IA entregues" },
-  { stat: "AWS", label: "Advanced Partner" },
-  { stat: "LGPD", label: "by design, desde a origem" },
-];
-
 const PRICING = [
   { tier: "Até 100 clientes", price: "R$ 497", per: "/mês" },
   { tier: "101 a 300 clientes", price: "R$ 797", per: "/mês" },
@@ -683,103 +676,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 5. PROVA / QUEM SOMOS (banda de credibilidade) */}
-      <section className="lp-section lp-section--medium surface-2-light">
-        <div className="lp-shell">
-          <Reveal style={{ maxWidth: 720, marginBottom: 40 }}>
-            <div className="eyebrow" style={{ marginBottom: 18 }}>
-              <span className="dot-cyan" /> Quem está por trás
-            </div>
-            <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)" }}>Kontiva é da BlueMetrics.</h2>
-          </Reveal>
-          <div className="lp-grid-stat" style={{ marginBottom: 32 }}>
-            {PROOF.map((p, i) => {
-              const m = p.stat.match(/^(\d+)(.*)$/);
-              return (
-                <Reveal
-                  key={p.label}
-                  delay={i * 70}
-                  style={{
-                    padding: 24,
-                    border: "1px solid var(--border-on-light)",
-                    borderRadius: 14,
-                    background: "var(--branco)",
-                  }}
-                >
-                  <div
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: 24,
-                      fontWeight: 700,
-                      color: "var(--azul-profundo)",
-                      letterSpacing: "-0.02em",
-                    }}
-                  >
-                    {m ? (
-                      <CountUp to={Number(m[1])} format={(v) => `${v}${m[2]}`} />
-                    ) : (
-                      p.stat
-                    )}
-                  </div>
-                  <div style={{ fontSize: 13, color: "var(--cinza-texto)", marginTop: 6 }}>
-                    {p.label}
-                  </div>
-                </Reveal>
-              );
-            })}
-          </div>
-          <div className="hairline" style={{ marginBottom: 32 }} />
-          <Reveal
-            style={{
-              padding: 28,
-              borderRadius: 18,
-              background: "var(--azul-profundo)",
-              position: "relative",
-              overflow: "hidden",
-            }}
-          >
-            <div
-              aria-hidden="true"
-              style={{
-                position: "absolute",
-                inset: 0,
-                background:
-                  "radial-gradient(420px circle at 100% 0%, color-mix(in oklab, var(--ciano) 18%, transparent), transparent 65%)",
-                pointerEvents: "none",
-              }}
-            />
-            <div style={{ position: "relative", maxWidth: 720 }}>
-              <div
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: 11,
-                  letterSpacing: "0.08em",
-                  textTransform: "uppercase",
-                  color: "var(--ciano)",
-                  marginBottom: 12,
-                }}
-              >
-                Resultado real
-              </div>
-              <p
-                style={{
-                  margin: 0,
-                  fontSize: "clamp(19px, 2.4vw, 26px)",
-                  lineHeight: 1.4,
-                  color: "var(--branco)",
-                  letterSpacing: "-0.01em",
-                }}
-              >
-                Num escritório de 20 clientes no Sul, achamos{" "}
-                <strong style={{ color: "var(--ciano)" }}>R$ 29 mil por ano</strong> em honorário
-                não cobrado.
-              </p>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* 6. CONDIÇÃO FUNDADORA EGESCON (preço) */}
+      {/* 5. CONDIÇÃO FUNDADORA EGESCON (preço) */}
       <section
         className="lp-section lp-section--ample surface-2-dark"
         id="preco"
@@ -947,7 +844,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 7. FAQ */}
+      {/* 6. FAQ */}
       <section className="lp-section lp-section--medium surface-1" id="faq">
         <div className="lp-shell lp-narrow">
           <Reveal>
@@ -1082,7 +979,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 8. BANDA DE CTA FINAL (recombina copy existente, sem headline nova) */}
+      {/* 7. BANDA DE CTA FINAL (recombina copy existente, sem headline nova) */}
       <section
         className="lp-section lp-section--ample surface-2-dark"
         style={{ position: "relative", overflow: "hidden", textAlign: "center" }}
@@ -1158,7 +1055,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 9. RODAPÉ */}
+      {/* 8. RODAPÉ */}
       <footer
         style={{
           background: "var(--azul-profundo)",
