@@ -818,6 +818,23 @@ footer .brand-lockup .k { color: #EAF6FF; }
 }
 @keyframes livepulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
 
+/* ---- Vídeo do ecossistema (Remotion) embutido ---- */
+.eco-video-frame {
+  position: relative;
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  border: 1px solid color-mix(in oklab, var(--ciano) 30%, transparent);
+  box-shadow: 0 40px 90px -45px rgba(0,0,0,0.7),
+              0 0 0 1px rgba(255,255,255,0.03) inset;
+  background: var(--azul-profundo);
+  line-height: 0;
+}
+.eco-video-frame video {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 /* ---- Próximos no Hub (secundários) ---- */
 .upcoming-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 @media (max-width: 820px) { .upcoming-row { grid-template-columns: 1fr; } }

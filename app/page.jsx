@@ -218,6 +218,16 @@ export default function Page() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  /* Movimento reduzido: não dá autoplay no vídeo do ecossistema. */
+  const [reduceMotion, setReduceMotion] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReduceMotion(mq.matches);
+    const handler = (e) => setReduceMotion(e.matches);
+    mq.addEventListener?.("change", handler);
+    return () => mq.removeEventListener?.("change", handler);
+  }, []);
+
   return (
     <div
       style={{
@@ -527,57 +537,59 @@ export default function Page() {
               Quem entra agora influencia quais agentes vêm depois.
             </p>
           </Reveal>
-          {/* Dois agentes ativos: destaque */}
-          <div className="agent-grid" style={{ marginBottom: 28 }}>
-            {ACTIVE_AGENTS.map((a, i) => (
-              <Reveal key={a.key} delay={i * 90} className="agent-card">
-                <div
+          {/* Esquema visual do ecossistema (motion graphic Remotion) */}
+          <Reveal className="eco-video-frame" style={{ marginBottom: 18 }}>
+            <video
+              src="/agents-ecosystem.mp4"
+              poster="/agents-ecosystem-poster.jpg"
+              autoPlay={!reduceMotion}
+              muted
+              loop
+              playsInline
+              controls={reduceMotion}
+              preload="metadata"
+              aria-label="Ecossistema do Hub Kontiva. O agente de Honorários lê ERP e cobrança, cruza contrato e cobrança e acha o que ficou sem cobrar. O agente Tributário lê ERP e notas, simula regime (Simples, Presumido, Real, IBS e CBS) e entrega relatório pronto. Tudo do seu escritório para os seus clientes."
+            />
+          </Reveal>
+          {/* Legenda acessível dos dois agentes ativos */}
+          <Reveal
+            delay={80}
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: 20,
+              justifyContent: "center",
+              marginBottom: 40,
+            }}
+          >
+            {ACTIVE_AGENTS.map((a) => (
+              <span
+                key={a.key}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 9,
+                  fontFamily: "var(--font-mono)",
+                  fontSize: 13,
+                  fontWeight: 600,
+                  color: "rgba(234,246,255,0.75)",
+                }}
+              >
+                <span
+                  aria-hidden="true"
                   style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    gap: 12,
+                    width: 8,
+                    height: 8,
+                    borderRadius: "50%",
+                    background: "var(--ciano)",
+                    boxShadow: "0 0 0 4px color-mix(in oklab, var(--ciano) 20%, transparent)",
                   }}
-                >
-                  <span className="agent-icon">{a.icon}</span>
-                  <span className="live-badge">
-                    <span className="live-dot" aria-hidden="true" />
-                    Ativo
-                  </span>
-                </div>
-                <div>
-                  <h3
-                    style={{
-                      fontSize: 22,
-                      fontWeight: 700,
-                      color: "var(--branco)",
-                      letterSpacing: "-0.02em",
-                      fontFamily: "inherit",
-                    }}
-                  >
-                    {a.name}
-                  </h3>
-                  <p
-                    style={{
-                      fontSize: 15,
-                      color: "rgba(234,246,255,0.72)",
-                      margin: "8px 0 0",
-                      lineHeight: 1.5,
-                    }}
-                  >
-                    {a.desc}
-                  </p>
-                </div>
-                <div className="agent-chips" style={{ marginTop: "auto" }}>
-                  {a.chips.map((c) => (
-                    <span key={c} className="agent-chip">
-                      {c}
-                    </span>
-                  ))}
-                </div>
-              </Reveal>
+                />
+                {a.name}
+                <span style={{ color: "rgba(234,246,255,0.4)" }}>· Ativo</span>
+              </span>
             ))}
-          </div>
+          </Reveal>
 
           {/* Próximos no Hub: secundários */}
           <Reveal
