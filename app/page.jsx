@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import RadarCard from "./components/RadarCard";
 import Reveal from "./components/Reveal";
-import CountUp from "./components/CountUp";
 
 
 /* Link de agendamento (Google Calendar Appointment Scheduling). */
@@ -45,13 +44,12 @@ const BENEFITS = [
     ),
   },
   {
-    title: "Vitrine de IA de verdade",
-    body: "O escritório mostra à carteira dele que opera com agentes reais, não com promessa.",
+    title: "Pronto para a reforma",
+    body: "O agente tributário simula os cenários da reforma com IBS e CBS, ano a ano, e aponta os créditos a recuperar.",
     icon: (
       <svg {...svgProps}>
-        <rect x="3" y="4" width="18" height="13" rx="2" />
-        <path d="M8 21h8M12 17v4" />
-        <path d="m8 11 2 2 4-4" />
+        <path d="M3 3v18h18" />
+        <path d="m7 14 3-4 3 3 4-6" />
       </svg>
     ),
   },
@@ -81,35 +79,6 @@ const STEPS = [
 ];
 
 /* Dois agentes já rodando hoje: as estrelas da seção. */
-const ACTIVE_AGENTS = [
-  {
-    key: "honorarios",
-    name: "Conciliador de Honorários",
-    desc: "Cruza contrato e cobrança, acha o que faltou.",
-    chips: ["Contrato × cobrança", "Você aprova antes de cobrar"],
-    icon: (
-      <svg {...svgProps}>
-        <circle cx="11" cy="11" r="7" />
-        <path d="m20 20-3.5-3.5" />
-        <path d="M11 8v6M8 11h6" />
-      </svg>
-    ),
-  },
-  {
-    key: "tributario",
-    name: "Tributário / ICMS",
-    desc: "Confere apuração e regime contra o que foi lançado.",
-    chips: ["Simples", "Presumido", "Real", "IBS / CBS"],
-    icon: (
-      <svg {...svgProps}>
-        <path d="M4 4h16v4H4z" />
-        <path d="M4 12h10M4 16h10M4 20h6" />
-        <path d="m16 15 2 2 4-4" />
-      </svg>
-    ),
-  },
-];
-
 /* Próximos no Hub: papel secundário. */
 const UPCOMING_AGENTS = [
   {
@@ -392,55 +361,36 @@ export default function Page() {
               Três coisas que mudam no dia seguinte.
             </h2>
           </Reveal>
-          <div className="lp-grid-bento">
+          <div className="lp-grid-3">
             {BENEFITS.map((b, i) => (
               <Reveal
                 key={b.title}
                 delay={i * 80}
-                className={`card${i === 0 ? " card--featured bento-big" : ""}`}
+                className={`card${i === 2 ? " card--featured" : ""}`}
                 style={{
                   display: "flex",
                   flexDirection: "column",
                   gap: 14,
                   padding: 28,
                   height: "100%",
-                  justifyContent: i === 0 ? "space-between" : "flex-start",
                 }}
               >
-                <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-                  <span
-                    style={{
-                      width: 44,
-                      height: 44,
-                      borderRadius: 12,
-                      background: "color-mix(in oklab, var(--ciano) 16%, transparent)",
-                      color: "var(--azul-profundo)",
-                      display: "inline-flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    {b.icon}
-                  </span>
-                  <h3 style={{ fontSize: 20, letterSpacing: "-0.02em" }}>{b.title}</h3>
-                  <p style={{ fontSize: 15.5, margin: 0 }}>{b.body}</p>
-                </div>
-                {i === 0 && (
-                  <div
-                    className="hairline"
-                    style={{ paddingTop: 18, marginTop: 8 }}
-                  >
-                    <div
-                      className="num-display"
-                      style={{ fontSize: 40, color: "var(--azul-profundo)" }}
-                    >
-                      <CountUp to={29} format={(v) => `R$ ${v} mil`} />
-                    </div>
-                    <div style={{ fontSize: 12.5, color: "var(--cinza-texto)", marginTop: 4 }}>
-                      Amostra ilustrativa. No Setup de Teste, roda nos seus números.
-                    </div>
-                  </div>
-                )}
+                <span
+                  style={{
+                    width: 44,
+                    height: 44,
+                    borderRadius: 12,
+                    background: "color-mix(in oklab, var(--ciano) 16%, transparent)",
+                    color: "var(--azul-profundo)",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {b.icon}
+                </span>
+                <h3 style={{ fontSize: 20, letterSpacing: "-0.02em" }}>{b.title}</h3>
+                <p style={{ fontSize: 15.5, margin: 0 }}>{b.body}</p>
               </Reveal>
             ))}
           </div>
@@ -539,73 +489,61 @@ export default function Page() {
               Quem entra agora influencia quais agentes vêm depois.
             </p>
           </Reveal>
-          {/* Esquema visual: uma motion graphic por agente (Remotion) */}
-          <Reveal className="eco-video-grid" style={{ marginBottom: 18 }}>
-            <div className="eco-video-frame">
-              <video
-                src="/agent-honorarios.mp4"
-                poster="/agent-honorarios-poster.jpg"
-                autoPlay={!reduceMotion}
-                muted
-                loop
-                playsInline
-                controls={reduceMotion}
-                preload="metadata"
-                aria-label="Agente de Honorários. O Conciliador de Honorários cruza contrato e cobrança, acha o que ficou sem cobrar e você aprova antes de cobrar. Amostra ilustrativa."
-              />
-            </div>
-            <div className="eco-video-frame">
-              <video
-                src="/agent-tributario.mp4"
-                poster="/agent-tributario-poster.jpg"
-                autoPlay={!reduceMotion}
-                muted
-                loop
-                playsInline
-                controls={reduceMotion}
-                preload="metadata"
-                aria-label="Agente Tributário, com foco na Reforma Tributária. Simula os cenários da reforma com IBS e CBS ano a ano, compara os regimes Simples, Presumido e Real, e entrega créditos recuperáveis com memória de cálculo em relatório pronto."
-              />
-            </div>
-          </Reveal>
-          {/* Legenda acessível dos dois agentes ativos */}
-          <Reveal
-            delay={80}
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: 20,
-              justifyContent: "center",
-              marginBottom: 40,
-            }}
-          >
-            {ACTIVE_AGENTS.map((a) => (
-              <span
-                key={a.key}
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 9,
-                  fontFamily: "var(--font-mono)",
-                  fontSize: 13,
-                  fontWeight: 600,
-                  color: "rgba(234,246,255,0.75)",
-                }}
-              >
-                <span
-                  aria-hidden="true"
-                  style={{
-                    width: 8,
-                    height: 8,
-                    borderRadius: "50%",
-                    background: "var(--ciano)",
-                    boxShadow: "0 0 0 4px color-mix(in oklab, var(--ciano) 20%, transparent)",
-                  }}
+          {/* Esquema visual: uma motion graphic por agente (Remotion) + texto */}
+          <Reveal className="eco-video-grid" style={{ marginBottom: 44 }}>
+            <div>
+              <div className="eco-video-frame">
+                <video
+                  src="/agent-honorarios.mp4"
+                  poster="/agent-honorarios-poster.jpg"
+                  autoPlay={!reduceMotion}
+                  muted
+                  loop
+                  playsInline
+                  controls={reduceMotion}
+                  preload="metadata"
+                  aria-label="Agente de Honorários. O Conciliador de Honorários cruza contrato e cobrança, acha o que ficou sem cobrar e você aprova antes de cobrar. Amostra ilustrativa."
                 />
-                {a.name}
-                <span style={{ color: "rgba(234,246,255,0.4)" }}>· Ativo</span>
-              </span>
-            ))}
+              </div>
+              <div className="eco-caption">
+                <div className="eco-caption-head">
+                  <span className="eco-dot" aria-hidden="true" />
+                  Conciliador de Honorários
+                  <span className="eco-live">· Ativo</span>
+                </div>
+                <p>
+                  Cruza contrato e cobrança e acha o honorário que ficou sem cobrar.
+                  Você aprova antes de cobrar.
+                </p>
+              </div>
+            </div>
+            <div>
+              <div className="eco-video-frame">
+                <video
+                  src="/agent-tributario.mp4"
+                  poster="/agent-tributario-poster.jpg"
+                  autoPlay={!reduceMotion}
+                  muted
+                  loop
+                  playsInline
+                  controls={reduceMotion}
+                  preload="metadata"
+                  aria-label="Agente Tributário, com foco na Reforma Tributária. Simula os cenários da reforma com IBS e CBS ano a ano, compara os regimes Simples, Presumido e Real, e entrega créditos recuperáveis com memória de cálculo em relatório pronto."
+                />
+              </div>
+              <div className="eco-caption">
+                <div className="eco-caption-head">
+                  <span className="eco-dot" aria-hidden="true" />
+                  Tributário / ICMS
+                  <span className="eco-live">· Ativo</span>
+                </div>
+                <p>
+                  Focado na reforma: simula IBS e CBS ano a ano, compara Simples,
+                  Presumido e Real e aponta os créditos a recuperar, com relatório
+                  pronto.
+                </p>
+              </div>
+            </div>
           </Reveal>
 
           {/* Próximos no Hub: secundários */}

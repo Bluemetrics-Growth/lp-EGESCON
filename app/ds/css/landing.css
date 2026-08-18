@@ -837,10 +837,31 @@ footer .brand-lockup .k { color: #EAF6FF; }
 .eco-video-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: 24px;
+  align-items: start;
 }
 @media (max-width: 820px) {
   .eco-video-grid { grid-template-columns: 1fr; }
+}
+.eco-caption { margin-top: 16px; }
+.eco-caption-head {
+  display: flex; align-items: center; gap: 9px;
+  font-family: var(--font-body);
+  font-size: 16px; font-weight: 700; letter-spacing: -0.01em;
+  color: var(--branco);
+}
+.eco-caption-head .eco-dot {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--ciano); flex: none;
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--ciano) 20%, transparent);
+}
+.eco-caption-head .eco-live {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 600;
+  color: rgba(234,246,255,0.5); letter-spacing: 0.02em;
+}
+.eco-caption p {
+  margin: 8px 0 0;
+  font-size: 14.5px; line-height: 1.55;
+  color: rgba(234,246,255,0.7);
 }
 
 /* ---- Botões sociais do rodapé ---- */
