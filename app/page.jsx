@@ -240,11 +240,13 @@ export default function Page() {
       {/* STICKY HEADER */}
       <nav className={`nav${pastHero ? " condensed" : ""}`}>
         <div className="lp-shell nav-inner">
-          <span className="brand-lockup">
-            <span className="k">Kontiva</span>
-            <span className="dot">.</span>
-            <span className="ai">ai</span>
-          </span>
+          <img
+            className="brand-logo"
+            src="/assets/kontiva-logo-color.png"
+            alt="Kontiva.ai"
+            width={1559}
+            height={287}
+          />
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
             <span className="nav-scarcity">{slotsBadge}</span>
             <a
@@ -911,32 +913,6 @@ export default function Page() {
               );
             })}
           </div>
-          <Reveal
-            style={{
-              marginTop: 28,
-              padding: 22,
-              borderRadius: 14,
-              border: "1px dashed var(--border-on-light-strong)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: 16,
-              flexWrap: "wrap",
-            }}
-          >
-            <span style={{ fontSize: 15, color: "var(--cinza-escuro)" }}>
-              Ainda com dúvida?
-            </span>
-            <a
-              className="btn btn-ghost"
-              style={{ padding: "10px 18px", fontSize: 14 }}
-              href="https://wa.me/5551926343014"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              WhatsApp
-            </a>
-          </Reveal>
         </div>
       </section>
 
@@ -1025,23 +1001,16 @@ export default function Page() {
             justifyContent: "space-between",
           }}
         >
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            <span className="brand-lockup" style={{ fontSize: 18 }}>
-              <span className="k" style={{ color: "#EAF6FF" }}>
-                Kontiva
-              </span>
-              <span className="dot" style={{ color: "var(--ciano)" }}>
-                .
-              </span>
-              <span className="ai" style={{ color: "var(--ciano)" }}>
-                ai
-              </span>
-            </span>
+          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            <img
+              className="brand-logo brand-logo--footer"
+              src="/assets/kontiva-logo-light.png"
+              alt="Kontiva.ai"
+              width={1559}
+              height={287}
+            />
             <div style={{ fontSize: 14, color: "rgba(234,246,255,0.7)" }}>
               Kontiva by BlueMetrics
-            </div>
-            <div style={{ fontSize: 13, color: "rgba(234,246,255,0.55)", maxWidth: 320 }}>
-              LGPD by design · dados no seu ambiente de nuvem
             </div>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 14, fontSize: 14 }}>
