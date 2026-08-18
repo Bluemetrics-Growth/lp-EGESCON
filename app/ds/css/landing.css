@@ -770,3 +770,68 @@ footer .brand-lockup .k { color: #EAF6FF; }
 .trust-chip .tick {
   width: 5px; height: 5px; border-radius: 50%; background: var(--ciano); flex: none;
 }
+
+/* ---- Roadmap: dois agentes ativos em destaque ---- */
+.agent-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 820px) { .agent-grid { grid-template-columns: 1fr; } }
+
+.agent-card {
+  position: relative; display: flex; flex-direction: column; gap: 18px;
+  padding: 30px; border-radius: var(--r-xl); height: 100%;
+  background:
+    radial-gradient(120% 80% at 100% 0%, color-mix(in oklab, var(--ciano) 14%, transparent), transparent 60%),
+    color-mix(in oklab, var(--ciano) 7%, transparent);
+  border: 1px solid color-mix(in oklab, var(--ciano) 45%, transparent);
+  box-shadow: 0 34px 80px -40px rgba(0,0,0,0.6);
+  transition: transform .2s cubic-bezier(.2,.7,.1,1), box-shadow .2s ease, border-color .2s;
+}
+.agent-card:hover {
+  transform: translateY(-5px);
+  border-color: color-mix(in oklab, var(--ciano) 75%, transparent);
+  box-shadow: 0 44px 90px -40px rgba(0,0,0,0.65),
+              0 0 0 1px color-mix(in oklab, var(--ciano) 30%, transparent);
+}
+.agent-card .agent-icon {
+  flex: none; width: 52px; height: 52px; border-radius: 14px;
+  background: var(--ciano); color: var(--azul-profundo);
+  display: inline-flex; align-items: center; justify-content: center;
+  box-shadow: 0 10px 24px -10px color-mix(in oklab, var(--ciano) 80%, transparent);
+}
+.agent-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.agent-chip {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.02em;
+  padding: 6px 11px; border-radius: var(--r-pill);
+  background: rgba(255,255,255,0.05); color: var(--claro-escuro);
+  border: 1px solid rgba(255,255,255,0.14);
+}
+
+.live-badge {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 5px 11px 5px 9px; border-radius: var(--r-pill);
+  background: var(--ciano); color: var(--azul-profundo);
+}
+.live-badge .live-dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--azul-profundo);
+  animation: livepulse 1.6s ease-in-out infinite;
+}
+@keyframes livepulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+/* ---- Próximos no Hub (secundários) ---- */
+.upcoming-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 820px) { .upcoming-row { grid-template-columns: 1fr; } }
+.upcoming-item {
+  display: flex; align-items: center; gap: 14px; padding: 16px 18px;
+  border-radius: var(--r-lg); border: 1px dashed rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.02);
+}
+.upcoming-item .up-icon {
+  flex: none; width: 40px; height: 40px; border-radius: 10px;
+  background: rgba(255,255,255,0.06); color: rgba(234,246,255,0.55);
+  display: inline-flex; align-items: center; justify-content: center;
+}
+@media (prefers-reduced-motion: reduce) {
+  .live-badge .live-dot { animation: none; }
+  .agent-card:hover { transform: none; }
+}

@@ -80,12 +80,13 @@ const STEPS = [
   },
 ];
 
-const ROADMAP_BASE = [
+/* Dois agentes já rodando hoje: as estrelas da seção. */
+const ACTIVE_AGENTS = [
   {
+    key: "honorarios",
     name: "Conciliador de Honorários",
     desc: "Cruza contrato e cobrança, acha o que faltou.",
-    tag: "Ativo",
-    active: true,
+    chips: ["Contrato × cobrança", "Você aprova antes de cobrar"],
     icon: (
       <svg {...svgProps}>
         <circle cx="11" cy="11" r="7" />
@@ -95,10 +96,10 @@ const ROADMAP_BASE = [
     ),
   },
   {
+    key: "tributario",
     name: "Tributário / ICMS",
     desc: "Confere apuração e regime contra o que foi lançado.",
-    tag: "Ativo",
-    active: true,
+    chips: ["Simples", "Presumido", "Real", "IBS / CBS"],
     icon: (
       <svg {...svgProps}>
         <path d="M4 4h16v4H4z" />
@@ -107,11 +108,14 @@ const ROADMAP_BASE = [
       </svg>
     ),
   },
+];
+
+/* Próximos no Hub: papel secundário. */
+const UPCOMING_AGENTS = [
   {
     name: "Simulação em Massa da carteira",
     desc: "Roda cenários tributários em toda a base de clientes.",
     tag: "Est. Q4 2026",
-    active: false,
     icon: (
       <svg {...svgProps}>
         <path d="M3 3v18h18" />
@@ -123,7 +127,6 @@ const ROADMAP_BASE = [
     name: "Próximo agente",
     desc: "Definido com os escritórios do Setup EGESCON.",
     tag: "Est. Q1 2027",
-    active: false,
     icon: (
       <svg {...svgProps}>
         <circle cx="12" cy="12" r="9" strokeDasharray="3 3" />
@@ -133,23 +136,6 @@ const ROADMAP_BASE = [
     ),
   },
 ];
-
-const ACTIVE_BG = "color-mix(in oklab, var(--ciano) 8%, transparent)";
-const ACTIVE_BORDER = "1px solid color-mix(in oklab, var(--ciano) 55%, transparent)";
-const SOFT_BORDER = "1px dashed rgba(255,255,255,0.14)";
-
-const ROADMAP = ROADMAP_BASE.map((r) => ({
-  ...r,
-  bg: r.active ? ACTIVE_BG : "rgba(255,255,255,0.02)",
-  border: r.active ? ACTIVE_BORDER : SOFT_BORDER,
-  opacity: r.active ? 1 : 0.62,
-  iconBg: r.active ? "var(--ciano)" : "rgba(255,255,255,0.06)",
-  iconColor: r.active ? "var(--azul-profundo)" : "rgba(234,246,255,0.55)",
-  titleColor: r.active ? "var(--branco)" : "rgba(234,246,255,0.75)",
-  tagBg: r.active ? "var(--ciano)" : "transparent",
-  tagColor: r.active ? "var(--azul-profundo)" : "rgba(234,246,255,0.6)",
-  tagBorder: r.active ? "none" : "1px solid rgba(255,255,255,0.16)",
-}));
 
 const PRICING = [
   { tier: "Até 100 clientes", price: "R$ 497", per: "/mês" },
@@ -541,89 +527,113 @@ export default function Page() {
               Quem entra agora influencia quais agentes vêm depois.
             </p>
           </Reveal>
-          <div className="roadmap-lane lp-grid-3">
-            {ROADMAP.map((r, i) => (
-              <Reveal key={r.name} delay={i * 80}>
-                <div className={`roadmap-axis${r.active ? " is-live" : ""}`}>
-                  <span className="dot" aria-hidden="true" />
-                  {r.active ? "Hoje" : r.tag}
-                </div>
+          {/* Dois agentes ativos: destaque */}
+          <div className="agent-grid" style={{ marginBottom: 28 }}>
+            {ACTIVE_AGENTS.map((a, i) => (
+              <Reveal key={a.key} delay={i * 90} className="agent-card">
                 <div
                   style={{
                     display: "flex",
-                    flexDirection: "column",
-                    gap: 16,
-                    padding: 24,
-                    borderRadius: 16,
-                    background: r.bg,
-                    border: r.border,
-                    opacity: r.opacity,
-                    height: "100%",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    gap: 12,
                   }}
                 >
+                  <span className="agent-icon">{a.icon}</span>
+                  <span className="live-badge">
+                    <span className="live-dot" aria-hidden="true" />
+                    Ativo
+                  </span>
+                </div>
+                <div>
+                  <h3
+                    style={{
+                      fontSize: 22,
+                      fontWeight: 700,
+                      color: "var(--branco)",
+                      letterSpacing: "-0.02em",
+                      fontFamily: "inherit",
+                    }}
+                  >
+                    {a.name}
+                  </h3>
+                  <p
+                    style={{
+                      fontSize: 15,
+                      color: "rgba(234,246,255,0.72)",
+                      margin: "8px 0 0",
+                      lineHeight: 1.5,
+                    }}
+                  >
+                    {a.desc}
+                  </p>
+                </div>
+                <div className="agent-chips" style={{ marginTop: "auto" }}>
+                  {a.chips.map((c) => (
+                    <span key={c} className="agent-chip">
+                      {c}
+                    </span>
+                  ))}
+                </div>
+              </Reveal>
+            ))}
+          </div>
+
+          {/* Próximos no Hub: secundários */}
+          <Reveal
+            className="eyebrow light"
+            delay={120}
+            style={{ marginBottom: 14, color: "rgba(234,246,255,0.5)" }}
+          >
+            <span className="dot-cyan" /> Próximos no Hub
+          </Reveal>
+          <div className="upcoming-row">
+            {UPCOMING_AGENTS.map((u, i) => (
+              <Reveal key={u.name} delay={140 + i * 80} className="upcoming-item">
+                <span className="up-icon">{u.icon}</span>
+                <div style={{ minWidth: 0 }}>
                   <div
                     style={{
                       display: "flex",
                       alignItems: "center",
-                      justifyContent: "space-between",
-                      gap: 12,
+                      gap: 10,
+                      flexWrap: "wrap",
                     }}
                   >
                     <span
                       style={{
-                        flex: "none",
-                        width: 44,
-                        height: 44,
-                        borderRadius: 12,
-                        background: r.iconBg,
-                        color: r.iconColor,
-                        display: "inline-flex",
-                        alignItems: "center",
-                        justifyContent: "center",
+                        fontSize: 15,
+                        fontWeight: 600,
+                        color: "rgba(234,246,255,0.85)",
                       }}
                     >
-                      {r.icon}
+                      {u.name}
                     </span>
                     <span
                       style={{
-                        flex: "none",
                         fontFamily: "var(--font-mono)",
                         fontSize: 10,
                         fontWeight: 700,
                         letterSpacing: "0.06em",
                         textTransform: "uppercase",
-                        padding: "5px 10px",
+                        padding: "4px 9px",
                         borderRadius: 99,
-                        background: r.tagBg,
-                        color: r.tagColor,
-                        border: r.tagBorder,
+                        color: "rgba(234,246,255,0.6)",
+                        border: "1px solid rgba(255,255,255,0.16)",
                       }}
                     >
-                      {r.tag}
+                      {u.tag}
                     </span>
                   </div>
-                  <div>
-                    <h3
-                      style={{
-                        fontSize: 17,
-                        fontWeight: 600,
-                        color: r.titleColor,
-                        letterSpacing: "-0.01em",
-                        fontFamily: "inherit",
-                      }}
-                    >
-                      {r.name}
-                    </h3>
-                    <div
-                      style={{
-                        fontSize: 13.5,
-                        color: "rgba(234,246,255,0.55)",
-                        marginTop: 6,
-                        lineHeight: 1.5,
-                      }}
-                    >
-                      {r.desc}
-                    </div>
+                  <div
+                    style={{
+                      fontSize: 13,
+                      color: "rgba(234,246,255,0.5)",
+                      marginTop: 4,
+                      lineHeight: 1.5,
+                    }}
+                  >
+                    {u.desc}
                   </div>
                 </div>
               </Reveal>
