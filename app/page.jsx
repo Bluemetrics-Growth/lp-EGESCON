@@ -5,13 +5,6 @@ import RadarCard from "./components/RadarCard";
 import Reveal from "./components/Reveal";
 import CountUp from "./components/CountUp";
 
-/* ------------------------------------------------------------------ *
- * Estado da turma fundadora.
- * Na fase Code isto vem do CMS / inventário de vagas. Mudar aqui
- * reflete no badge de urgência.
- *   slotsLeft: vagas restantes (0 a 15), usado no selo do hero.
- * ------------------------------------------------------------------ */
-const FOUNDING = { slotsLeft: 6 };
 
 /* Link de agendamento (Google Calendar Appointment Scheduling). */
 const SCHEDULER_URL =
@@ -68,7 +61,7 @@ const STEPS = [
   {
     n: "01",
     title: "Reserva a vaga",
-    body: "Sem cartão, sem assinar nada agora. Você só garante o lugar na turma fundadora.",
+    body: "Sem cartão, sem assinar nada agora. Você só garante o lugar no Setup EGESCON.",
   },
   {
     n: "02",
@@ -128,7 +121,7 @@ const ROADMAP_BASE = [
   },
   {
     name: "Próximo agente",
-    desc: "Definido com os escritórios fundadores.",
+    desc: "Definido com os escritórios do Setup EGESCON.",
     tag: "Est. Q1 2027",
     active: false,
     icon: (
@@ -171,7 +164,7 @@ const FAQ = [
   },
   {
     q: "Quanto custa depois do beta?",
-    a: "Tabela a partir de R$ 900/mês para carteiras menores. Quem reserva no EGESCON trava a Condição Fundadora EGESCON por 12 meses após o beta. É a melhor condição que o Hub vai ter.",
+    a: "Tabela a partir de R$ 900/mês para carteiras menores. Quem reserva no EGESCON trava a Condição Setup EGESCON por 12 meses após o beta. É a melhor condição que o Hub vai ter.",
   },
   {
     q: "Preciso pagar ou assinar algo agora?",
@@ -187,7 +180,7 @@ const FAQ = [
   },
   {
     q: "Essa condição vale depois do evento?",
-    a: "Não. A Condição Fundadora EGESCON é exclusiva de quem reserva durante o 9º EGESCON. Depois do evento, entra a tabela cheia.",
+    a: "Não. A Condição Setup EGESCON é exclusiva de quem reserva durante o 9º EGESCON. Depois do evento, entra a tabela cheia.",
   },
 ];
 
@@ -203,10 +196,10 @@ export default function Page() {
   const [openFaq, setOpenFaq] = useState(0);
   const toggleFaq = (i) => setOpenFaq((cur) => (cur === i ? null : i));
 
-  const heroCtaLabel = "Reservar minha Vaga Fundadora EGESCON";
+  const heroCtaLabel = "Reservar meu Setup EGESCON";
   const heroCtaHref = SCHEDULER_URL;
   const headerCtaLabel = "Reservar vaga";
-  const slotsBadge = `Restam ${FOUNDING.slotsLeft} de 15 vagas · Turma Fundadora EGESCON`;
+  const slotsBadge = "Vagas limitadas · Setup EGESCON";
 
   /* Modal do agendador: abre o Google Calendar num iframe, sem sair da página.
      O href é mantido como fallback caso o JS esteja desabilitado. */
@@ -238,8 +231,6 @@ export default function Page() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  const slotsFilled = 15 - FOUNDING.slotsLeft;
 
   return (
     <div
@@ -318,11 +309,6 @@ export default function Page() {
                 >
                   {slotsBadge}
                 </span>
-                <span className="slots-meter" aria-hidden="true">
-                  {Array.from({ length: 15 }, (_, i) => (
-                    <span key={i} className={i < slotsFilled ? "filled" : undefined} />
-                  ))}
-                </span>
               </div>
               <h1
                 style={{
@@ -336,7 +322,7 @@ export default function Page() {
                 escritório deixa na mesa.
               </h1>
               <p className="lead" style={{ margin: "0 0 32px", maxWidth: 520 }}>
-                Estamos selecionando os escritórios fundadores do Hub no 9º EGESCON. 15 vagas.
+                Estamos selecionando os escritórios do Hub para o Setup EGESCON. Vagas limitadas.
               </p>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 14, alignItems: "center" }}>
                 <a
@@ -463,12 +449,12 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 3. COMO FUNCIONA A VAGA FUNDADORA (stepper conectado) */}
+      {/* 3. COMO FUNCIONA O SETUP EGESCON (stepper conectado) */}
       <section className="lp-section lp-section--medium surface-0" id="como-funciona">
         <div className="lp-shell">
           <Reveal style={{ maxWidth: 720, marginBottom: 44 }}>
             <div className="eyebrow" style={{ marginBottom: 18 }}>
-              <span className="dot-cyan" /> Como funciona a Vaga Fundadora EGESCON
+              <span className="dot-cyan" /> Como funciona o Setup EGESCON
             </div>
             <h2 style={{ fontSize: "clamp(30px, 4.2vw, 46px)" }}>
               Você vê funcionando antes de pagar.
@@ -646,7 +632,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 5. CONDIÇÃO FUNDADORA EGESCON (preço) */}
+      {/* 5. CONDIÇÃO SETUP EGESCON (preço) */}
       <section
         className="lp-section lp-section--ample surface-2-dark edge-glow"
         id="preco"
@@ -659,7 +645,7 @@ export default function Page() {
               className="eyebrow light"
               style={{ marginBottom: 18, color: "rgba(234,246,255,0.66)" }}
             >
-              <span className="dot-cyan" /> Condição Fundadora EGESCON
+              <span className="dot-cyan" /> Condição Setup EGESCON
             </div>
             <h2
               style={{
@@ -671,7 +657,7 @@ export default function Page() {
               O preço que só existe no 9º EGESCON.
             </h2>
             <p style={{ color: "rgba(234,246,255,0.7)", fontSize: 16, margin: 0 }}>
-              6 meses, com os 2 agentes que já rodam. Sem fidelidade.
+              12 meses, com os 2 agentes que já rodam. Sem fidelidade.
             </p>
           </Reveal>
           <div className="lp-grid-3" style={{ marginBottom: 24 }}>
@@ -778,7 +764,7 @@ export default function Page() {
                 Setup
               </span>
               <span style={{ fontSize: 14.5, color: "rgba(234,246,255,0.85)", lineHeight: 1.5 }}>
-                Setup de Teste (R$ 1.500 de tabela) grátis para fundadores EGESCON.
+                Setup de Teste (R$ 1.500 de tabela) grátis para quem entra no Setup EGESCON.
               </span>
             </div>
           </Reveal>
@@ -1076,7 +1062,7 @@ export default function Page() {
         target="_blank"
         rel="noopener noreferrer"
         onClick={openScheduler}
-        aria-label="Reservar minha Vaga Fundadora EGESCON"
+        aria-label="Reservar meu Setup EGESCON"
       >
         <svg
           width="18"
