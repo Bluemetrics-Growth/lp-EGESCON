@@ -1,18 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Script from "next/script";
 import RadarCard from "./components/RadarCard";
 
 /* ------------------------------------------------------------------ *
  * Estado da turma fundadora.
  * Na fase Code isto vem do CMS / inventário de vagas. Mudar aqui
- * reflete em toda a página: CTAs, badge, headlines, destaque da lista
- * de espera e aviso do agendador.
- *   slotsOpen  — turma aceitando reservas
- *   slotsLeft  — vagas restantes (0–15). Em 0, a lista de espera abre
- *                automaticamente mesmo com slotsOpen = true.
+ * reflete no badge de urgência.
+ *   slotsLeft — vagas restantes (0 a 15), usado no selo do hero.
  * ------------------------------------------------------------------ */
-const FOUNDING = { slotsOpen: true, slotsLeft: 6 };
+const FOUNDING = { slotsLeft: 6 };
+
+/* Agendamento (Google Calendar Appointment Scheduling). */
+const SCHEDULER_URL =
+  "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2-qsOojrD73dO48zSXLJ_hiu91ZSD5fNqo0s24NOJq4zc6n7XtKrQUF_2rECb8Gm50l258XovZ?gv=true";
+const SCHEDULER_CSS = "https://calendar.google.com/calendar/scheduling-button-script.css";
+const SCHEDULER_JS = "https://calendar.google.com/calendar/scheduling-button-script.js";
 
 const svgProps = {
   width: 22,
@@ -207,38 +211,28 @@ export default function Page() {
   const [openFaq, setOpenFaq] = useState(0);
   const toggleFaq = (i) => setOpenFaq((cur) => (cur === i ? null : i));
 
-  // Lista de espera libera automaticamente quando as 15 vagas encerram.
-  const slotsOpenEff = FOUNDING.slotsOpen && FOUNDING.slotsLeft > 0;
+  const heroCtaLabel = "Reservar minha Vaga Fundadora EGESCON";
+  const heroCtaHref = "#agendador";
+  const headerCtaLabel = "Reservar vaga";
+  const slotsBadge = `Restam ${FOUNDING.slotsLeft} de 15 vagas · Turma Fundadora EGESCON`;
 
-  const heroCtaLabel = slotsOpenEff
-    ? "Reservar minha Vaga Fundadora EGESCON"
-    : "Entrar na lista de espera";
-  const heroCtaHref = slotsOpenEff ? "#agendador" : "#lista-espera";
-  const headerCtaLabel = slotsOpenEff ? "Reservar vaga" : "Lista de espera";
+  /* Monta o botão do Google Calendar dentro do card, sem duplicar. */
+  const schedulerRef = useRef(null);
+  const [scriptReady, setScriptReady] = useState(false);
 
-  const slotsBadge = slotsOpenEff
-    ? `Restam ${FOUNDING.slotsLeft} de 15 vagas · Turma Fundadora EGESCON`
-    : "Turma Fundadora EGESCON completa · 2ª turma em fila";
-
-  const pathsHeadline = slotsOpenEff
-    ? "Reserve agora ou entre na fila da próxima."
-    : "Turma Fundadora EGESCON completa. Garanta a 2ª turma.";
-
-  const waitlistHeadline = slotsOpenEff
-    ? "Prefere decidir depois? Garanta seu lugar na 2ª turma."
-    : "Turma Fundadora EGESCON completa. Entre na fila da 2ª turma.";
-
-  const waitlistBorder = slotsOpenEff
-    ? "1px solid var(--border-on-light)"
-    : "1.5px solid color-mix(in oklab, var(--ciano) 55%, transparent)";
-
-  const showWaitlistLink = slotsOpenEff;
-  const schedulerClosed = !slotsOpenEff;
-
-  // HOOK (fase Code): ligar ao POST da Forms Submission API v3 do HubSpot.
-  const onWaitlistSubmit = (e) => {
-    e.preventDefault();
-  };
+  useEffect(() => {
+    if (!scriptReady) return;
+    const target = schedulerRef.current;
+    const api = typeof window !== "undefined" && window.calendar?.schedulingButton;
+    if (!target || !api) return;
+    target.replaceChildren();
+    api.load({
+      url: SCHEDULER_URL,
+      color: "#0a1f3f",
+      label: "Kontiva - Setup fundadores EGESCON",
+      target,
+    });
+  }, [scriptReady]);
 
   return (
     <div
@@ -333,20 +327,6 @@ export default function Page() {
                 >
                   {heroCtaLabel}
                 </a>
-                {showWaitlistLink && (
-                  <a
-                    href="#lista-espera"
-                    style={{
-                      fontSize: 14,
-                      fontWeight: 500,
-                      color: "var(--cinza-texto)",
-                      textDecoration: "underline",
-                      textUnderlineOffset: 3,
-                    }}
-                  >
-                    Não quer decidir agora? Entrar na lista de espera
-                  </a>
-                )}
               </div>
             </div>
             <div>
@@ -846,275 +826,85 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 7. DOIS CAMINHOS: Agendador (A) + Lista de espera (B) */}
-      <section className="lp-section" style={{ background: "var(--branco)" }}>
-        <div className="lp-shell">
-          <div style={{ maxWidth: 720, marginBottom: 40 }}>
+      {/* 7. AGENDAMENTO · Setup de Teste (Google Calendar) */}
+      <section className="lp-section" id="agendador" style={{ background: "var(--branco)" }}>
+        <link rel="stylesheet" href={SCHEDULER_CSS} />
+        <Script
+          src={SCHEDULER_JS}
+          strategy="afterInteractive"
+          onReady={() => setScriptReady(true)}
+        />
+        <div className="lp-shell lp-narrow">
+          <div style={{ maxWidth: 640, marginBottom: 32 }}>
             <div className="eyebrow" style={{ marginBottom: 18 }}>
-              <span className="dot-cyan" /> Dois caminhos
+              <span className="dot-cyan" /> Reservar
             </div>
-            <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)" }}>{pathsHeadline}</h2>
+            <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)", marginBottom: 12 }}>
+              Escolha o horário do seu Setup de Teste.
+            </h2>
+            <p className="lead" style={{ margin: 0, maxWidth: 560 }}>
+              Sem compromisso. A gente monta o Setup de Teste e você vê rodando nos
+              seus números antes de decidir.
+            </p>
           </div>
-          <div className="lp-paths">
-            {/* Caminho A · Agendador — STUB.
-                HOOK (fase Code): substituir o card stub abaixo pelo embed do
-                HubSpot Meetings via next/script. Não carregar script externo aqui. */}
-            <div
-              id="agendador"
+          <div
+            style={{
+              padding: 32,
+              borderRadius: 20,
+              background: "var(--cinza-claro)",
+              border: "1px solid var(--border-on-light)",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 18,
+              textAlign: "center",
+            }}
+          >
+            <span
               style={{
-                padding: 28,
-                borderRadius: 20,
-                background: "var(--cinza-claro)",
-                border: "1px solid var(--border-on-light)",
+                width: 52,
+                height: 52,
+                borderRadius: 14,
+                background: "var(--azul-profundo)",
+                color: "var(--ciano)",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  gap: 12,
-                  marginBottom: 20,
-                }}
+              <svg
+                width="26"
+                height="26"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
-                <span
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: 11,
-                    fontWeight: 700,
-                    letterSpacing: "0.08em",
-                    textTransform: "uppercase",
-                    color: "var(--cinza-texto)",
-                  }}
-                >
-                  Caminho A · Reservar
-                </span>
-                {slotsOpenEff && (
-                  <span
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: 10,
-                      fontWeight: 700,
-                      letterSpacing: "0.06em",
-                      textTransform: "uppercase",
-                      padding: "5px 10px",
-                      borderRadius: 99,
-                      background: "var(--ciano)",
-                      color: "var(--azul-profundo)",
-                    }}
-                  >
-                    Recomendado
-                  </span>
-                )}
-              </div>
-              <h3 style={{ fontSize: 22, letterSpacing: "-0.02em", marginBottom: 18 }}>
-                Escolha o horário do seu Setup de Teste.
-              </h3>
-
-              {schedulerClosed && (
-                <div
-                  style={{
-                    display: "flex",
-                    gap: 12,
-                    alignItems: "flex-start",
-                    padding: 16,
-                    borderRadius: 14,
-                    background: "var(--antes-tag-bg)",
-                    border: "1px solid rgba(162,64,26,0.2)",
-                    marginBottom: 18,
-                  }}
-                >
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="var(--antes-tag-fg)"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    style={{ flex: "none", marginTop: 1 }}
-                  >
-                    <path d="M12 9v4M12 17h.01" />
-                    <path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z" />
-                  </svg>
-                  <div style={{ fontSize: 14, color: "var(--antes-tag-fg)", fontWeight: 600 }}>
-                    Turma Fundadora EGESCON completa. Entre na fila da 2ª turma.
-                  </div>
-                </div>
-              )}
-
-              <div
-                style={{
-                  position: "relative",
-                  border: "1.5px dashed color-mix(in oklab, var(--ciano) 55%, var(--border-on-light-strong))",
-                  borderRadius: 16,
-                  background: "linear-gradient(135deg, var(--ciano-suave), var(--branco))",
-                  minHeight: 260,
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 16,
-                  padding: "36px 20px",
-                  textAlign: "center",
-                }}
+                <rect x="3" y="4" width="18" height="18" rx="2" />
+                <path d="M16 2v4M8 2v4M3 10h18" />
+              </svg>
+            </span>
+            {/* Fallback enquanto o script do Google carrega; o botão oficial entra no ref abaixo. */}
+            {!scriptReady && (
+              <a
+                className="btn btn-primary"
+                href={SCHEDULER_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ padding: "16px 26px", fontSize: 16 }}
               >
-                <span
-                  style={{
-                    width: 52,
-                    height: 52,
-                    borderRadius: 14,
-                    background: "var(--azul-profundo)",
-                    color: "var(--ciano)",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <svg
-                    width="26"
-                    height="26"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <rect x="3" y="4" width="18" height="18" rx="2" />
-                    <path d="M16 2v4M8 2v4M3 10h18" />
-                  </svg>
-                </span>
-                <div
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: 13,
-                    color: "var(--azul-profundo)",
-                    fontWeight: 600,
-                    background: "var(--branco)",
-                    padding: "8px 14px",
-                    borderRadius: 8,
-                    border: "1px solid var(--border-on-light)",
-                  }}
-                >
-                  [ Agendador HubSpot · integração na fase Code ]
-                </div>
-                <div style={{ fontSize: 13, color: "var(--cinza-texto)", maxWidth: 320 }}>
-                  Seleção de dia e horário aparece aqui quando o embed for conectado.
-                </div>
-              </div>
-              <p
-                style={{
-                  fontSize: 14,
-                  color: "var(--cinza-texto)",
-                  margin: "16px 4px 0",
-                  textAlign: "center",
-                }}
-              >
-                Sem cartão. Você só decide pagar depois de ver funcionando.
-              </p>
-            </div>
-
-            {/* Caminho B · Lista de espera — form visual, sem submit ligado */}
+                Agendar meu Setup de Teste
+              </a>
+            )}
             <div
-              id="lista-espera"
-              style={{
-                padding: 28,
-                borderRadius: 20,
-                background: "var(--branco)",
-                border: waitlistBorder,
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  gap: 12,
-                  marginBottom: 20,
-                }}
-              >
-                <span
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: 11,
-                    fontWeight: 700,
-                    letterSpacing: "0.08em",
-                    textTransform: "uppercase",
-                    color: "var(--cinza-texto)",
-                  }}
-                >
-                  Caminho B · 2ª turma
-                </span>
-                {schedulerClosed && (
-                  <span
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: 10,
-                      fontWeight: 700,
-                      letterSpacing: "0.06em",
-                      textTransform: "uppercase",
-                      padding: "5px 10px",
-                      borderRadius: 99,
-                      background: "var(--ciano)",
-                      color: "var(--azul-profundo)",
-                    }}
-                  >
-                    Vagas abertas
-                  </span>
-                )}
-              </div>
-              <h3 style={{ fontSize: 22, letterSpacing: "-0.02em", marginBottom: 6 }}>
-                {waitlistHeadline}
-              </h3>
-              <p style={{ fontSize: 14.5, color: "var(--cinza-escuro)", margin: "0 0 20px" }}>
-                A gente te chama assim que abrir a próxima leva de vagas, com prioridade por ordem de inscrição.
-              </p>
-              <form onSubmit={onWaitlistSubmit}>
-                <div className="f-field">
-                  <label htmlFor="wl-nome">Nome</label>
-                  <input id="wl-nome" type="text" placeholder="Seu nome" />
-                </div>
-                <div className="f-row">
-                  <div className="f-field">
-                    <label htmlFor="wl-escritorio">Escritório</label>
-                    <input id="wl-escritorio" type="text" placeholder="Nome do escritório" />
-                  </div>
-                  <div className="f-field">
-                    <label htmlFor="wl-cidade">Cidade</label>
-                    <input id="wl-cidade" type="text" placeholder="Cidade / UF" />
-                  </div>
-                </div>
-                <div className="f-row">
-                  <div className="f-field">
-                    <label htmlFor="wl-whats">WhatsApp</label>
-                    <input id="wl-whats" type="tel" placeholder="(00) 90000-0000" />
-                  </div>
-                  <div className="f-field">
-                    <label htmlFor="wl-email">E-mail</label>
-                    <input id="wl-email" type="email" placeholder="voce@escritorio.com.br" />
-                  </div>
-                </div>
-                <div className="f-field">
-                  <label htmlFor="wl-clientes">Quantos clientes ativos?</label>
-                  <select id="wl-clientes" defaultValue="">
-                    <option value="">Selecione</option>
-                    <option value="ate-30">até 30</option>
-                    <option value="31-100">31-100</option>
-                    <option value="101-300">101-300</option>
-                    <option value="300+">300+</option>
-                  </select>
-                </div>
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  style={{ width: "100%", padding: 16, fontSize: 16, marginTop: 6 }}
-                >
-                  Entrar na lista de espera
-                </button>
-              </form>
-            </div>
+              ref={schedulerRef}
+              style={{ display: "flex", justifyContent: "center", minHeight: 44 }}
+            />
+            <p style={{ fontSize: 14, color: "var(--cinza-texto)", margin: 0, maxWidth: 360 }}>
+              Sem cartão. Você só decide pagar depois de ver funcionando.
+            </p>
           </div>
         </div>
       </section>
