@@ -28,7 +28,7 @@ const svgProps = {
 const BENEFITS = [
   {
     title: "Achar dinheiro",
-    body: "A conciliação de honorários acha receita que o escritório deixa de cobrar — contrato por contrato.",
+    body: "A conciliação de honorários acha receita que o escritório deixa de cobrar, contrato por contrato.",
     icon: (
       <svg {...svgProps}>
         <circle cx="11" cy="11" r="7" />
@@ -50,7 +50,7 @@ const BENEFITS = [
   },
   {
     title: "Vitrine de IA de verdade",
-    body: "O escritório mostra à carteira dele que opera com agentes reais — não com promessa.",
+    body: "O escritório mostra à carteira dele que opera com agentes reais, não com promessa.",
     icon: (
       <svg {...svgProps}>
         <rect x="3" y="4" width="18" height="13" rx="2" />
@@ -80,7 +80,7 @@ const STEPS = [
   {
     n: "04",
     title: "7 dias para decidir",
-    body: "Após o setup. Se não seguir, a vaga volta pra fila — sem ruído.",
+    body: "Após o setup. Se não seguir, a vaga volta pra fila, sem ruído.",
   },
 ];
 
@@ -162,26 +162,36 @@ const PROOF = [
   { stat: "LGPD", label: "by design, desde a origem" },
 ];
 
+const PRICING = [
+  { tier: "Até 100 clientes", price: "R$ 497", per: "/mês" },
+  { tier: "101 a 300 clientes", price: "R$ 797", per: "/mês" },
+  { tier: "300+ clientes", price: "R$ 990", per: "/mês + R$ 30 por CNPJ ativo" },
+];
+
 const FAQ = [
   {
     q: "Já tenho sistema (Domínio / Alterdata)?",
-    a: "A gente lê os dados dele. Seu sistema executa a cobrança; o Kontiva confere se está certa contra o contrato.",
+    a: "A gente lê os dados dele. Seu sistema executa a cobrança; o Kontiva confere se ela está certa contra o contrato. Ninguém faz essa conferência hoje.",
   },
   {
     q: "Quanto custa depois do beta?",
-    a: "Tabela a partir de R$ 900/mês. Fundador mantém a condição por 12 meses.",
+    a: "Tabela a partir de R$ 900/mês para carteiras menores. Quem reserva no EGESCON trava a Condição Fundadora EGESCON por 12 meses após o beta. É a melhor condição que o Hub vai ter.",
   },
   {
     q: "Preciso pagar ou assinar algo agora?",
-    a: "Nada. Você reserva a vaga e marca o setup. O pagamento vai por link depois, e confirma a vaga em até 7 dias.",
+    a: "Nada. Você reserva a vaga e marca o Setup de Teste. O pagamento do primeiro mês vai por link depois do setup e confirma a vaga em até 7 dias. O contrato a gente assina junto na reunião.",
   },
   {
     q: "Não tenho tempo pra implantar?",
-    a: "Por isso a turma é de 15: nós fazemos o setup. Você participa de 2 reuniões de 1h.",
+    a: "Por isso a turma é de 15: nós fazemos o setup. Você participa de 2 reuniões de 1h e recebe a primeira análise pronta.",
   },
   {
     q: "Meus dados estão seguros?",
-    a: "Dados no seu ambiente de nuvem, termo de confidencialidade no contrato, LGPD by design.",
+    a: "Dados no seu ambiente de nuvem, termo de confidencialidade no contrato, LGPD by design. Somos a BlueMetrics: 10 anos e 200+ projetos de IA.",
+  },
+  {
+    q: "Essa condição vale depois do evento?",
+    a: "Não. A Condição Fundadora EGESCON é exclusiva de quem reserva durante o 9º EGESCON. Depois do evento, entra a tabela cheia.",
   },
 ];
 
@@ -201,22 +211,22 @@ export default function Page() {
   const slotsOpenEff = FOUNDING.slotsOpen && FOUNDING.slotsLeft > 0;
 
   const heroCtaLabel = slotsOpenEff
-    ? "Reservar minha vaga fundadora"
+    ? "Reservar minha Vaga Fundadora EGESCON"
     : "Entrar na lista de espera";
   const heroCtaHref = slotsOpenEff ? "#agendador" : "#lista-espera";
   const headerCtaLabel = slotsOpenEff ? "Reservar vaga" : "Lista de espera";
 
   const slotsBadge = slotsOpenEff
-    ? `Restam ${FOUNDING.slotsLeft} de 15 vagas fundadoras`
-    : "Turma fundadora completa · 2ª turma em fila";
+    ? `Restam ${FOUNDING.slotsLeft} de 15 vagas · Turma Fundadora EGESCON`
+    : "Turma Fundadora EGESCON completa · 2ª turma em fila";
 
   const pathsHeadline = slotsOpenEff
-    ? "Reserve agora — ou entre na fila da próxima."
-    : "Turma fundadora completa. Garanta a 2ª turma.";
+    ? "Reserve agora ou entre na fila da próxima."
+    : "Turma Fundadora EGESCON completa. Garanta a 2ª turma.";
 
   const waitlistHeadline = slotsOpenEff
-    ? "Quer decidir depois? Fique na fila."
-    : "Vagas esgotadas? Garanta seu lugar.";
+    ? "Prefere decidir depois? Garanta seu lugar na 2ª turma."
+    : "Turma Fundadora EGESCON completa. Entre na fila da 2ª turma.";
 
   const waitlistBorder = slotsOpenEff
     ? "1px solid var(--border-on-light)"
@@ -308,12 +318,12 @@ export default function Page() {
                   className="serif-accent"
                   style={{ color: "var(--azul-profundo)", fontSize: "1.06em" }}
                 >
-                  acha
+                  recupera
                 </span>{" "}
                 o dinheiro que o seu escritório deixa na mesa.
               </h1>
               <p className="lead" style={{ margin: "0 0 32px", maxWidth: 520 }}>
-                Estamos selecionando os escritórios fundadores do Hub. Vagas limitadas.
+                Estamos selecionando os escritórios fundadores do Hub no 9º EGESCON. 15 vagas.
               </p>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 14, alignItems: "center" }}>
                 <a
@@ -334,7 +344,7 @@ export default function Page() {
                       textUnderlineOffset: 3,
                     }}
                   >
-                    Prefiro entrar na lista de espera da 2ª turma
+                    Não quer decidir agora? Entrar na lista de espera
                   </a>
                 )}
               </div>
@@ -413,7 +423,7 @@ export default function Page() {
         <div className="lp-shell">
           <div style={{ maxWidth: 720, marginBottom: 44 }}>
             <div className="eyebrow" style={{ marginBottom: 18 }}>
-              <span className="dot-cyan" /> Como funciona a vaga fundadora
+              <span className="dot-cyan" /> Como funciona a Vaga Fundadora EGESCON
             </div>
             <h2 style={{ fontSize: "clamp(30px, 4.2vw, 46px)" }}>
               Você{" "}
@@ -679,7 +689,164 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 6. DOIS CAMINHOS: Agendador (A) + Lista de espera (B) */}
+      {/* 6. CONDIÇÃO FUNDADORA EGESCON (preço) */}
+      <section
+        className="lp-section"
+        id="preco"
+        style={{
+          background: "var(--azul-profundo)",
+          color: "var(--claro-escuro)",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "radial-gradient(700px circle at 20% 0%, color-mix(in oklab, var(--ciano) 12%, transparent), transparent 60%)",
+            pointerEvents: "none",
+          }}
+        />
+        <div className="lp-shell" style={{ position: "relative" }}>
+          <div style={{ maxWidth: 720, marginBottom: 40 }}>
+            <div
+              className="eyebrow light"
+              style={{ marginBottom: 18, color: "rgba(234,246,255,0.66)" }}
+            >
+              <span className="dot-cyan" /> Condição Fundadora EGESCON
+            </div>
+            <h2
+              style={{
+                fontSize: "clamp(30px, 4.2vw, 46px)",
+                color: "var(--branco)",
+                marginBottom: 12,
+              }}
+            >
+              O preço que só existe no 9º EGESCON.
+            </h2>
+            <p style={{ color: "rgba(234,246,255,0.7)", fontSize: 16, margin: 0 }}>
+              6 meses, com os 2 agentes que já rodam. Sem fidelidade.
+            </p>
+          </div>
+          <div className="lp-grid-3" style={{ marginBottom: 24 }}>
+            {PRICING.map((p) => (
+              <div
+                key={p.tier}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 10,
+                  padding: 28,
+                  borderRadius: 16,
+                  background: "color-mix(in oklab, var(--ciano) 8%, transparent)",
+                  border: "1px solid color-mix(in oklab, var(--ciano) 55%, transparent)",
+                  height: "100%",
+                }}
+              >
+                <div
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: 11,
+                    fontWeight: 700,
+                    letterSpacing: "0.06em",
+                    textTransform: "uppercase",
+                    color: "rgba(234,246,255,0.7)",
+                  }}
+                >
+                  {p.tier}
+                </div>
+                <div style={{ display: "flex", alignItems: "baseline", gap: 6, flexWrap: "wrap" }}>
+                  <span
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: 30,
+                      fontWeight: 700,
+                      color: "var(--branco)",
+                      letterSpacing: "-0.02em",
+                    }}
+                  >
+                    {p.price}
+                  </span>
+                  <span style={{ fontSize: 14, color: "rgba(234,246,255,0.7)" }}>{p.per}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: 12,
+              alignItems: "stretch",
+            }}
+          >
+            <div
+              style={{
+                flex: "1 1 260px",
+                display: "flex",
+                gap: 12,
+                alignItems: "flex-start",
+                padding: 18,
+                borderRadius: 14,
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(255,255,255,0.1)",
+              }}
+            >
+              <span
+                style={{
+                  flex: "none",
+                  fontFamily: "var(--font-mono)",
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: "0.06em",
+                  textTransform: "uppercase",
+                  color: "var(--ciano)",
+                  paddingTop: 2,
+                }}
+              >
+                Trava
+              </span>
+              <span style={{ fontSize: 14.5, color: "rgba(234,246,255,0.85)", lineHeight: 1.5 }}>
+                Condição garantida por 12 meses após o beta. Depois, tabela cheia.
+              </span>
+            </div>
+            <div
+              style={{
+                flex: "1 1 260px",
+                display: "flex",
+                gap: 12,
+                alignItems: "flex-start",
+                padding: 18,
+                borderRadius: 14,
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(255,255,255,0.1)",
+              }}
+            >
+              <span
+                style={{
+                  flex: "none",
+                  fontFamily: "var(--font-mono)",
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: "0.06em",
+                  textTransform: "uppercase",
+                  color: "var(--ciano)",
+                  paddingTop: 2,
+                }}
+              >
+                Setup
+              </span>
+              <span style={{ fontSize: 14.5, color: "rgba(234,246,255,0.85)", lineHeight: 1.5 }}>
+                Setup de Teste (R$ 1.500 de tabela) grátis para fundadores EGESCON.
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 7. DOIS CAMINHOS: Agendador (A) + Lista de espera (B) */}
       <section className="lp-section" style={{ background: "var(--branco)" }}>
         <div className="lp-shell">
           <div style={{ maxWidth: 720, marginBottom: 40 }}>
@@ -772,7 +939,7 @@ export default function Page() {
                     <path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z" />
                   </svg>
                   <div style={{ fontSize: 14, color: "var(--antes-tag-fg)", fontWeight: 600 }}>
-                    Turma fundadora completa — entre na fila da 2ª turma.
+                    Turma Fundadora EGESCON completa. Entre na fila da 2ª turma.
                   </div>
                 </div>
               )}
@@ -831,7 +998,7 @@ export default function Page() {
                     border: "1px solid var(--border-on-light)",
                   }}
                 >
-                  [ Agendador HubSpot — integração na fase Code ]
+                  [ Agendador HubSpot · integração na fase Code ]
                 </div>
                 <div style={{ fontSize: 13, color: "var(--cinza-texto)", maxWidth: 320 }}>
                   Seleção de dia e horário aparece aqui quando o embed for conectado.
@@ -902,7 +1069,7 @@ export default function Page() {
                 {waitlistHeadline}
               </h3>
               <p style={{ fontSize: 14.5, color: "var(--cinza-escuro)", margin: "0 0 20px" }}>
-                Garanta seu lugar na 2ª turma. A gente avisa quando abrir.
+                A gente te chama assim que abrir a próxima leva de vagas, com prioridade por ordem de inscrição.
               </p>
               <form onSubmit={onWaitlistSubmit}>
                 <div className="f-field">
@@ -934,8 +1101,8 @@ export default function Page() {
                   <select id="wl-clientes" defaultValue="">
                     <option value="">Selecione</option>
                     <option value="ate-30">até 30</option>
-                    <option value="31-100">31–100</option>
-                    <option value="101-300">101–300</option>
+                    <option value="31-100">31-100</option>
+                    <option value="101-300">101-300</option>
                     <option value="300+">300+</option>
                   </select>
                 </div>
@@ -952,7 +1119,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 7. FAQ */}
+      {/* 8. FAQ */}
       <section className="lp-section" id="faq" style={{ background: "var(--cinza-claro)" }}>
         <div className="lp-shell lp-narrow">
           <div className="eyebrow" style={{ marginBottom: 18 }}>
@@ -1039,7 +1206,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 8. RODAPÉ */}
+      {/* 9. RODAPÉ */}
       <footer
         style={{
           background: "var(--azul-profundo)",
