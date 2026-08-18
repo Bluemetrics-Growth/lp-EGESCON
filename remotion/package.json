@@ -1,0 +1,17 @@
+{
+  "name": "kontiva-egescon-motion",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Motion graphic dos dois agentes do Hub Kontiva (Honorários + Tributário) para o Setup EGESCON, feito com Remotion.",
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render AgentsRoadmap out/agents-roadmap.mp4",
+    "render:chromium": "remotion render AgentsRoadmap out/agents-roadmap.mp4 --browser-executable=/opt/pw-browsers/chromium"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "^4.0.0"
+  }
+}
