@@ -579,7 +579,7 @@ export default function Page() {
                 marginBottom: 12,
               }}
             >
-              Dois agentes rodando hoje. Mais chegando.
+              Dois agentes rodando hoje. Mais dois a caminho.
             </h2>
             <p style={{ color: "rgba(234,246,255,0.7)", fontSize: 16, margin: 0 }}>
               Quem entra agora influencia quais agentes vêm depois.
