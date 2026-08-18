@@ -834,6 +834,14 @@ footer .brand-lockup .k { color: #EAF6FF; }
   width: 100%;
   height: auto;
 }
+.eco-video-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+@media (max-width: 820px) {
+  .eco-video-grid { grid-template-columns: 1fr; }
+}
 
 /* ---- Botões sociais do rodapé ---- */
 .social-row { display: inline-flex; gap: 10px; }

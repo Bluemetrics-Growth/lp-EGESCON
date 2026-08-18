@@ -539,19 +539,34 @@ export default function Page() {
               Quem entra agora influencia quais agentes vêm depois.
             </p>
           </Reveal>
-          {/* Esquema visual do ecossistema (motion graphic Remotion) */}
-          <Reveal className="eco-video-frame" style={{ marginBottom: 18 }}>
-            <video
-              src="/agents-ecosystem.mp4"
-              poster="/agents-ecosystem-poster.jpg"
-              autoPlay={!reduceMotion}
-              muted
-              loop
-              playsInline
-              controls={reduceMotion}
-              preload="metadata"
-              aria-label="Ecossistema do Hub Kontiva. O agente de Honorários lê ERP e cobrança, cruza contrato e cobrança e acha o que ficou sem cobrar. O agente Tributário lê ERP e notas, simula regime (Simples, Presumido, Real, IBS e CBS) e entrega relatório pronto. Tudo do seu escritório para os seus clientes."
-            />
+          {/* Esquema visual: uma motion graphic por agente (Remotion) */}
+          <Reveal className="eco-video-grid" style={{ marginBottom: 18 }}>
+            <div className="eco-video-frame">
+              <video
+                src="/agent-honorarios.mp4"
+                poster="/agent-honorarios-poster.jpg"
+                autoPlay={!reduceMotion}
+                muted
+                loop
+                playsInline
+                controls={reduceMotion}
+                preload="metadata"
+                aria-label="Agente de Honorários. O Conciliador de Honorários cruza contrato e cobrança, acha o que ficou sem cobrar e você aprova antes de cobrar. Amostra ilustrativa."
+              />
+            </div>
+            <div className="eco-video-frame">
+              <video
+                src="/agent-tributario.mp4"
+                poster="/agent-tributario-poster.jpg"
+                autoPlay={!reduceMotion}
+                muted
+                loop
+                playsInline
+                controls={reduceMotion}
+                preload="metadata"
+                aria-label="Agente Tributário, com foco na Reforma Tributária. Simula os cenários da reforma com IBS e CBS ano a ano, compara os regimes Simples, Presumido e Real, e entrega créditos recuperáveis com memória de cálculo em relatório pronto."
+              />
+            </div>
           </Reveal>
           {/* Legenda acessível dos dois agentes ativos */}
           <Reveal
