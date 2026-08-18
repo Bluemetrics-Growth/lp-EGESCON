@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import Script from "next/script";
+import { useState } from "react";
 import RadarCard from "./components/RadarCard";
 
 /* ------------------------------------------------------------------ *
@@ -12,11 +11,9 @@ import RadarCard from "./components/RadarCard";
  * ------------------------------------------------------------------ */
 const FOUNDING = { slotsLeft: 6 };
 
-/* Agendamento (Google Calendar Appointment Scheduling). */
+/* Link de agendamento (Google Calendar Appointment Scheduling). */
 const SCHEDULER_URL =
   "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2-qsOojrD73dO48zSXLJ_hiu91ZSD5fNqo0s24NOJq4zc6n7XtKrQUF_2rECb8Gm50l258XovZ?gv=true";
-const SCHEDULER_CSS = "https://calendar.google.com/calendar/scheduling-button-script.css";
-const SCHEDULER_JS = "https://calendar.google.com/calendar/scheduling-button-script.js";
 
 const svgProps = {
   width: 22,
@@ -212,27 +209,9 @@ export default function Page() {
   const toggleFaq = (i) => setOpenFaq((cur) => (cur === i ? null : i));
 
   const heroCtaLabel = "Reservar minha Vaga Fundadora EGESCON";
-  const heroCtaHref = "#agendador";
+  const heroCtaHref = SCHEDULER_URL;
   const headerCtaLabel = "Reservar vaga";
   const slotsBadge = `Restam ${FOUNDING.slotsLeft} de 15 vagas · Turma Fundadora EGESCON`;
-
-  /* Monta o botão do Google Calendar dentro do card, sem duplicar. */
-  const schedulerRef = useRef(null);
-  const [scriptReady, setScriptReady] = useState(false);
-
-  useEffect(() => {
-    if (!scriptReady) return;
-    const target = schedulerRef.current;
-    const api = typeof window !== "undefined" && window.calendar?.schedulingButton;
-    if (!target || !api) return;
-    target.replaceChildren();
-    api.load({
-      url: SCHEDULER_URL,
-      color: "#0a1f3f",
-      label: "Kontiva - Setup fundadores EGESCON",
-      target,
-    });
-  }, [scriptReady]);
 
   return (
     <div
@@ -255,6 +234,8 @@ export default function Page() {
             className="btn btn-primary"
             style={{ padding: "10px 16px", fontSize: 14 }}
             href={heroCtaHref}
+            target="_blank"
+            rel="noopener noreferrer"
           >
             {headerCtaLabel}
           </a>
@@ -307,14 +288,8 @@ export default function Page() {
                   margin: "0 0 22px",
                 }}
               >
-                O Hub de agentes de IA que{" "}
-                <span
-                  className="serif-accent"
-                  style={{ color: "var(--azul-profundo)", fontSize: "1.06em" }}
-                >
-                  recupera
-                </span>{" "}
-                o dinheiro que o seu escritório deixa na mesa.
+                O Hub de agentes de IA que recupera o dinheiro que o seu
+                escritório deixa na mesa.
               </h1>
               <p className="lead" style={{ margin: "0 0 32px", maxWidth: 520 }}>
                 Estamos selecionando os escritórios fundadores do Hub no 9º EGESCON. 15 vagas.
@@ -324,6 +299,8 @@ export default function Page() {
                   className="btn btn-primary"
                   style={{ padding: "17px 26px", fontSize: 16 }}
                   href={heroCtaHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   {heroCtaLabel}
                 </a>
@@ -406,11 +383,7 @@ export default function Page() {
               <span className="dot-cyan" /> Como funciona a Vaga Fundadora EGESCON
             </div>
             <h2 style={{ fontSize: "clamp(30px, 4.2vw, 46px)" }}>
-              Você{" "}
-              <span className="serif-accent" style={{ color: "var(--azul-profundo)" }}>
-                vê
-              </span>{" "}
-              funcionando antes de pagar.
+              Você vê funcionando antes de pagar.
             </h2>
           </div>
           <div className="lp-grid-4">
@@ -826,90 +799,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 7. AGENDAMENTO · Setup de Teste (Google Calendar) */}
-      <section className="lp-section" id="agendador" style={{ background: "var(--branco)" }}>
-        <link rel="stylesheet" href={SCHEDULER_CSS} />
-        <Script
-          src={SCHEDULER_JS}
-          strategy="afterInteractive"
-          onReady={() => setScriptReady(true)}
-        />
-        <div className="lp-shell lp-narrow">
-          <div style={{ maxWidth: 640, marginBottom: 32 }}>
-            <div className="eyebrow" style={{ marginBottom: 18 }}>
-              <span className="dot-cyan" /> Reservar
-            </div>
-            <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)", marginBottom: 12 }}>
-              Escolha o horário do seu Setup de Teste.
-            </h2>
-            <p className="lead" style={{ margin: 0, maxWidth: 560 }}>
-              Sem compromisso. A gente monta o Setup de Teste e você vê rodando nos
-              seus números antes de decidir.
-            </p>
-          </div>
-          <div
-            style={{
-              padding: 32,
-              borderRadius: 20,
-              background: "var(--cinza-claro)",
-              border: "1px solid var(--border-on-light)",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: 18,
-              textAlign: "center",
-            }}
-          >
-            <span
-              style={{
-                width: 52,
-                height: 52,
-                borderRadius: 14,
-                background: "var(--azul-profundo)",
-                color: "var(--ciano)",
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <svg
-                width="26"
-                height="26"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <rect x="3" y="4" width="18" height="18" rx="2" />
-                <path d="M16 2v4M8 2v4M3 10h18" />
-              </svg>
-            </span>
-            {/* Fallback enquanto o script do Google carrega; o botão oficial entra no ref abaixo. */}
-            {!scriptReady && (
-              <a
-                className="btn btn-primary"
-                href={SCHEDULER_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ padding: "16px 26px", fontSize: 16 }}
-              >
-                Agendar meu Setup de Teste
-              </a>
-            )}
-            <div
-              ref={schedulerRef}
-              style={{ display: "flex", justifyContent: "center", minHeight: 44 }}
-            />
-            <p style={{ fontSize: 14, color: "var(--cinza-texto)", margin: 0, maxWidth: 360 }}>
-              Sem cartão. Você só decide pagar depois de ver funcionando.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* 8. FAQ */}
+      {/* 7. FAQ */}
       <section className="lp-section" id="faq" style={{ background: "var(--cinza-claro)" }}>
         <div className="lp-shell lp-narrow">
           <div className="eyebrow" style={{ marginBottom: 18 }}>
@@ -996,7 +886,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 9. RODAPÉ */}
+      {/* 8. RODAPÉ */}
       <footer
         style={{
           background: "var(--azul-profundo)",
@@ -1055,6 +945,31 @@ export default function Page() {
           © 2026 Kontiva.ai · 9º EGESCON
         </div>
       </footer>
+
+      {/* Botão flutuante de reserva — acompanha o scroll da página */}
+      <a
+        className="btn btn-primary fab-reservar"
+        href={SCHEDULER_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Reservar minha Vaga Fundadora EGESCON"
+      >
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.9"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <rect x="3" y="4" width="18" height="18" rx="2" />
+          <path d="M16 2v4M8 2v4M3 10h18" />
+        </svg>
+        <span>Reservar vaga</span>
+      </a>
     </div>
   );
 }

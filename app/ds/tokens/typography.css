@@ -12,4 +12,5 @@
   --fs-body: 15px;
   --fs-eyebrow: 12px;
 }
-.serif-accent { font-family: var(--font-serif-italic); font-style: italic; font-weight: 400; letter-spacing: -0.01em; }
+/* Ênfase mantida no mesmo tipo do restante (sem itálico serifado). */
+.serif-accent { font-family: inherit; font-style: normal; font-weight: inherit; letter-spacing: inherit; }

@@ -63,11 +63,25 @@ a { color: inherit; text-decoration: none; }
   color: var(--azul-profundo);
   box-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 10px 30px -10px color-mix(in oklab, var(--ciano) calc(70% * var(--accent-boost)), transparent);
 }
-.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 18px 40px -12px color-mix(in oklab, var(--ciano) calc(80% * var(--accent-boost)), transparent); }
+.btn-primary:hover { transform: translateY(-1px); color: var(--azul-profundo); box-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 18px 40px -12px color-mix(in oklab, var(--ciano) calc(80% * var(--accent-boost)), transparent); }
 .btn-ghost { background: transparent; color: var(--azul-profundo); border-color: rgba(10,31,63,0.14); }
-.btn-ghost:hover { background: var(--cinza-claro); }
+.btn-ghost:hover { background: var(--cinza-claro); color: var(--azul-profundo); }
 .btn-dark { background: var(--azul-profundo); color: var(--branco); }
-.btn-dark:hover { background: var(--azul-profundo-2); }
+.btn-dark:hover { background: var(--azul-profundo-2); color: var(--branco); }
+
+/* Botão flutuante de reserva (acompanha o scroll) */
+.fab-reservar {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 60;
+  padding: 14px 22px;
+  box-shadow: 0 10px 30px -8px color-mix(in oklab, var(--ciano) calc(85% * var(--accent-boost)), transparent), 0 2px 8px rgba(10,31,63,0.18);
+}
+.fab-reservar:hover { transform: translateY(-2px); color: var(--azul-profundo); }
+@media (max-width: 720px) {
+  .fab-reservar { right: 16px; bottom: 16px; padding: 13px 18px; font-size: 14px; }
+}
 
 .btn .whats {
   width: 18px; height: 18px; display: inline-block;
