@@ -1,4 +1,4 @@
-/* Kontiva.ai — regras da Landing/base (movidas de styles.css; tokens em tokens/) */
+/* Kontiva.ai · regras da Landing/base (movidas de styles.css; tokens em tokens/) */
 
 
 
@@ -129,6 +129,156 @@ a { color: inherit; text-decoration: none; }
   width: 18px; height: 18px; display: inline-block;
 }
 
+/* Foco visível (AA), em todo interativo */
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--ciano);
+  outline-offset: 3px;
+  border-radius: var(--r-xs);
+}
+
+/* Cadência de fundo entre seções (superfícies existentes, sem cor nova) */
+.surface-0 { background: var(--surface-0); }
+.surface-1 { background: var(--surface-1); }
+.surface-2-light { background: var(--surface-2-light); }
+.surface-2-dark { background: var(--surface-2-dark); color: var(--claro-escuro); }
+
+/* Escala de padding vertical de seção */
+.lp-section--dense { padding: 64px 0; }
+.lp-section--medium { padding: 88px 0; }
+.lp-section--ample { padding: 120px 0; }
+@media (max-width: 720px) {
+  .lp-section--dense { padding: 44px 0; }
+  .lp-section--medium { padding: 56px 0; }
+  .lp-section--ample { padding: 72px 0; }
+}
+
+/* Textura sutil (grid hairline), só onde indicado */
+.lp-texture {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.5), transparent 70%);
+}
+
+/* Card destaque (elevação 2): acento de topo + surface-2 + sombra maior */
+.card--featured {
+  position: relative;
+  border-top: 3px solid var(--ciano);
+  background: var(--surface-2-light);
+  box-shadow: var(--shadow-card);
+}
+.card--featured:hover { box-shadow: var(--shadow-glow-hover); }
+
+/* Divisor hairline entre blocos, quando a troca de superfície não basta */
+.hairline { border-top: 1px solid var(--border-on-light); }
+.hairline-dark { border-top: 1px solid var(--border-on-dark); }
+
+/* Reveal on scroll (utilitário). Já existiam .reveal/.reveal.in/.delay-N acima */
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+}
+
+/* Count-up */
+.count-up { font-variant-numeric: tabular-nums; }
+
+/* Header sticky condensado ao rolar */
+.nav { transition: height .15s ease-out, background .15s ease-out; }
+.nav-inner { transition: height .15s ease-out; }
+.nav.condensed .nav-inner { height: 56px; }
+.nav.condensed { background: rgba(255,255,255,0.92); box-shadow: 0 1px 0 var(--border-on-light); }
+.nav-scarcity {
+  display: none;
+  font-family: var(--font-mono);
+  font-size: 12px; font-weight: 600; letter-spacing: 0.02em;
+  color: var(--cinza-texto);
+  white-space: nowrap;
+}
+.nav.condensed .nav-scarcity { display: inline; }
+@media (max-width: 640px) {
+  .nav.condensed .nav-scarcity { display: none; }
+}
+
+/* Medidor segmentado de vagas (escassez) */
+.slots-meter { display: inline-flex; gap: 3px; align-items: center; }
+.slots-meter span {
+  width: 5px; height: 12px; border-radius: 2px;
+  background: rgba(10,31,63,0.12);
+}
+.slots-meter span.filled { background: var(--azul-profundo); }
+
+/* Stepper conectado (Como funciona) */
+.stepper { position: relative; }
+.stepper-track {
+  position: absolute; top: 46px; left: 0; right: 0;
+  height: 2px; background: var(--border-on-light-strong);
+  z-index: 0;
+}
+@media (max-width: 880px) {
+  .stepper-track { top: 26px; bottom: 26px; left: 46px; right: auto; width: 2px; height: auto; }
+}
+.step-card {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; gap: 14px;
+  padding: 26px;
+  border: 1px solid var(--border-on-light);
+  border-radius: var(--r-lg);
+  background: var(--branco);
+  height: 100%;
+  transition: transform .18s ease-out, box-shadow .18s ease-out, border-color .18s ease-out;
+}
+.step-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-card); }
+.step-card--key {
+  border-color: color-mix(in oklab, var(--ciano) 55%, transparent);
+  background: var(--surface-2-light);
+}
+@media (prefers-reduced-motion: reduce) {
+  .step-card:hover { transform: none; }
+}
+
+/* Roadmap lane (eixo temporal) */
+.roadmap-lane { position: relative; }
+.roadmap-axis {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 10px;
+  font-family: var(--font-mono);
+  font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  color: rgba(234,246,255,0.5);
+}
+.roadmap-axis .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.roadmap-axis.is-live { color: var(--ciano); }
+
+/* Barra de CTA fixa no mobile */
+.sticky-cta-bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+  display: none;
+  align-items: center; justify-content: space-between; gap: 12px;
+  padding: 12px 16px;
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+  background: rgba(255,255,255,0.94);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--border-on-light);
+  box-shadow: 0 -8px 24px -12px rgba(10,31,63,0.15);
+  transform: translateY(100%);
+  transition: transform .2s ease-out;
+}
+.sticky-cta-bar.visible { transform: translateY(0); }
+.sticky-cta-bar .scarcity {
+  font-family: var(--font-mono);
+  font-size: 12px; font-weight: 600; color: var(--cinza-texto);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+@media (max-width: 720px) {
+  .sticky-cta-bar { display: flex; }
+  .fab-reservar { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sticky-cta-bar { transition: none; }
+}
+
 /* Section scaffold */
 section { padding: 120px 0; position: relative; }
 @media (max-width: 720px) { section { padding: 80px 0; } }
@@ -192,7 +342,7 @@ p { color: var(--cinza-escuro); line-height: 1.55; }
   color: var(--azul-profundo);
 }
 
-/* Hero visual — radar-scanning contract list */
+/* Hero visual · radar-scanning contract list */
 .radar-card {
   position: relative;
   background: var(--azul-profundo);
@@ -291,7 +441,7 @@ p { color: var(--cinza-escuro); line-height: 1.55; }
 .radar-summary .value { font-size: 28px; font-weight: 700; color: var(--ciano); letter-spacing: -0.02em; }
 
 /* Reveal */
-.reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.1,1); }
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity .5s ease-out, transform .5s cubic-bezier(.2,.7,.1,1); }
 .reveal.in { opacity: 1; transform: none; }
 .reveal.delay-1 { transition-delay: .08s; }
 .reveal.delay-2 { transition-delay: .16s; }

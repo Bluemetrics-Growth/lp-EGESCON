@@ -1,5 +1,5 @@
 :root {
-  /* Base — nomes canônicos (DESIGN.md §2) */
+  /* Base, nomes canônicos (DESIGN.md §2) */
   --azul-profundo: #0A1F3F;
   --azul-profundo-2: #122A52;
   --ciano: #00D4FF;
@@ -26,7 +26,13 @@
   --border-on-light-strong: rgba(10,31,63,0.14);
   --border-on-dark: rgba(255,255,255,0.08);
 
-  /* Mock "antes" (planilha legada) — não é UI Kontiva */
+  /* Camadas de superfície (cadência de fundo entre seções, sem cor nova) */
+  --surface-0: var(--branco);
+  --surface-1: var(--cinza-claro);
+  --surface-2-light: var(--ciano-suave);
+  --surface-2-dark: var(--azul-profundo);
+
+  /* Mock "antes" (planilha legada), não é UI Kontiva */
   --antes-err-fg: #C23A1F;
   --antes-tag-fg: #A3401A;
   --antes-tag-bg: #FFF1EC;

@@ -2,12 +2,14 @@
 
 import { useEffect, useState } from "react";
 import RadarCard from "./components/RadarCard";
+import Reveal from "./components/Reveal";
+import CountUp from "./components/CountUp";
 
 /* ------------------------------------------------------------------ *
  * Estado da turma fundadora.
  * Na fase Code isto vem do CMS / inventário de vagas. Mudar aqui
  * reflete no badge de urgência.
- *   slotsLeft — vagas restantes (0 a 15), usado no selo do hero.
+ *   slotsLeft: vagas restantes (0 a 15), usado no selo do hero.
  * ------------------------------------------------------------------ */
 const FOUNDING = { slotsLeft: 6 };
 
@@ -235,6 +237,17 @@ export default function Page() {
     };
   }, [schedulerOpen]);
 
+  /* Header condensado e barra de CTA mobile aparecem depois que o hero sai da tela. */
+  const [pastHero, setPastHero] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setPastHero(window.scrollY > 520);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const slotsFilled = 15 - FOUNDING.slotsLeft;
+
   return (
     <div
       style={{
@@ -245,36 +258,53 @@ export default function Page() {
       }}
     >
       {/* STICKY HEADER */}
-      <nav className="nav">
+      <nav className={`nav${pastHero ? " condensed" : ""}`}>
         <div className="lp-shell nav-inner">
           <span className="brand-lockup">
             <span className="k">Kontiva</span>
             <span className="dot">.</span>
             <span className="ai">ai</span>
           </span>
-          <a
-            className="btn btn-primary"
-            style={{ padding: "10px 16px", fontSize: 14 }}
-            href={heroCtaHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={openScheduler}
-          >
-            {headerCtaLabel}
-          </a>
+          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+            <span className="nav-scarcity">{slotsBadge}</span>
+            <a
+              className="btn btn-primary"
+              style={{ padding: "10px 16px", fontSize: 14 }}
+              href={heroCtaHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={openScheduler}
+            >
+              {headerCtaLabel}
+            </a>
+          </div>
         </div>
       </nav>
 
       {/* 1. HERO */}
-      <section className="lp-section" style={{ background: "var(--branco)", paddingTop: 48 }}>
-        <div className="lp-shell">
+      <section
+        className="lp-section lp-section--ample"
+        style={{ background: "var(--branco)", position: "relative", overflow: "hidden" }}
+      >
+        <div
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "radial-gradient(900px circle at 15% -10%, color-mix(in oklab, var(--ciano) 8%, transparent), transparent 55%)",
+            pointerEvents: "none",
+          }}
+        />
+        <div className="lp-shell" style={{ position: "relative" }}>
           <div className="lp-grid-2">
+            {/* Conteúdo above-the-fold: visível de imediato, sem gate de JS/observer (protege LCP). */}
             <div>
               <div
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
-                  gap: 9,
+                  gap: 12,
                   padding: "7px 14px",
                   borderRadius: 99,
                   background: "var(--ciano-suave)",
@@ -283,12 +313,14 @@ export default function Page() {
                 }}
               >
                 <span
+                  aria-hidden="true"
                   style={{
                     width: 7,
                     height: 7,
                     borderRadius: "50%",
                     background: "var(--ciano)",
                     boxShadow: "0 0 0 4px color-mix(in oklab, var(--ciano) 20%, transparent)",
+                    flex: "none",
                   }}
                 />
                 <span
@@ -301,6 +333,11 @@ export default function Page() {
                   }}
                 >
                   {slotsBadge}
+                </span>
+                <span className="slots-meter" aria-hidden="true">
+                  {Array.from({ length: 15 }, (_, i) => (
+                    <span key={i} className={i < slotsFilled ? "filled" : undefined} />
+                  ))}
                 </span>
               </div>
               <h1
@@ -329,6 +366,35 @@ export default function Page() {
                   {heroCtaLabel}
                 </a>
               </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: 10,
+                  marginTop: 28,
+                }}
+              >
+                {["AWS Advanced Partner", "LGPD by design", "200+ projetos de IA entregues"].map(
+                  (chip) => (
+                    <span
+                      key={chip}
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        padding: "7px 12px",
+                        borderRadius: 99,
+                        border: "1px solid var(--border-on-light-strong)",
+                        fontSize: 12.5,
+                        fontWeight: 500,
+                        color: "var(--cinza-escuro)",
+                        background: "var(--branco)",
+                      }}
+                    >
+                      {chip}
+                    </span>
+                  )
+                )}
+              </div>
             </div>
             <div>
               <RadarCard
@@ -336,7 +402,8 @@ export default function Page() {
                 live="Varredura ativa"
                 rows={RADAR_ROWS}
                 summaryLabel="Receita encontrada / ano"
-                summaryValue="R$ 29 mil"
+                summaryCountTo={29}
+                summaryFormat={(v) => `R$ ${v} mil`}
               />
               <p
                 style={{
@@ -353,78 +420,112 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 2. TRÊS EIXOS DE BENEFÍCIO */}
-      <section className="lp-section" style={{ background: "var(--cinza-claro)" }}>
+      {/* 2. TRÊS EIXOS DE BENEFÍCIO (bento assimétrico) */}
+      <section className="lp-section lp-section--medium surface-1">
         <div className="lp-shell">
-          <div style={{ maxWidth: 720, marginBottom: 44 }}>
+          <Reveal style={{ maxWidth: 720, marginBottom: 44 }}>
             <div className="eyebrow" style={{ marginBottom: 18 }}>
               <span className="dot-cyan" /> Por que agora
             </div>
             <h2 style={{ fontSize: "clamp(30px, 4.2vw, 46px)" }}>
               Três coisas que mudam no dia seguinte.
             </h2>
-          </div>
-          <div className="lp-grid-3">
-            {BENEFITS.map((b) => (
-              <div
+          </Reveal>
+          <div className="lp-grid-bento">
+            {BENEFITS.map((b, i) => (
+              <Reveal
                 key={b.title}
-                className="card"
+                delay={i * 80}
+                className={`card${i === 0 ? " card--featured bento-big" : ""}`}
                 style={{
                   display: "flex",
                   flexDirection: "column",
                   gap: 14,
                   padding: 28,
                   height: "100%",
+                  justifyContent: i === 0 ? "space-between" : "flex-start",
                 }}
               >
-                <span
-                  style={{
-                    width: 44,
-                    height: 44,
-                    borderRadius: 12,
-                    background: "color-mix(in oklab, var(--ciano) 16%, transparent)",
-                    color: "var(--azul-profundo)",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  {b.icon}
-                </span>
-                <h3 style={{ fontSize: 20, letterSpacing: "-0.02em" }}>{b.title}</h3>
-                <p style={{ fontSize: 15.5, margin: 0 }}>{b.body}</p>
-              </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                  <span
+                    style={{
+                      width: 44,
+                      height: 44,
+                      borderRadius: 12,
+                      background: "color-mix(in oklab, var(--ciano) 16%, transparent)",
+                      color: "var(--azul-profundo)",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {b.icon}
+                  </span>
+                  <h3 style={{ fontSize: 20, letterSpacing: "-0.02em" }}>{b.title}</h3>
+                  <p style={{ fontSize: 15.5, margin: 0 }}>{b.body}</p>
+                </div>
+                {i === 0 && (
+                  <div
+                    className="hairline"
+                    style={{ paddingTop: 18, marginTop: 8 }}
+                  >
+                    <div
+                      style={{
+                        fontFamily: "var(--font-mono)",
+                        fontSize: 26,
+                        fontWeight: 700,
+                        color: "var(--azul-profundo)",
+                        letterSpacing: "-0.02em",
+                      }}
+                    >
+                      <CountUp to={29} format={(v) => `R$ ${v} mil`} />
+                    </div>
+                    <div style={{ fontSize: 12.5, color: "var(--cinza-texto)", marginTop: 4 }}>
+                      Amostra ilustrativa. No Setup de Teste, roda nos seus números.
+                    </div>
+                  </div>
+                )}
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 3. COMO FUNCIONA A VAGA FUNDADORA */}
-      <section className="lp-section" id="como-funciona" style={{ background: "var(--branco)" }}>
+      {/* 3. COMO FUNCIONA A VAGA FUNDADORA (stepper conectado) */}
+      <section className="lp-section lp-section--medium surface-0" id="como-funciona">
         <div className="lp-shell">
-          <div style={{ maxWidth: 720, marginBottom: 44 }}>
+          <Reveal style={{ maxWidth: 720, marginBottom: 44 }}>
             <div className="eyebrow" style={{ marginBottom: 18 }}>
               <span className="dot-cyan" /> Como funciona a Vaga Fundadora EGESCON
             </div>
             <h2 style={{ fontSize: "clamp(30px, 4.2vw, 46px)" }}>
               Você vê funcionando antes de pagar.
             </h2>
-          </div>
-          <div className="lp-grid-4">
-            {STEPS.map((s) => (
-              <div
+          </Reveal>
+          <div className="stepper lp-grid-4">
+            <div className="stepper-track" aria-hidden="true" />
+            {STEPS.map((s, i) => (
+              <Reveal
                 key={s.n}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 14,
-                  padding: 26,
-                  border: "1px solid var(--border-on-light)",
-                  borderRadius: 16,
-                  background: "var(--branco)",
-                  height: "100%",
-                }}
+                delay={i * 80}
+                className={`step-card${i === 2 ? " step-card--key" : ""}`}
               >
+                <span
+                  aria-hidden="true"
+                  style={{
+                    position: "absolute",
+                    right: 8,
+                    top: -6,
+                    fontSize: 46,
+                    fontWeight: 800,
+                    color: "rgba(10,31,63,0.05)",
+                    fontFamily: "var(--font-mono)",
+                    lineHeight: 1,
+                    userSelect: "none",
+                  }}
+                >
+                  {s.n}
+                </span>
                 <span
                   style={{
                     width: 40,
@@ -448,24 +549,20 @@ export default function Page() {
                   </h3>
                   <p style={{ fontSize: 14.5, margin: 0 }}>{s.body}</p>
                 </div>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 4. ROADMAP DO HUB */}
+      {/* 4. ROADMAP DO HUB (lane com eixo temporal) */}
       <section
-        className="lp-section"
+        className="lp-section lp-section--medium surface-2-dark"
         id="roadmap"
-        style={{
-          background: "var(--azul-profundo)",
-          color: "var(--claro-escuro)",
-          position: "relative",
-          overflow: "hidden",
-        }}
+        style={{ position: "relative", overflow: "hidden" }}
       >
         <div
+          aria-hidden="true"
           style={{
             position: "absolute",
             inset: 0,
@@ -475,7 +572,7 @@ export default function Page() {
           }}
         />
         <div className="lp-shell" style={{ position: "relative" }}>
-          <div style={{ maxWidth: 640, marginBottom: 40 }}>
+          <Reveal style={{ maxWidth: 640, marginBottom: 40 }}>
             <div
               className="eyebrow light"
               style={{ marginBottom: 18, color: "rgba(234,246,255,0.66)" }}
@@ -494,130 +591,145 @@ export default function Page() {
             <p style={{ color: "rgba(234,246,255,0.7)", fontSize: 16, margin: 0 }}>
               Quem entra agora influencia quais agentes vêm depois.
             </p>
-          </div>
-          <div className="lp-grid-3">
-            {ROADMAP.map((r) => (
-              <div
-                key={r.name}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 16,
-                  padding: 24,
-                  borderRadius: 16,
-                  background: r.bg,
-                  border: r.border,
-                  opacity: r.opacity,
-                  height: "100%",
-                }}
-              >
+          </Reveal>
+          <div className="roadmap-lane lp-grid-3">
+            {ROADMAP.map((r, i) => (
+              <Reveal key={r.name} delay={i * 80}>
+                <div className={`roadmap-axis${r.active ? " is-live" : ""}`}>
+                  <span className="dot" aria-hidden="true" />
+                  {r.active ? "Hoje" : r.tag}
+                </div>
                 <div
                   style={{
                     display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    gap: 12,
+                    flexDirection: "column",
+                    gap: 16,
+                    padding: 24,
+                    borderRadius: 16,
+                    background: r.bg,
+                    border: r.border,
+                    opacity: r.opacity,
+                    height: "100%",
                   }}
                 >
-                  <span
+                  <div
                     style={{
-                      flex: "none",
-                      width: 44,
-                      height: 44,
-                      borderRadius: 12,
-                      background: r.iconBg,
-                      color: r.iconColor,
-                      display: "inline-flex",
+                      display: "flex",
                       alignItems: "center",
-                      justifyContent: "center",
+                      justifyContent: "space-between",
+                      gap: 12,
                     }}
                   >
-                    {r.icon}
-                  </span>
-                  <span
-                    style={{
-                      flex: "none",
-                      fontFamily: "var(--font-mono)",
-                      fontSize: 10,
-                      fontWeight: 700,
-                      letterSpacing: "0.06em",
-                      textTransform: "uppercase",
-                      padding: "5px 10px",
-                      borderRadius: 99,
-                      background: r.tagBg,
-                      color: r.tagColor,
-                      border: r.tagBorder,
-                    }}
-                  >
-                    {r.tag}
-                  </span>
-                </div>
-                <div>
-                  <div
-                    style={{
-                      fontSize: 17,
-                      fontWeight: 600,
-                      color: r.titleColor,
-                      letterSpacing: "-0.01em",
-                    }}
-                  >
-                    {r.name}
+                    <span
+                      style={{
+                        flex: "none",
+                        width: 44,
+                        height: 44,
+                        borderRadius: 12,
+                        background: r.iconBg,
+                        color: r.iconColor,
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {r.icon}
+                    </span>
+                    <span
+                      style={{
+                        flex: "none",
+                        fontFamily: "var(--font-mono)",
+                        fontSize: 10,
+                        fontWeight: 700,
+                        letterSpacing: "0.06em",
+                        textTransform: "uppercase",
+                        padding: "5px 10px",
+                        borderRadius: 99,
+                        background: r.tagBg,
+                        color: r.tagColor,
+                        border: r.tagBorder,
+                      }}
+                    >
+                      {r.tag}
+                    </span>
                   </div>
-                  <div
-                    style={{
-                      fontSize: 13.5,
-                      color: "rgba(234,246,255,0.55)",
-                      marginTop: 6,
-                      lineHeight: 1.5,
-                    }}
-                  >
-                    {r.desc}
+                  <div>
+                    <h3
+                      style={{
+                        fontSize: 17,
+                        fontWeight: 600,
+                        color: r.titleColor,
+                        letterSpacing: "-0.01em",
+                        fontFamily: "inherit",
+                      }}
+                    >
+                      {r.name}
+                    </h3>
+                    <div
+                      style={{
+                        fontSize: 13.5,
+                        color: "rgba(234,246,255,0.55)",
+                        marginTop: 6,
+                        lineHeight: 1.5,
+                      }}
+                    >
+                      {r.desc}
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 5. PROVA / QUEM SOMOS */}
-      <section className="lp-section" style={{ background: "var(--ciano-suave)" }}>
+      {/* 5. PROVA / QUEM SOMOS (banda de credibilidade) */}
+      <section className="lp-section lp-section--medium surface-2-light">
         <div className="lp-shell">
-          <div style={{ maxWidth: 720, marginBottom: 40 }}>
+          <Reveal style={{ maxWidth: 720, marginBottom: 40 }}>
             <div className="eyebrow" style={{ marginBottom: 18 }}>
               <span className="dot-cyan" /> Quem está por trás
             </div>
             <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)" }}>Kontiva é da BlueMetrics.</h2>
-          </div>
-          <div className="lp-grid-stat" style={{ marginBottom: 20 }}>
-            {PROOF.map((p) => (
-              <div
-                key={p.label}
-                style={{
-                  padding: 24,
-                  border: "1px solid var(--border-on-light)",
-                  borderRadius: 14,
-                  background: "var(--branco)",
-                }}
-              >
-                <div
+          </Reveal>
+          <div className="lp-grid-stat" style={{ marginBottom: 32 }}>
+            {PROOF.map((p, i) => {
+              const m = p.stat.match(/^(\d+)(.*)$/);
+              return (
+                <Reveal
+                  key={p.label}
+                  delay={i * 70}
                   style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: 24,
-                    fontWeight: 700,
-                    color: "var(--azul-profundo)",
-                    letterSpacing: "-0.02em",
+                    padding: 24,
+                    border: "1px solid var(--border-on-light)",
+                    borderRadius: 14,
+                    background: "var(--branco)",
                   }}
                 >
-                  {p.stat}
-                </div>
-                <div style={{ fontSize: 13, color: "var(--cinza-texto)", marginTop: 6 }}>
-                  {p.label}
-                </div>
-              </div>
-            ))}
+                  <div
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: 24,
+                      fontWeight: 700,
+                      color: "var(--azul-profundo)",
+                      letterSpacing: "-0.02em",
+                    }}
+                  >
+                    {m ? (
+                      <CountUp to={Number(m[1])} format={(v) => `${v}${m[2]}`} />
+                    ) : (
+                      p.stat
+                    )}
+                  </div>
+                  <div style={{ fontSize: 13, color: "var(--cinza-texto)", marginTop: 6 }}>
+                    {p.label}
+                  </div>
+                </Reveal>
+              );
+            })}
           </div>
-          <div
+          <div className="hairline" style={{ marginBottom: 32 }} />
+          <Reveal
             style={{
               padding: 28,
               borderRadius: 18,
@@ -627,6 +739,7 @@ export default function Page() {
             }}
           >
             <div
+              aria-hidden="true"
               style={{
                 position: "absolute",
                 inset: 0,
@@ -662,22 +775,18 @@ export default function Page() {
                 não cobrado.
               </p>
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
 
       {/* 6. CONDIÇÃO FUNDADORA EGESCON (preço) */}
       <section
-        className="lp-section"
+        className="lp-section lp-section--ample surface-2-dark"
         id="preco"
-        style={{
-          background: "var(--azul-profundo)",
-          color: "var(--claro-escuro)",
-          position: "relative",
-          overflow: "hidden",
-        }}
+        style={{ position: "relative", overflow: "hidden" }}
       >
         <div
+          aria-hidden="true"
           style={{
             position: "absolute",
             inset: 0,
@@ -687,7 +796,7 @@ export default function Page() {
           }}
         />
         <div className="lp-shell" style={{ position: "relative" }}>
-          <div style={{ maxWidth: 720, marginBottom: 40 }}>
+          <Reveal style={{ maxWidth: 720, marginBottom: 40 }}>
             <div
               className="eyebrow light"
               style={{ marginBottom: 18, color: "rgba(234,246,255,0.66)" }}
@@ -706,11 +815,13 @@ export default function Page() {
             <p style={{ color: "rgba(234,246,255,0.7)", fontSize: 16, margin: 0 }}>
               6 meses, com os 2 agentes que já rodam. Sem fidelidade.
             </p>
-          </div>
+          </Reveal>
           <div className="lp-grid-3" style={{ marginBottom: 24 }}>
-            {PRICING.map((p) => (
-              <div
+            {PRICING.map((p, i) => (
+              <Reveal
                 key={p.tier}
+                delay={i * 80}
+                className="card"
                 style={{
                   display: "flex",
                   flexDirection: "column",
@@ -738,7 +849,7 @@ export default function Page() {
                   <span
                     style={{
                       fontFamily: "var(--font-mono)",
-                      fontSize: 30,
+                      fontSize: 34,
                       fontWeight: 700,
                       color: "var(--branco)",
                       letterSpacing: "-0.02em",
@@ -748,15 +859,16 @@ export default function Page() {
                   </span>
                   <span style={{ fontSize: 14, color: "rgba(234,246,255,0.7)" }}>{p.per}</span>
                 </div>
-              </div>
+              </Reveal>
             ))}
           </div>
-          <div
+          <Reveal
             style={{
               display: "flex",
               flexWrap: "wrap",
               gap: 12,
               alignItems: "stretch",
+              marginBottom: 36,
             }}
           >
             <div
@@ -819,25 +931,42 @@ export default function Page() {
                 Setup de Teste (R$ 1.500 de tabela) grátis para fundadores EGESCON.
               </span>
             </div>
-          </div>
+          </Reveal>
+          <Reveal style={{ textAlign: "center" }}>
+            <a
+              className="btn btn-primary"
+              style={{ padding: "17px 26px", fontSize: 16 }}
+              href={heroCtaHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={openScheduler}
+            >
+              {heroCtaLabel}
+            </a>
+          </Reveal>
         </div>
       </section>
 
       {/* 7. FAQ */}
-      <section className="lp-section" id="faq" style={{ background: "var(--cinza-claro)" }}>
+      <section className="lp-section lp-section--medium surface-1" id="faq">
         <div className="lp-shell lp-narrow">
-          <div className="eyebrow" style={{ marginBottom: 18 }}>
-            <span className="dot-cyan" /> Perguntas frequentes
-          </div>
-          <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)", marginBottom: 28 }}>
-            O que fica de dúvida.
-          </h2>
+          <Reveal>
+            <div className="eyebrow" style={{ marginBottom: 18 }}>
+              <span className="dot-cyan" /> Perguntas frequentes
+            </div>
+            <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)", marginBottom: 28 }}>
+              O que fica de dúvida.
+            </h2>
+          </Reveal>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {FAQ.map((f, i) => {
               const open = openFaq === i;
+              const panelId = `faq-panel-${i}`;
+              const triggerId = `faq-trigger-${i}`;
               return (
-                <div
+                <Reveal
                   key={f.q}
+                  delay={Math.min(i, 4) * 50}
                   style={{
                     border: "1px solid var(--border-on-light)",
                     borderRadius: 14,
@@ -847,10 +976,13 @@ export default function Page() {
                 >
                   <button
                     type="button"
+                    id={triggerId}
                     onClick={() => toggleFaq(i)}
                     aria-expanded={open}
+                    aria-controls={panelId}
                     style={{
                       width: "100%",
+                      minHeight: 44,
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "space-between",
@@ -874,6 +1006,7 @@ export default function Page() {
                       {f.q}
                     </span>
                     <span
+                      aria-hidden="true"
                       style={{
                         flex: "none",
                         width: 26,
@@ -886,31 +1019,146 @@ export default function Page() {
                         justifyContent: "center",
                         fontSize: 18,
                         fontWeight: 500,
+                        transition: "transform .2s ease-out",
+                        transform: open ? "rotate(180deg)" : "none",
                       }}
                     >
                       {open ? "−" : "+"}
                     </span>
                   </button>
-                  {open && (
-                    <div
-                      style={{
-                        padding: "0 20px 20px",
-                        fontSize: 15,
-                        lineHeight: 1.55,
-                        color: "var(--cinza-escuro)",
-                      }}
-                    >
-                      {f.a}
+                  <div
+                    id={panelId}
+                    role="region"
+                    aria-labelledby={triggerId}
+                    style={{
+                      display: "grid",
+                      gridTemplateRows: open ? "1fr" : "0fr",
+                      transition: "grid-template-rows .25s ease-out",
+                    }}
+                  >
+                    <div style={{ overflow: "hidden", minHeight: 0 }}>
+                      <div
+                        style={{
+                          padding: "0 20px 20px",
+                          fontSize: 15,
+                          lineHeight: 1.55,
+                          color: "var(--cinza-escuro)",
+                        }}
+                      >
+                        {f.a}
+                      </div>
                     </div>
-                  )}
-                </div>
+                  </div>
+                </Reveal>
               );
             })}
           </div>
+          <Reveal
+            style={{
+              marginTop: 28,
+              padding: 22,
+              borderRadius: 14,
+              border: "1px dashed var(--border-on-light-strong)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 16,
+              flexWrap: "wrap",
+            }}
+          >
+            <span style={{ fontSize: 15, color: "var(--cinza-escuro)" }}>
+              Ainda com dúvida?
+            </span>
+            <a
+              className="btn btn-ghost"
+              style={{ padding: "10px 18px", fontSize: 14 }}
+              href="https://wa.me/5551926343014"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              WhatsApp
+            </a>
+          </Reveal>
         </div>
       </section>
 
-      {/* 8. RODAPÉ */}
+      {/* 8. BANDA DE CTA FINAL (recombina copy existente, sem headline nova) */}
+      <section
+        className="lp-section lp-section--ample surface-2-dark"
+        style={{ position: "relative", overflow: "hidden", textAlign: "center" }}
+      >
+        <div
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "radial-gradient(800px circle at 50% 0%, color-mix(in oklab, var(--ciano) 14%, transparent), transparent 60%)",
+            pointerEvents: "none",
+          }}
+        />
+        <div className="lp-shell" style={{ position: "relative" }}>
+          <Reveal
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 9,
+              padding: "7px 14px",
+              borderRadius: 99,
+              background: "rgba(255,255,255,0.06)",
+              border: "1px solid rgba(255,255,255,0.14)",
+              marginBottom: 26,
+            }}
+          >
+            <span
+              aria-hidden="true"
+              style={{
+                width: 7,
+                height: 7,
+                borderRadius: "50%",
+                background: "var(--ciano)",
+                boxShadow: "0 0 0 4px color-mix(in oklab, var(--ciano) 25%, transparent)",
+              }}
+            />
+            <span
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: 12,
+                fontWeight: 600,
+                letterSpacing: "0.02em",
+                color: "var(--claro-escuro)",
+              }}
+            >
+              {slotsBadge}
+            </span>
+          </Reveal>
+          <Reveal delay={80}>
+            <h2
+              style={{
+                fontSize: "clamp(28px, 4vw, 44px)",
+                color: "var(--branco)",
+                marginBottom: 32,
+              }}
+            >
+              O preço que só existe no 9º EGESCON.
+            </h2>
+          </Reveal>
+          <Reveal delay={140}>
+            <a
+              className="btn btn-primary"
+              style={{ padding: "17px 26px", fontSize: 16 }}
+              href={heroCtaHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={openScheduler}
+            >
+              {heroCtaLabel}
+            </a>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* 9. RODAPÉ */}
       <footer
         style={{
           background: "var(--azul-profundo)",
@@ -955,6 +1203,16 @@ export default function Page() {
               WhatsApp
             </a>
           </div>
+          <a
+            className="btn btn-primary"
+            style={{ padding: "12px 20px", fontSize: 14 }}
+            href={heroCtaHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={openScheduler}
+          >
+            {headerCtaLabel}
+          </a>
         </div>
         <div
           className="lp-shell"
@@ -970,7 +1228,7 @@ export default function Page() {
         </div>
       </footer>
 
-      {/* Botão flutuante de reserva — acompanha o scroll da página */}
+      {/* Botão flutuante de reserva, acompanha o scroll da página */}
       <a
         className="btn btn-primary fab-reservar"
         href={SCHEDULER_URL}
@@ -996,7 +1254,22 @@ export default function Page() {
         <span>Reservar vaga</span>
       </a>
 
-      {/* Modal do agendador — abre o Google Calendar num iframe, sem sair da página */}
+      {/* Barra de CTA fixa no mobile, aparece depois do hero */}
+      <div className={`sticky-cta-bar${pastHero ? " visible" : ""}`}>
+        <span className="scarcity">{slotsBadge}</span>
+        <a
+          className="btn btn-primary"
+          style={{ padding: "10px 16px", fontSize: 14, flex: "none" }}
+          href={heroCtaHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={openScheduler}
+        >
+          {headerCtaLabel}
+        </a>
+      </div>
+
+      {/* Modal do agendador, abre o Google Calendar num iframe, sem sair da página */}
       {schedulerOpen && (
         <div
           className="modal-overlay"

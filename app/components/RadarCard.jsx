@@ -1,4 +1,6 @@
-/* Mock escuro com varredura — coração da identidade Kontiva.
+import CountUp from "./CountUp";
+
+/* Mock escuro com varredura, coração da identidade Kontiva.
    rows: [{ idx, name, amount, badge, flagged }] */
 export default function RadarCard({
   title = "Contratos · varredura",
@@ -6,6 +8,8 @@ export default function RadarCard({
   rows = [],
   summaryLabel,
   summaryValue,
+  summaryCountTo,
+  summaryFormat,
   scan = true,
 }) {
   return (
@@ -22,6 +26,7 @@ export default function RadarCard({
       }}
     >
       <div
+        aria-hidden="true"
         style={{
           position: "absolute",
           inset: 0,
@@ -32,12 +37,14 @@ export default function RadarCard({
       />
       {scan && (
         <div
+          aria-hidden="true"
+          className="radar-sweep"
           style={{
             position: "absolute",
             inset: "80px 0 0 0",
             background:
               "linear-gradient(180deg, transparent 0%, color-mix(in oklab, var(--ciano) 22%, transparent) 48%, color-mix(in oklab, var(--ciano) 40%, transparent) 50%, transparent 100%)",
-            animation: "scan 3.6s cubic-bezier(.7,0,.3,1) infinite",
+            animation: "scan 2.8s cubic-bezier(.7,0,.3,1) infinite",
             pointerEvents: "none",
           }}
         />
@@ -134,7 +141,7 @@ export default function RadarCard({
           </div>
         ))}
       </div>
-      {summaryValue && (
+      {(summaryValue || summaryCountTo != null) && (
         <div
           style={{
             marginTop: 20,
@@ -164,7 +171,11 @@ export default function RadarCard({
               letterSpacing: "-0.02em",
             }}
           >
-            {summaryValue}
+            {summaryCountTo != null ? (
+              <CountUp to={summaryCountTo} format={summaryFormat} />
+            ) : (
+              summaryValue
+            )}
           </span>
         </div>
       )}

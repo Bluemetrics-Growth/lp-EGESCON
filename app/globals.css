@@ -1,4 +1,4 @@
-/* Design system (Kontiva) — tokens first, then base + components */
+/* Design system (Kontiva). Tokens first, then base + components */
 @import "./ds/tokens/fonts.css";
 @import "./ds/tokens/colors.css";
 @import "./ds/tokens/typography.css";
@@ -16,8 +16,49 @@ a:hover { color: var(--ciano); }
 .lp-shell { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
 .lp-narrow { max-width: 760px; }
 
-.lp-grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 56px; align-items: center; }
+.lp-grid-2 { display: grid; grid-template-columns: 1.15fr 0.95fr; gap: 56px; align-items: center; }
 .lp-grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 18px; }
 .lp-grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
 .lp-grid-stat { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; }
 .lp-paths { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 24px; align-items: start; }
+.lp-grid-bento { display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: 1fr; gap: 18px; }
+.lp-grid-bento .bento-big { grid-column: span 3; }
+@media (min-width: 880px) {
+  .lp-grid-bento .bento-big { grid-column: span 1; grid-row: span 2; }
+}
+@media (max-width: 960px) {
+  .lp-grid-2 { grid-template-columns: 1fr; gap: 40px; }
+}
+@media (max-width: 880px) {
+  .lp-grid-bento { grid-template-columns: 1fr 1fr; }
+  .lp-grid-bento .bento-big { grid-column: span 2; }
+}
+@media (max-width: 560px) {
+  .lp-grid-bento { grid-template-columns: 1fr; }
+  .lp-grid-bento .bento-big { grid-column: span 1; }
+}
+
+/* Movimento reduzido, global (por último na cascata: vence empates de especificidade) */
+@media (prefers-reduced-motion: reduce) {
+  .radar-sweep,
+  .radar-head .live::before,
+  .card,
+  .card-dark,
+  .btn,
+  .btn-primary,
+  .fab-reservar,
+  .step-card,
+  .modal-overlay,
+  .modal-card,
+  .reveal {
+    animation: none !important;
+    transition: none !important;
+  }
+  .card:hover,
+  .btn:hover,
+  .btn-primary:hover,
+  .fab-reservar:hover,
+  .step-card:hover {
+    transform: none !important;
+  }
+}
