@@ -687,3 +687,86 @@ footer .brand-lockup .k { color: #EAF6FF; }
   font-size: 11px; cursor: pointer; background: var(--branco); color: var(--cinza-escuro); font-weight: 500;
 }
 #tweaks-panel .chip.on { background: var(--azul-profundo); border-color: var(--azul-profundo); color: var(--branco); }
+
+/* ================================================================== *
+ * Elevação estética (skill frontend-design)
+ * Atmosfera, profundidade, numerais editoriais e detalhe, tudo dentro
+ * do design system Kontiva (Inter + JetBrains Mono, ciano + azul).
+ * ================================================================== */
+
+/* Grão sutil sobre a página inteira, dá textura e tira o "chapado". */
+.grain-overlay {
+  position: fixed; inset: 0; z-index: 40; pointer-events: none;
+  opacity: 0.05; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Numeral editorial: mono, tabular, encorpado. Para os números-âncora. */
+.num-display {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+}
+
+/* Malha de brilho ciano em camadas para blocos escuros (mais profundidade
+   que um único radial). Aplicar num filho aria-hidden com inset:0. */
+.atmo-mesh {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(60% 80% at 85% -5%, color-mix(in oklab, var(--ciano) 16%, transparent), transparent 60%),
+    radial-gradient(50% 60% at 10% 110%, color-mix(in oklab, var(--ciano) 10%, transparent), transparent 65%),
+    linear-gradient(180deg, transparent 0%, rgba(0,212,255,0.03) 100%);
+}
+
+/* Fio de luz ciano no topo de um bloco escuro (borda decorativa fina). */
+.edge-glow { position: relative; }
+.edge-glow::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--ciano) 70%, transparent), transparent);
+  pointer-events: none;
+}
+
+/* Hero: composição mais ousada e atmosférica. */
+.hero-glow {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(70% 60% at 12% -10%, color-mix(in oklab, var(--ciano) 10%, transparent), transparent 55%),
+    radial-gradient(45% 50% at 100% 15%, color-mix(in oklab, var(--ciano) 7%, transparent), transparent 60%);
+}
+/* Marca d'água decorativa gigante atrás do widget do hero. */
+.hero-watermark {
+  position: absolute; right: -2%; top: -8%; z-index: 0; pointer-events: none;
+  font-family: var(--font-mono); font-weight: 800; font-size: clamp(180px, 26vw, 360px);
+  line-height: 0.8; letter-spacing: -0.06em;
+  color: color-mix(in oklab, var(--ciano) 6%, transparent);
+  user-select: none;
+}
+
+/* Radar card levantado, com sombra dramática e leve quebra de grid. */
+.radar-lift {
+  position: relative; z-index: 1;
+  box-shadow: 0 40px 90px -30px rgba(10,31,63,0.45), 0 0 0 1px rgba(10,31,63,0.06);
+  transition: transform .3s cubic-bezier(.2,.7,.1,1), box-shadow .3s ease;
+}
+@media (min-width: 961px) {
+  .radar-lift { transform: rotate(-1.2deg); }
+  .radar-lift:hover { transform: rotate(0deg) translateY(-4px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .radar-lift, .radar-lift:hover { transform: none; }
+}
+
+/* Trust chips do hero com hairline e leve profundidade. */
+.trust-chip {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 8px 14px; border-radius: var(--r-pill);
+  border: 1px solid var(--border-on-light-strong);
+  font-size: 12.5px; font-weight: 500; color: var(--cinza-escuro);
+  background: color-mix(in oklab, var(--ciano) 4%, var(--branco));
+  box-shadow: 0 1px 0 rgba(255,255,255,0.6) inset;
+}
+.trust-chip .tick {
+  width: 5px; height: 5px; border-radius: 50%; background: var(--ciano); flex: none;
+}

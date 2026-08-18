@@ -164,11 +164,10 @@ export default function RadarCard({
             {summaryLabel}
           </span>
           <span
+            className="num-display"
             style={{
-              fontSize: 28,
-              fontWeight: 700,
+              fontSize: 34,
               color: "var(--ciano)",
-              letterSpacing: "-0.02em",
             }}
           >
             {summaryCountTo != null ? (

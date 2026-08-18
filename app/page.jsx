@@ -279,16 +279,7 @@ export default function Page() {
         className="lp-section lp-section--ample"
         style={{ background: "var(--branco)", position: "relative", overflow: "hidden" }}
       >
-        <div
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "radial-gradient(900px circle at 15% -10%, color-mix(in oklab, var(--ciano) 8%, transparent), transparent 55%)",
-            pointerEvents: "none",
-          }}
-        />
+        <div className="hero-glow" aria-hidden="true" />
         <div className="lp-shell" style={{ position: "relative" }}>
           <div className="lp-grid-2">
             {/* Conteúdo above-the-fold: visível de imediato, sem gate de JS/observer (protege LCP). */}
@@ -369,35 +360,28 @@ export default function Page() {
               >
                 {["AWS Advanced Partner", "LGPD by design", "200+ projetos de IA entregues"].map(
                   (chip) => (
-                    <span
-                      key={chip}
-                      style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        padding: "7px 12px",
-                        borderRadius: 99,
-                        border: "1px solid var(--border-on-light-strong)",
-                        fontSize: 12.5,
-                        fontWeight: 500,
-                        color: "var(--cinza-escuro)",
-                        background: "var(--branco)",
-                      }}
-                    >
+                    <span key={chip} className="trust-chip">
+                      <span className="tick" aria-hidden="true" />
                       {chip}
                     </span>
                   )
                 )}
               </div>
             </div>
-            <div>
-              <RadarCard
-                title="Conciliação de honorários"
-                live="Varredura ativa"
-                rows={RADAR_ROWS}
-                summaryLabel="Receita encontrada / ano"
-                summaryCountTo={29}
-                summaryFormat={(v) => `R$ ${v} mil`}
-              />
+            <div style={{ position: "relative" }}>
+              <span className="hero-watermark" aria-hidden="true">
+                +
+              </span>
+              <div className="radar-lift" style={{ borderRadius: 22 }}>
+                <RadarCard
+                  title="Conciliação de honorários"
+                  live="Varredura ativa"
+                  rows={RADAR_ROWS}
+                  summaryLabel="Receita encontrada / ano"
+                  summaryCountTo={29}
+                  summaryFormat={(v) => `R$ ${v} mil`}
+                />
+              </div>
               <p
                 style={{
                   fontSize: 13,
@@ -463,13 +447,8 @@ export default function Page() {
                     style={{ paddingTop: 18, marginTop: 8 }}
                   >
                     <div
-                      style={{
-                        fontFamily: "var(--font-mono)",
-                        fontSize: 26,
-                        fontWeight: 700,
-                        color: "var(--azul-profundo)",
-                        letterSpacing: "-0.02em",
-                      }}
+                      className="num-display"
+                      style={{ fontSize: 40, color: "var(--azul-profundo)" }}
                     >
                       <CountUp to={29} format={(v) => `R$ ${v} mil`} />
                     </div>
@@ -550,20 +529,11 @@ export default function Page() {
 
       {/* 4. ROADMAP DO HUB (lane com eixo temporal) */}
       <section
-        className="lp-section lp-section--medium surface-2-dark"
+        className="lp-section lp-section--medium surface-2-dark edge-glow"
         id="roadmap"
         style={{ position: "relative", overflow: "hidden" }}
       >
-        <div
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "radial-gradient(700px circle at 80% 0%, color-mix(in oklab, var(--ciano) 12%, transparent), transparent 60%)",
-            pointerEvents: "none",
-          }}
-        />
+        <div className="atmo-mesh" aria-hidden="true" />
         <div className="lp-shell" style={{ position: "relative" }}>
           <Reveal style={{ maxWidth: 640, marginBottom: 40 }}>
             <div
@@ -678,20 +648,11 @@ export default function Page() {
 
       {/* 5. CONDIÇÃO FUNDADORA EGESCON (preço) */}
       <section
-        className="lp-section lp-section--ample surface-2-dark"
+        className="lp-section lp-section--ample surface-2-dark edge-glow"
         id="preco"
         style={{ position: "relative", overflow: "hidden" }}
       >
-        <div
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "radial-gradient(700px circle at 20% 0%, color-mix(in oklab, var(--ciano) 12%, transparent), transparent 60%)",
-            pointerEvents: "none",
-          }}
-        />
+        <div className="atmo-mesh" aria-hidden="true" />
         <div className="lp-shell" style={{ position: "relative" }}>
           <Reveal style={{ maxWidth: 720, marginBottom: 40 }}>
             <div
@@ -743,15 +704,7 @@ export default function Page() {
                   {p.tier}
                 </div>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 6, flexWrap: "wrap" }}>
-                  <span
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: 34,
-                      fontWeight: 700,
-                      color: "var(--branco)",
-                      letterSpacing: "-0.02em",
-                    }}
-                  >
+                  <span className="num-display" style={{ fontSize: 42, color: "var(--branco)" }}>
                     {p.price}
                   </span>
                   <span style={{ fontSize: 14, color: "rgba(234,246,255,0.7)" }}>{p.per}</span>
@@ -981,19 +934,10 @@ export default function Page() {
 
       {/* 7. BANDA DE CTA FINAL (recombina copy existente, sem headline nova) */}
       <section
-        className="lp-section lp-section--ample surface-2-dark"
+        className="lp-section lp-section--ample surface-2-dark edge-glow"
         style={{ position: "relative", overflow: "hidden", textAlign: "center" }}
       >
-        <div
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "radial-gradient(800px circle at 50% 0%, color-mix(in oklab, var(--ciano) 14%, transparent), transparent 60%)",
-            pointerEvents: "none",
-          }}
-        />
+        <div className="atmo-mesh" aria-hidden="true" />
         <div className="lp-shell" style={{ position: "relative" }}>
           <Reveal
             style={{
@@ -1165,6 +1109,9 @@ export default function Page() {
           {headerCtaLabel}
         </a>
       </div>
+
+      {/* Textura de grão sobre a página inteira (profundidade sutil) */}
+      <div className="grain-overlay" aria-hidden="true" />
 
       {/* Modal do agendador, abre o Google Calendar num iframe, sem sair da página */}
       {schedulerOpen && (
