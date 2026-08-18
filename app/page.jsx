@@ -1044,13 +1044,58 @@ export default function Page() {
               LGPD by design · dados no seu ambiente de nuvem
             </div>
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 10, fontSize: 14 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 14, fontSize: 14 }}>
             <a href="mailto:contato@kontiva.ai" style={{ color: "rgba(234,246,255,0.8)" }}>
               contato@kontiva.ai
             </a>
             <a href="https://wa.me/5551926343014" style={{ color: "rgba(234,246,255,0.8)" }}>
               WhatsApp
             </a>
+            <div className="social-row" style={{ marginTop: 2 }}>
+              <a
+                className="social-btn"
+                href="https://www.instagram.com/kontiva.ai?igsh=MWo4N3ZuMW55Ymlncg%3D%3D"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram da Kontiva.ai"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <rect x="3" y="3" width="18" height="18" rx="5" />
+                  <circle cx="12" cy="12" r="4" />
+                  <circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none" />
+                </svg>
+              </a>
+              <a
+                className="social-btn"
+                href="https://www.linkedin.com/company/kontivaai/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn da Kontiva.ai"
+              >
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05C20.4 8.65 21 10.9 21 14v7h-4v-6.2c0-1.48-.03-3.38-2.06-3.38-2.06 0-2.38 1.6-2.38 3.27V21H9z" />
+                </svg>
+              </a>
+              <a
+                className="social-btn"
+                href="https://api.whatsapp.com/send/?phone=5551926343014&text=Ol%C3%A1%2C+gostaria+de+conhecer+a+Kontiva.ai&type=phone_number&app_absent=0"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="WhatsApp da Kontiva.ai"
+              >
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.9c0 1.76.46 3.45 1.32 4.95L2 22l5.3-1.38a9.9 9.9 0 0 0 4.74 1.2h.01c5.46 0 9.9-4.45 9.9-9.9C21.95 6.45 17.5 2 12.04 2zm5.8 14.1c-.24.68-1.4 1.3-1.94 1.35-.5.05-1.13.24-3.67-.77-3.09-1.22-5.06-4.36-5.22-4.57-.15-.2-1.25-1.66-1.25-3.17s.79-2.25 1.07-2.56c.28-.31.61-.38.81-.38.2 0 .41 0 .59.01.19.01.44-.07.69.53.24.6.83 2.07.9 2.22.07.15.12.33.02.53-.1.2-.15.33-.3.5-.15.18-.31.39-.44.53-.15.15-.3.31-.13.6.18.3.79 1.3 1.69 2.1 1.17 1.04 2.15 1.36 2.45 1.51.3.15.48.13.66-.08.18-.2.76-.89.96-1.19.2-.3.4-.25.68-.15.28.1 1.76.83 2.06.98.3.15.5.22.57.35.07.12.07.72-.17 1.4z" />
+                </svg>
+              </a>
+            </div>
           </div>
           <a
             className="btn btn-primary"
