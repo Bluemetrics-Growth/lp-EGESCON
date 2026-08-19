@@ -3,17 +3,6 @@
 import { useState } from "react";
 import RadarCard from "./components/RadarCard";
 
-/* ------------------------------------------------------------------ *
- * Estado do grupo de lançamento.
- * Na fase Code isto vem do CMS / inventário de vagas. Mudar aqui
- * reflete em toda a página: CTAs, badge, headlines, destaque da lista
- * de espera e aviso do agendador.
- *   slotsOpen  - grupo aceitando reservas
- *   slotsLeft  - vagas restantes (0 a 15). Em 0, a lista de espera abre
- *                automaticamente mesmo com slotsOpen = true.
- * ------------------------------------------------------------------ */
-const LAUNCH = { slotsOpen: true, slotsLeft: 6 };
-
 /* Cor de acento do selo beta (dourado do material do evento). */
 const AMBAR = "#F5C451";
 
@@ -63,18 +52,18 @@ const BENEFITS = [
     ),
   },
   {
-    title: "Mostre IA de verdade",
+    title: "Pronto para a reforma",
     body: (
       <>
-        Entregue relatórios com IA <strong>e a sua marca</strong>. É a sua vitrine para
-        conquistar contas.
+        Simule os cenários da reforma (<strong>IBS e CBS</strong>) na carteira dele, ano a ano.
+        Seu escritório chega com número na mão, não com susto.
       </>
     ),
     icon: (
       <svg {...svgProps}>
-        <rect x="3" y="4" width="18" height="13" rx="2" />
-        <path d="M8 21h8M12 17v4" />
-        <path d="m8 11 2 2 4-4" />
+        <rect x="3" y="4" width="18" height="17" rx="2" />
+        <path d="M16 2v4M8 2v4M3 10h18" />
+        <path d="m9 15 2 2 4-4" />
       </svg>
     ),
   },
@@ -96,10 +85,10 @@ const AGENTS = [
     ),
   },
   {
-    name: "Agente Tributário",
+    name: "Agente Tributário (reforma)",
     tag: "Ativo · Beta",
     state: "beta",
-    body: "Simula regime e créditos de impostos, com relatório da sua marca pronto para apresentar.",
+    body: "É o agente da reforma tributária. Simula os cenários de IBS e CBS ano a ano, o regime atual e os créditos recuperáveis, com relatório da sua marca pronto para levar ao cliente.",
     icon: (
       <svg {...svgProps}>
         <path d="M4 4h16v4H4z" />
@@ -233,38 +222,11 @@ export default function Page() {
   const [openFaq, setOpenFaq] = useState(0);
   const toggleFaq = (i) => setOpenFaq((cur) => (cur === i ? null : i));
 
-  // Lista de espera libera automaticamente quando as 15 vagas encerram.
-  const slotsOpenEff = LAUNCH.slotsOpen && LAUNCH.slotsLeft > 0;
-
-  const heroCtaLabel = slotsOpenEff
-    ? "Reservar minha vaga de lançamento"
-    : "Entrar na lista de espera";
-  const heroCtaHref = slotsOpenEff ? "#agendador" : "#lista-espera";
-  const headerCtaLabel = slotsOpenEff ? "Reservar vaga" : "Lista de espera";
-
-  const slotsBadge = slotsOpenEff
-    ? `Restam ${LAUNCH.slotsLeft} de 15 vagas de lançamento`
-    : "Grupo de lançamento completo · lista de espera aberta";
-
-  const pathsHeadline = slotsOpenEff
-    ? "Reserve agora, ou entre na lista de espera."
-    : "Grupo de lançamento completo. Entre na lista de espera.";
-
-  const waitlistHeadline = slotsOpenEff
-    ? "Quer decidir depois? Entre na lista."
-    : "Vagas esgotadas? Garanta seu lugar.";
-
-  const waitlistBorder = slotsOpenEff
-    ? "1px solid var(--border-on-light)"
-    : "1.5px solid color-mix(in oklab, var(--ciano) 55%, transparent)";
-
-  const showWaitlistLink = slotsOpenEff;
-  const schedulerClosed = !slotsOpenEff;
-
-  // HOOK (fase Code): ligar ao POST da Forms Submission API v3 do HubSpot.
-  const onWaitlistSubmit = (e) => {
-    e.preventDefault();
-  };
+  const heroCtaLabel = "Reservar minha vaga de lançamento";
+  const heroCtaHref = "#agendador";
+  const headerCtaLabel = "Reservar vaga";
+  const slotsBadge = "Vagas limitadas de lançamento";
+  const pathsHeadline = "Reserve sua vaga de lançamento.";
 
   return (
     <div
@@ -403,20 +365,52 @@ export default function Page() {
                 >
                   {heroCtaLabel}
                 </a>
-                {showWaitlistLink && (
-                  <a
-                    href="#lista-espera"
-                    style={{
-                      fontSize: 14,
-                      fontWeight: 500,
-                      color: "rgba(234,246,255,0.7)",
-                      textDecoration: "underline",
-                      textUnderlineOffset: 3,
-                    }}
+              </div>
+              {/* Gancho do evento: o Setup de Teste montado no 9º EGESCON */}
+              <div
+                style={{
+                  display: "flex",
+                  gap: 12,
+                  alignItems: "flex-start",
+                  marginTop: 28,
+                  padding: "16px 18px",
+                  borderRadius: 14,
+                  background: "color-mix(in oklab, var(--ciano) 9%, transparent)",
+                  border: "1px solid color-mix(in oklab, var(--ciano) 28%, transparent)",
+                  maxWidth: 520,
+                }}
+              >
+                <span
+                  style={{
+                    flex: "none",
+                    width: 34,
+                    height: 34,
+                    borderRadius: 10,
+                    background: "var(--ciano)",
+                    color: "var(--azul-profundo)",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   >
-                    Prefiro entrar na lista de espera
-                  </a>
-                )}
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                </span>
+                <div style={{ fontSize: 14, lineHeight: 1.5, color: "rgba(234,246,255,0.82)" }}>
+                  <strong style={{ color: "var(--branco)" }}>Exclusivo do 9º EGESCON:</strong>{" "}
+                  montamos seu Setup de Teste com uma amostra dos seus próprios dados, grátis. Valor
+                  de tabela R$ 1.500.
+                </div>
               </div>
             </div>
             <div>
@@ -885,7 +879,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 7. DOIS CAMINHOS: Agendador (A) + Lista de espera (B) */}
+      {/* 7. RESERVE AGORA: Agendador do Setup de Teste */}
       <section className="lp-section" style={{ background: "var(--branco)" }}>
         <div className="lp-shell">
           <div style={{ maxWidth: 720, marginBottom: 40 }}>
@@ -895,269 +889,120 @@ export default function Page() {
             <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)", marginBottom: 12 }}>{pathsHeadline}</h2>
             <p style={{ color: "var(--cinza-escuro)", fontSize: 16, margin: 0 }}>
               Grupo de lançamento limitado a{" "}
-              <strong style={{ color: "var(--azul-profundo)" }}>15 escritórios</strong>. Os demais
-              entram por lista de espera.
+              <strong style={{ color: "var(--azul-profundo)" }}>15 escritórios</strong>. Reserve a
+              sua e marque o Setup de Teste no evento.
             </p>
           </div>
-          <div className="lp-paths">
-            {/* Caminho A · Agendador — STUB.
-                HOOK (fase Code): substituir o card stub abaixo pelo embed do
-                HubSpot Meetings via next/script. Não carregar script externo aqui. */}
+          {/* Agendador (STUB).
+              HOOK (fase Code): substituir o card stub abaixo pelo embed do
+              HubSpot Meetings via next/script. Não carregar script externo aqui. */}
+          <div
+            id="agendador"
+            style={{
+              maxWidth: 640,
+              margin: "0 auto",
+              padding: 28,
+              borderRadius: 20,
+              background: "var(--cinza-claro)",
+              border: "1px solid var(--border-on-light)",
+            }}
+          >
             <div
-              id="agendador"
               style={{
-                padding: 28,
-                borderRadius: 20,
-                background: "var(--cinza-claro)",
-                border: "1px solid var(--border-on-light)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: 12,
+                marginBottom: 20,
               }}
             >
-              <div
+              <span
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  gap: 12,
-                  marginBottom: 20,
+                  fontFamily: "var(--font-mono)",
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  color: "var(--cinza-texto)",
                 }}
               >
-                <span
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: 11,
-                    fontWeight: 700,
-                    letterSpacing: "0.08em",
-                    textTransform: "uppercase",
-                    color: "var(--cinza-texto)",
-                  }}
-                >
-                  Caminho A · Reservar
-                </span>
-                {slotsOpenEff && (
-                  <span
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: 10,
-                      fontWeight: 700,
-                      letterSpacing: "0.06em",
-                      textTransform: "uppercase",
-                      padding: "5px 10px",
-                      borderRadius: 99,
-                      background: "var(--ciano)",
-                      color: "var(--azul-profundo)",
-                    }}
-                  >
-                    Recomendado
-                  </span>
-                )}
-              </div>
-              <h3 style={{ fontSize: 22, letterSpacing: "-0.02em", marginBottom: 18 }}>
-                Escolha o horário do seu Setup de Teste.
-              </h3>
+                Reservar vaga
+              </span>
+            </div>
+            <h3 style={{ fontSize: 22, letterSpacing: "-0.02em", marginBottom: 18 }}>
+              Escolha o horário do seu Setup de Teste.
+            </h3>
 
-              {schedulerClosed && (
-                <div
-                  style={{
-                    display: "flex",
-                    gap: 12,
-                    alignItems: "flex-start",
-                    padding: 16,
-                    borderRadius: 14,
-                    background: "var(--antes-tag-bg)",
-                    border: "1px solid rgba(162,64,26,0.2)",
-                    marginBottom: 18,
-                  }}
-                >
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="var(--antes-tag-fg)"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    style={{ flex: "none", marginTop: 1 }}
-                  >
-                    <path d="M12 9v4M12 17h.01" />
-                    <path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z" />
-                  </svg>
-                  <div style={{ fontSize: 14, color: "var(--antes-tag-fg)", fontWeight: 600 }}>
-                    Grupo de lançamento completo, entre na lista de espera.
-                  </div>
-                </div>
-              )}
-
-              <div
+            <div
+              style={{
+                position: "relative",
+                border: "1.5px dashed color-mix(in oklab, var(--ciano) 55%, var(--border-on-light-strong))",
+                borderRadius: 16,
+                background: "linear-gradient(135deg, var(--ciano-suave), var(--branco))",
+                minHeight: 260,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 16,
+                padding: "36px 20px",
+                textAlign: "center",
+              }}
+            >
+              <span
                 style={{
-                  position: "relative",
-                  border: "1.5px dashed color-mix(in oklab, var(--ciano) 55%, var(--border-on-light-strong))",
-                  borderRadius: 16,
-                  background: "linear-gradient(135deg, var(--ciano-suave), var(--branco))",
-                  minHeight: 260,
-                  display: "flex",
-                  flexDirection: "column",
+                  width: 52,
+                  height: 52,
+                  borderRadius: 14,
+                  background: "var(--azul-profundo)",
+                  color: "var(--ciano)",
+                  display: "inline-flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  gap: 16,
-                  padding: "36px 20px",
-                  textAlign: "center",
                 }}
               >
-                <span
-                  style={{
-                    width: 52,
-                    height: 52,
-                    borderRadius: 14,
-                    background: "var(--azul-profundo)",
-                    color: "var(--ciano)",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
+                <svg
+                  width="26"
+                  height="26"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 >
-                  <svg
-                    width="26"
-                    height="26"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <rect x="3" y="4" width="18" height="18" rx="2" />
-                    <path d="M16 2v4M8 2v4M3 10h18" />
-                  </svg>
-                </span>
-                <div
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: 13,
-                    color: "var(--azul-profundo)",
-                    fontWeight: 600,
-                    background: "var(--branco)",
-                    padding: "8px 14px",
-                    borderRadius: 8,
-                    border: "1px solid var(--border-on-light)",
-                  }}
-                >
-                  [ Agendador HubSpot: integração na fase Code ]
-                </div>
-                <div style={{ fontSize: 13, color: "var(--cinza-texto)", maxWidth: 320 }}>
-                  Seleção de dia e horário aparece aqui quando o embed for conectado.
-                </div>
-              </div>
-              <p
-                style={{
-                  fontSize: 14,
-                  color: "var(--cinza-texto)",
-                  margin: "16px 4px 0",
-                  textAlign: "center",
-                }}
-              >
-                Sem cartão. Você só decide pagar depois de ver funcionando.
-              </p>
-            </div>
-
-            {/* Caminho B · Lista de espera — form visual, sem submit ligado */}
-            <div
-              id="lista-espera"
-              style={{
-                padding: 28,
-                borderRadius: 20,
-                background: "var(--branco)",
-                border: waitlistBorder,
-              }}
-            >
+                  <rect x="3" y="4" width="18" height="18" rx="2" />
+                  <path d="M16 2v4M8 2v4M3 10h18" />
+                </svg>
+              </span>
               <div
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  gap: 12,
-                  marginBottom: 20,
+                  fontFamily: "var(--font-mono)",
+                  fontSize: 13,
+                  color: "var(--azul-profundo)",
+                  fontWeight: 600,
+                  background: "var(--branco)",
+                  padding: "8px 14px",
+                  borderRadius: 8,
+                  border: "1px solid var(--border-on-light)",
                 }}
               >
-                <span
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: 11,
-                    fontWeight: 700,
-                    letterSpacing: "0.08em",
-                    textTransform: "uppercase",
-                    color: "var(--cinza-texto)",
-                  }}
-                >
-                  Caminho B · Lista de espera
-                </span>
-                {schedulerClosed && (
-                  <span
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: 10,
-                      fontWeight: 700,
-                      letterSpacing: "0.06em",
-                      textTransform: "uppercase",
-                      padding: "5px 10px",
-                      borderRadius: 99,
-                      background: "var(--ciano)",
-                      color: "var(--azul-profundo)",
-                    }}
-                  >
-                    Aberta
-                  </span>
-                )}
+                [ Agendador HubSpot: integração na fase Code ]
               </div>
-              <h3 style={{ fontSize: 22, letterSpacing: "-0.02em", marginBottom: 6 }}>
-                {waitlistHeadline}
-              </h3>
-              <p style={{ fontSize: 14.5, color: "var(--cinza-escuro)", margin: "0 0 20px" }}>
-                Garanta seu lugar no próximo grupo. A gente avisa quando abrir.
-              </p>
-              <form onSubmit={onWaitlistSubmit}>
-                <div className="f-field">
-                  <label htmlFor="wl-nome">Nome</label>
-                  <input id="wl-nome" type="text" placeholder="Seu nome" />
-                </div>
-                <div className="f-row">
-                  <div className="f-field">
-                    <label htmlFor="wl-escritorio">Escritório</label>
-                    <input id="wl-escritorio" type="text" placeholder="Nome do escritório" />
-                  </div>
-                  <div className="f-field">
-                    <label htmlFor="wl-cidade">Cidade</label>
-                    <input id="wl-cidade" type="text" placeholder="Cidade / UF" />
-                  </div>
-                </div>
-                <div className="f-row">
-                  <div className="f-field">
-                    <label htmlFor="wl-whats">WhatsApp</label>
-                    <input id="wl-whats" type="tel" placeholder="(00) 90000-0000" />
-                  </div>
-                  <div className="f-field">
-                    <label htmlFor="wl-email">E-mail</label>
-                    <input id="wl-email" type="email" placeholder="voce@escritorio.com.br" />
-                  </div>
-                </div>
-                <div className="f-field">
-                  <label htmlFor="wl-clientes">Quantos clientes ativos?</label>
-                  <select id="wl-clientes" defaultValue="">
-                    <option value="">Selecione</option>
-                    <option value="ate-100">até 100</option>
-                    <option value="101-300">101 a 300</option>
-                    <option value="300+">acima de 300</option>
-                  </select>
-                </div>
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  style={{ width: "100%", padding: 16, fontSize: 16, marginTop: 6 }}
-                >
-                  Entrar na lista de espera
-                </button>
-              </form>
+              <div style={{ fontSize: 13, color: "var(--cinza-texto)", maxWidth: 320 }}>
+                Seleção de dia e horário aparece aqui quando o embed for conectado.
+              </div>
             </div>
+            <p
+              style={{
+                fontSize: 14,
+                color: "var(--cinza-texto)",
+                margin: "16px 4px 0",
+                textAlign: "center",
+              }}
+            >
+              Sem cartão. Você só decide pagar depois de ver funcionando.
+            </p>
           </div>
         </div>
       </section>

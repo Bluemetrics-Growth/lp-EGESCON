@@ -1,7 +1,7 @@
 # lp-EGESCON — Kontiva.ai
 
-Landing page da **Kontiva.ai** (by BlueMetrics) para o 9º EGESCON: seleção dos
-escritórios contábeis fundadores do Hub de agentes de IA.
+Landing page da **Kontiva.ai** (by BlueMetrics) para o 9º EGESCON: grupo de
+lançamento dos escritórios contábeis do Hub de agentes de IA.
 
 Construída em **Next.js (App Router)** a partir do design exportado do Claude
 Design, recriando o protótipo fiel ao pixel e herdando o design system Kontiva
@@ -33,27 +33,17 @@ project/                 # bundle de design original (referência)
 chats/                   # transcrições do design (provenance)
 ```
 
-## Estado do grupo de lançamento
+## Comunicação
 
-O bloco `LAUNCH` no topo de `app/page.jsx` controla o estado da campanha:
-
-```js
-const LAUNCH = { slotsOpen: true, slotsLeft: 6 };
-```
-
-Ele dirige, em toda a página, os CTAs, o badge de vagas, as headlines, o
-destaque da lista de espera e o aviso do agendador. Quando `slotsLeft` chega a
-`0`, a lista de espera libera automaticamente (mesmo com `slotsOpen: true`). Na
-fase de produção, esse estado deve vir do CMS ou do inventário de vagas.
+A página segue o material do 9º EGESCON: hero "Agentes de IA que trabalham no
+seu escritório. De verdade.", o gancho do Setup de Teste grátis do evento, os
+agentes do Hub (Honorários e Tributário da reforma), a vaga de lançamento e a
+condição de preço. As vagas são comunicadas como limitadas, sem contagem
+exposta e sem lista de espera.
 
 ## Integrações (fase Code)
 
-Duas integrações ficaram como stubs visuais na marca, com hooks marcados no
-código:
-
-- **Agendador HubSpot Meetings** — card placeholder em `app/page.jsx` (Caminho
-  A). Substituir pelo embed via `next/script`.
-- **Lista de espera** — form visual (Caminho B). Ligar o `onWaitlistSubmit` ao
-  POST da Forms Submission API v3 do HubSpot.
+- **Agendador HubSpot Meetings** — card placeholder em `app/page.jsx` (seção
+  "Reserve agora"). Substituir pelo embed via `next/script`.
 
 GTM / GA4 / UTM ainda a instrumentar.
