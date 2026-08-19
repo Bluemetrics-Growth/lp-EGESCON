@@ -17,8 +17,24 @@ const svgProps = {
   strokeLinejoin: "round",
 };
 
-/* O que é o Kontiva: três eixos, na linguagem do material do evento. */
+/* O que é o Kontiva: três eixos, com a reforma tributária à frente. */
 const BENEFITS = [
+  {
+    title: "Pronto para a reforma",
+    body: (
+      <>
+        Simule os cenários da reforma (<strong>IBS e CBS</strong>) na carteira dele, ano a ano.
+        Seu escritório chega com número na mão, não com susto.
+      </>
+    ),
+    icon: (
+      <svg {...svgProps}>
+        <rect x="3" y="4" width="18" height="17" rx="2" />
+        <path d="M16 2v4M8 2v4M3 10h18" />
+        <path d="m9 15 2 2 4-4" />
+      </svg>
+    ),
+  },
   {
     title: "Ache dinheiro",
     body: (
@@ -51,39 +67,10 @@ const BENEFITS = [
       </svg>
     ),
   },
-  {
-    title: "Pronto para a reforma",
-    body: (
-      <>
-        Simule os cenários da reforma (<strong>IBS e CBS</strong>) na carteira dele, ano a ano.
-        Seu escritório chega com número na mão, não com susto.
-      </>
-    ),
-    icon: (
-      <svg {...svgProps}>
-        <rect x="3" y="4" width="18" height="17" rx="2" />
-        <path d="M16 2v4M8 2v4M3 10h18" />
-        <path d="m9 15 2 2 4-4" />
-      </svg>
-    ),
-  },
 ];
 
 /* Agentes do Hub: dois rodando hoje, o resto no roadmap. */
 const AGENTS = [
-  {
-    name: "Agente de Honorários",
-    tag: "Ativo",
-    state: "active",
-    body: "Lê contratos, calcula reajustes e concilia cobranças. Acha o que você deixa de faturar.",
-    icon: (
-      <svg {...svgProps}>
-        <circle cx="11" cy="11" r="7" />
-        <path d="m20 20-3.5-3.5" />
-        <path d="M11 8v6M8 11h6" />
-      </svg>
-    ),
-  },
   {
     name: "Agente Tributário (reforma)",
     tag: "Ativo · Beta",
@@ -94,6 +81,19 @@ const AGENTS = [
         <path d="M4 4h16v4H4z" />
         <path d="M4 12h10M4 16h10M4 20h6" />
         <path d="m16 15 2 2 4-4" />
+      </svg>
+    ),
+  },
+  {
+    name: "Agente de Honorários",
+    tag: "Ativo",
+    state: "active",
+    body: "Lê contratos, calcula reajustes e concilia cobranças. Acha o que você deixa de faturar.",
+    icon: (
+      <svg {...svgProps}>
+        <circle cx="11" cy="11" r="7" />
+        <path d="m20 20-3.5-3.5" />
+        <path d="M11 8v6M8 11h6" />
       </svg>
     ),
   },
@@ -189,6 +189,10 @@ const PROOF = [
 
 const FAQ = [
   {
+    q: "Como o Kontiva ajuda na reforma tributária?",
+    a: "O Agente Tributário simula os cenários de IBS e CBS ano a ano, compara com o regime atual e aponta os créditos recuperáveis, com relatório da sua marca para levar ao cliente. É simulação e estimativa com base nos dados fornecidos, não substitui parecer profissional.",
+  },
+  {
     q: "Já tenho sistema (Domínio / Alterdata)?",
     a: "A gente lê os dados dele. Seu sistema executa a cobrança; o Kontiva confere se está certa contra o contrato.",
   },
@@ -211,11 +215,11 @@ const FAQ = [
 ];
 
 const RADAR_ROWS = [
-  { idx: "01", name: "Contrato · Cliente A", amount: "R$ 890", badge: "ok", flagged: false },
-  { idx: "02", name: "Honorário · Cliente B", amount: "+R$ 420", badge: "a cobrar", flagged: true },
-  { idx: "03", name: "Contrato · Cliente C", amount: "R$ 1.240", badge: "ok", flagged: false },
-  { idx: "04", name: "Serviço extra · Cliente D", amount: "+R$ 310", badge: "a cobrar", flagged: true },
-  { idx: "05", name: "Contrato · Cliente E", amount: "R$ 640", badge: "ok", flagged: false },
+  { idx: "01", name: "Simples Nacional", amount: "R$ 41.200", badge: "atual", flagged: false },
+  { idx: "02", name: "Lucro Presumido", amount: "R$ 36.900", badge: "cenário", flagged: false },
+  { idx: "03", name: "Lucro Real", amount: "R$ 33.610", badge: "recomendado", flagged: true },
+  { idx: "04", name: "IBS + CBS · 2027", amount: "R$ 34.980", badge: "projeção", flagged: true },
+  { idx: "05", name: "Créditos recuperáveis", amount: "+R$ 7.300", badge: "a recuperar", flagged: true },
 ];
 
 export default function Page() {
@@ -225,7 +229,7 @@ export default function Page() {
   const heroCtaLabel = "Reservar minha vaga de lançamento";
   const heroCtaHref = "#agendador";
   const headerCtaLabel = "Reservar vaga";
-  const slotsBadge = "Vagas limitadas de lançamento";
+  const slotsBadge = "Reforma tributária · 2026 a 2033";
   const pathsHeadline = "Reserve sua vaga de lançamento.";
 
   return (
@@ -347,15 +351,16 @@ export default function Page() {
                   color: "var(--branco)",
                 }}
               >
-                Agentes de IA que trabalham no seu escritório.{" "}
+                Chegue na reforma tributária com a simulação pronta na mão.{" "}
                 <span style={{ color: "var(--ciano)" }}>De verdade.</span>
               </h1>
               <p
                 className="lead"
-                style={{ margin: "0 0 32px", maxWidth: 520, color: "rgba(234,246,255,0.72)" }}
+                style={{ margin: "0 0 32px", maxWidth: 540, color: "rgba(234,246,255,0.72)" }}
               >
-                O Hub de agentes de IA para escritórios contábeis. Cada agente assume um processo
-                inteiro, e a plataforma cresce agente a agente.
+                Entre 2026 e 2033, cada cliente vai repensar regime, créditos e caixa. O Kontiva é o
+                Hub de agentes de IA que roda essa simulação, com a sua marca. Quem chega com número
+                na mão conquista os clientes de quem não chega.
               </p>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 14, alignItems: "center" }}>
                 <a
@@ -422,11 +427,11 @@ export default function Page() {
                 }}
               >
                 <RadarCard
-                  title="Conciliação de honorários"
-                  live="Varredura ativa"
+                  title="Simulação da reforma · cliente exemplo"
+                  live="Cenários IBS/CBS"
                   rows={RADAR_ROWS}
-                  summaryLabel="Receita encontrada / ano"
-                  summaryValue="R$ 29 mil"
+                  summaryLabel="Melhor cenário / ano"
+                  summaryValue="R$ 33.610"
                 />
               </div>
               <p
@@ -437,9 +442,81 @@ export default function Page() {
                   textAlign: "center",
                 }}
               >
-                Amostra ilustrativa. No Setup de Teste, roda nos seus números.
+                Amostra ilustrativa de simulação. No Setup de Teste, roda nos números dos seus
+                clientes.
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 1b. A REFORMA TRIBUTÁRIA */}
+      <section className="lp-section" id="reforma" style={{ background: "var(--ciano-suave)" }}>
+        <div className="lp-shell">
+          <div style={{ maxWidth: 780, marginBottom: 40 }}>
+            <div className="eyebrow" style={{ marginBottom: 18 }}>
+              <span className="dot-cyan" /> A reforma já começou
+            </div>
+            <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)", lineHeight: 1.08, marginBottom: 16 }}>
+              De 2026 a 2033, cada cliente vai repensar regime, créditos e caixa.
+            </h2>
+            <p style={{ color: "var(--cinza-escuro)", fontSize: 17, lineHeight: 1.55, margin: 0 }}>
+              A reforma troca o modelo atual por IBS e CBS de forma gradual. Ano a ano muda o que
+              cada CNPJ paga e quanto de crédito dá para recuperar. O escritório que chega nessa
+              conversa com simulação na mão vira o consultor da vez, não o que corre atrás.
+            </p>
+          </div>
+          <div className="lp-grid-3">
+            {[
+              {
+                stat: "2026 a 2033",
+                label: "A transição para IBS e CBS acontece por etapas, ano a ano.",
+              },
+              {
+                stat: "Regime + créditos",
+                label: "Muda o melhor regime e os créditos recuperáveis de cada cliente.",
+              },
+              {
+                stat: "Simulação na mão",
+                label:
+                  "O Agente Tributário roda os cenários e entrega o relatório com a sua marca.",
+              },
+            ].map((r) => (
+              <div
+                key={r.stat}
+                className="card"
+                style={{
+                  padding: 26,
+                  height: "100%",
+                  borderTop: "3px solid var(--ciano)",
+                }}
+              >
+                <div
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: 18,
+                    fontWeight: 700,
+                    color: "var(--azul-profundo)",
+                    letterSpacing: "-0.01em",
+                    marginBottom: 10,
+                  }}
+                >
+                  {r.stat}
+                </div>
+                <div style={{ fontSize: 14.5, color: "var(--cinza-escuro)", lineHeight: 1.5 }}>
+                  {r.label}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{ marginTop: 32 }}>
+            <a
+              className="btn btn-primary"
+              style={{ padding: "15px 24px", fontSize: 15 }}
+              href="#agendador"
+            >
+              Reservar minha vaga de lançamento
+            </a>
           </div>
         </div>
       </section>
@@ -536,7 +613,8 @@ export default function Page() {
               <span style={{ color: "rgba(234,246,255,0.45)" }}>Dois já rodando hoje.</span>
             </h2>
             <p style={{ color: "rgba(234,246,255,0.7)", fontSize: 16, margin: 0 }}>
-              Cada agente faz o processo inteiro, com aprovação humana no que você definir.
+              O primeiro é o da reforma tributária. Cada agente faz o processo inteiro, com
+              aprovação humana no que você definir.
             </p>
           </div>
           <div className="lp-grid-2" style={{ alignItems: "stretch" }}>
