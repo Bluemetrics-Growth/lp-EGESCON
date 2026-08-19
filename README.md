@@ -33,12 +33,12 @@ project/                 # bundle de design original (referência)
 chats/                   # transcrições do design (provenance)
 ```
 
-## Estado da turma fundadora
+## Estado do grupo de lançamento
 
-O bloco `FOUNDING` no topo de `app/page.jsx` controla o estado da campanha:
+O bloco `LAUNCH` no topo de `app/page.jsx` controla o estado da campanha:
 
 ```js
-const FOUNDING = { slotsOpen: true, slotsLeft: 6 };
+const LAUNCH = { slotsOpen: true, slotsLeft: 6 };
 ```
 
 Ele dirige, em toda a página, os CTAs, o badge de vagas, as headlines, o

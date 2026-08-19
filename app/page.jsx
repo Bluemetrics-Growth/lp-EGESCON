@@ -4,15 +4,18 @@ import { useState } from "react";
 import RadarCard from "./components/RadarCard";
 
 /* ------------------------------------------------------------------ *
- * Estado da turma fundadora.
+ * Estado do grupo de lançamento.
  * Na fase Code isto vem do CMS / inventário de vagas. Mudar aqui
  * reflete em toda a página: CTAs, badge, headlines, destaque da lista
  * de espera e aviso do agendador.
- *   slotsOpen  — turma aceitando reservas
- *   slotsLeft  — vagas restantes (0–15). Em 0, a lista de espera abre
+ *   slotsOpen  - grupo aceitando reservas
+ *   slotsLeft  - vagas restantes (0 a 15). Em 0, a lista de espera abre
  *                automaticamente mesmo com slotsOpen = true.
  * ------------------------------------------------------------------ */
-const FOUNDING = { slotsOpen: true, slotsLeft: 6 };
+const LAUNCH = { slotsOpen: true, slotsLeft: 6 };
+
+/* Cor de acento do selo beta (dourado do material do evento). */
+const AMBAR = "#F5C451";
 
 const svgProps = {
   width: 22,
@@ -25,10 +28,16 @@ const svgProps = {
   strokeLinejoin: "round",
 };
 
+/* O que é o Kontiva: três eixos, na linguagem do material do evento. */
 const BENEFITS = [
   {
-    title: "Achar dinheiro",
-    body: "A conciliação de honorários acha receita que o escritório deixa de cobrar — contrato por contrato.",
+    title: "Ache dinheiro",
+    body: (
+      <>
+        Lê seus contratos, cruza com o faturamento e aponta, <strong>em reais</strong>, o
+        honorário que você deixa de cobrar.
+      </>
+    ),
     icon: (
       <svg {...svgProps}>
         <circle cx="11" cy="11" r="7" />
@@ -38,8 +47,13 @@ const BENEFITS = [
     ),
   },
   {
-    title: "Multiplicar capacidade",
-    body: "Mais clientes atendidos com as mesmas pessoas. O agente faz o trabalho repetitivo.",
+    title: "Multiplique a capacidade",
+    body: (
+      <>
+        Atenda mais clientes com o mesmo time. Os <strong>agentes assumem</strong> o trabalho
+        repetitivo.
+      </>
+    ),
     icon: (
       <svg {...svgProps}>
         <path d="M3 7l9-4 9 4-9 4-9-4z" />
@@ -49,8 +63,13 @@ const BENEFITS = [
     ),
   },
   {
-    title: "Vitrine de IA de verdade",
-    body: "O escritório mostra à carteira dele que opera com agentes reais — não com promessa.",
+    title: "Mostre IA de verdade",
+    body: (
+      <>
+        Entregue relatórios com IA <strong>e a sua marca</strong>. É a sua vitrine para
+        conquistar contas.
+      </>
+    ),
     icon: (
       <svg {...svgProps}>
         <rect x="3" y="4" width="18" height="13" rx="2" />
@@ -61,35 +80,13 @@ const BENEFITS = [
   },
 ];
 
-const STEPS = [
+/* Agentes do Hub: dois rodando hoje, o resto no roadmap. */
+const AGENTS = [
   {
-    n: "01",
-    title: "Reserva a vaga",
-    body: "Sem cartão, sem assinar nada agora. Você só garante o lugar na turma fundadora.",
-  },
-  {
-    n: "02",
-    title: "A gente faz o Setup de Teste",
-    body: "Gratuito, com uma amostra dos seus dados. A equipe Kontiva monta e roda.",
-  },
-  {
-    n: "03",
-    title: "Você vê rodando nos SEUS números",
-    body: "O Kontiva funcionando na sua carteira, antes de pagar qualquer coisa.",
-  },
-  {
-    n: "04",
-    title: "7 dias para decidir",
-    body: "Após o setup. Se não seguir, a vaga volta pra fila — sem ruído.",
-  },
-];
-
-const ROADMAP_BASE = [
-  {
-    name: "Conciliador de Honorários",
-    desc: "Cruza contrato e cobrança, acha o que faltou.",
+    name: "Agente de Honorários",
     tag: "Ativo",
-    active: true,
+    state: "active",
+    body: "Lê contratos, calcula reajustes e concilia cobranças. Acha o que você deixa de faturar.",
     icon: (
       <svg {...svgProps}>
         <circle cx="11" cy="11" r="7" />
@@ -99,10 +96,10 @@ const ROADMAP_BASE = [
     ),
   },
   {
-    name: "Tributário / ICMS",
-    desc: "Confere apuração e regime contra o que foi lançado.",
-    tag: "Ativo",
-    active: true,
+    name: "Agente Tributário",
+    tag: "Ativo · Beta",
+    state: "beta",
+    body: "Simula regime e créditos de impostos, com relatório da sua marca pronto para apresentar.",
     icon: (
       <svg {...svgProps}>
         <path d="M4 4h16v4H4z" />
@@ -112,10 +109,10 @@ const ROADMAP_BASE = [
     ),
   },
   {
-    name: "Simulação em Massa da carteira",
-    desc: "Roda cenários tributários em toda a base de clientes.",
-    tag: "Est. Q4 2026",
-    active: false,
+    name: "Simulação em massa",
+    tag: "Em breve",
+    state: "soon",
+    body: "A simulação tributária rodada para toda a sua carteira, com ranking de impacto.",
     icon: (
       <svg {...svgProps}>
         <path d="M3 3v18h18" />
@@ -124,15 +121,14 @@ const ROADMAP_BASE = [
     ),
   },
   {
-    name: "Próximo agente",
-    desc: "Definido com os escritórios fundadores.",
-    tag: "Est. Q1 2027",
-    active: false,
+    name: "Próximos agentes",
+    tag: "Roadmap",
+    state: "roadmap",
+    chips: ["documentos", "atendimento", "reforma"],
     icon: (
       <svg {...svgProps}>
-        <circle cx="12" cy="12" r="9" strokeDasharray="3 3" />
-        <path d="M12 8v4" />
-        <path d="M12 16h.01" />
+        <rect x="5" y="11" width="14" height="10" rx="2" />
+        <path d="M8 11V7a4 4 0 0 1 8 0v4" />
       </svg>
     ),
   },
@@ -140,26 +136,66 @@ const ROADMAP_BASE = [
 
 const ACTIVE_BG = "color-mix(in oklab, var(--ciano) 8%, transparent)";
 const ACTIVE_BORDER = "1px solid color-mix(in oklab, var(--ciano) 55%, transparent)";
+const SOFT_BG = "rgba(255,255,255,0.02)";
 const SOFT_BORDER = "1px dashed rgba(255,255,255,0.14)";
 
-const ROADMAP = ROADMAP_BASE.map((r) => ({
-  ...r,
-  bg: r.active ? ACTIVE_BG : "rgba(255,255,255,0.02)",
-  border: r.active ? ACTIVE_BORDER : SOFT_BORDER,
-  opacity: r.active ? 1 : 0.62,
-  iconBg: r.active ? "var(--ciano)" : "rgba(255,255,255,0.06)",
-  iconColor: r.active ? "var(--azul-profundo)" : "rgba(234,246,255,0.55)",
-  titleColor: r.active ? "var(--branco)" : "rgba(234,246,255,0.75)",
-  tagBg: r.active ? "var(--ciano)" : "transparent",
-  tagColor: r.active ? "var(--azul-profundo)" : "rgba(234,246,255,0.6)",
-  tagBorder: r.active ? "none" : "1px solid rgba(255,255,255,0.16)",
-}));
+/* Como funciona a vaga de lançamento: 4 passos. */
+const STEPS = [
+  {
+    n: "1",
+    title: "Você reserva sua vaga",
+    body: (
+      <>
+        Uma das <strong>15 vagas</strong> do grupo de lançamento, sem pagar nada na hora.
+      </>
+    ),
+  },
+  {
+    n: "2",
+    title: "Fazemos o Setup de Teste, grátis",
+    body: (
+      <>
+        Configuramos o Kontiva com uma amostra dos seus próprios dados. Valor de tabela{" "}
+        <strong>R$ 1.500</strong>, gratuito para membros de lançamento.
+      </>
+    ),
+  },
+  {
+    n: "3",
+    title: "Você vê funcionando nos seus números",
+    body: (
+      <>
+        Só decide pagar depois de ver o resultado. Você tem <strong>7 dias</strong> após o setup
+        para confirmar.
+      </>
+    ),
+  },
+  {
+    n: "4",
+    title: "Você entra como membro de lançamento",
+    body: (
+      <>
+        Condição de preço <strong>travada por 12 meses</strong> após o beta, e influência direta
+        nos próximos agentes do Hub.
+      </>
+    ),
+    dark: true,
+  },
+];
+
+/* Sua condição de lançamento: tabela do material do evento. */
+const PRICING = [
+  { range: "até 100 clientes", price: "R$ 497", per: "/mês" },
+  { range: "101 a 300 clientes", price: "R$ 797", per: "/mês" },
+  { range: "acima de 300 clientes", price: "condição Enterprise", dark: true },
+];
 
 const PROOF = [
   { stat: "10 anos", label: "de estrada em IA aplicada" },
   { stat: "200+", label: "projetos de IA entregues" },
   { stat: "AWS", label: "Advanced Partner" },
-  { stat: "LGPD", label: "by design, desde a origem" },
+  { stat: "Claude", label: "Partner" },
+  { stat: "Sisense", label: "Gold Partner" },
 ];
 
 const FAQ = [
@@ -168,8 +204,8 @@ const FAQ = [
     a: "A gente lê os dados dele. Seu sistema executa a cobrança; o Kontiva confere se está certa contra o contrato.",
   },
   {
-    q: "Quanto custa depois do beta?",
-    a: "Tabela a partir de R$ 900/mês. Fundador mantém a condição por 12 meses.",
+    q: "Quanto custa a condição de lançamento?",
+    a: "R$ 497/mês até 100 clientes e R$ 797/mês de 101 a 300. Acima disso, condição Enterprise. Quem entra no grupo de lançamento mantém o preço travado por 12 meses após o beta.",
   },
   {
     q: "Preciso pagar ou assinar algo agora?",
@@ -177,7 +213,7 @@ const FAQ = [
   },
   {
     q: "Não tenho tempo pra implantar?",
-    a: "Por isso a turma é de 15: nós fazemos o setup. Você participa de 2 reuniões de 1h.",
+    a: "Por isso o grupo de lançamento é de 15 escritórios: nós fazemos o setup. Você participa de 2 reuniões de 1h.",
   },
   {
     q: "Meus dados estão seguros?",
@@ -198,24 +234,24 @@ export default function Page() {
   const toggleFaq = (i) => setOpenFaq((cur) => (cur === i ? null : i));
 
   // Lista de espera libera automaticamente quando as 15 vagas encerram.
-  const slotsOpenEff = FOUNDING.slotsOpen && FOUNDING.slotsLeft > 0;
+  const slotsOpenEff = LAUNCH.slotsOpen && LAUNCH.slotsLeft > 0;
 
   const heroCtaLabel = slotsOpenEff
-    ? "Reservar minha vaga fundadora"
+    ? "Reservar minha vaga de lançamento"
     : "Entrar na lista de espera";
   const heroCtaHref = slotsOpenEff ? "#agendador" : "#lista-espera";
   const headerCtaLabel = slotsOpenEff ? "Reservar vaga" : "Lista de espera";
 
   const slotsBadge = slotsOpenEff
-    ? `Restam ${FOUNDING.slotsLeft} de 15 vagas fundadoras`
-    : "Turma fundadora completa · 2ª turma em fila";
+    ? `Restam ${LAUNCH.slotsLeft} de 15 vagas de lançamento`
+    : "Grupo de lançamento completo · lista de espera aberta";
 
   const pathsHeadline = slotsOpenEff
-    ? "Reserve agora — ou entre na fila da próxima."
-    : "Turma fundadora completa. Garanta a 2ª turma.";
+    ? "Reserve agora, ou entre na lista de espera."
+    : "Grupo de lançamento completo. Entre na lista de espera.";
 
   const waitlistHeadline = slotsOpenEff
-    ? "Quer decidir depois? Fique na fila."
+    ? "Quer decidir depois? Entre na lista."
     : "Vagas esgotadas? Garanta seu lugar.";
 
   const waitlistBorder = slotsOpenEff
@@ -239,8 +275,8 @@ export default function Page() {
         overflowX: "hidden",
       }}
     >
-      {/* STICKY HEADER */}
-      <nav className="nav">
+      {/* STICKY HEADER (escuro, acompanha o hero do material do evento) */}
+      <nav className="nav nav--dark">
         <div className="lp-shell nav-inner">
           <span className="brand-lockup">
             <span className="k">Kontiva</span>
@@ -257,9 +293,54 @@ export default function Page() {
         </div>
       </nav>
 
-      {/* 1. HERO */}
-      <section className="lp-section" style={{ background: "var(--branco)", paddingTop: 48 }}>
-        <div className="lp-shell">
+      {/* 1. HERO: escuro, na comunicação do evento */}
+      <section
+        className="lp-section"
+        style={{
+          background: "var(--azul-profundo)",
+          color: "var(--claro-escuro)",
+          paddingTop: 56,
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "radial-gradient(680px circle at 88% 8%, color-mix(in oklab, var(--ciano) 16%, transparent), transparent 60%)",
+            pointerEvents: "none",
+          }}
+        />
+        {/* Círculos concêntricos do material do evento */}
+        <svg
+          aria-hidden
+          viewBox="0 0 400 400"
+          style={{
+            position: "absolute",
+            top: -80,
+            right: -60,
+            width: 520,
+            height: 520,
+            opacity: 0.14,
+            pointerEvents: "none",
+          }}
+        >
+          {[60, 110, 160, 200].map((r) => (
+            <circle
+              key={r}
+              cx="200"
+              cy="200"
+              r={r}
+              fill="none"
+              stroke="var(--ciano)"
+              strokeWidth="1"
+            />
+          ))}
+        </svg>
+        <div className="lp-shell" style={{ position: "relative" }}>
           <div className="lp-grid-2">
             <div>
               <div
@@ -269,8 +350,8 @@ export default function Page() {
                   gap: 9,
                   padding: "7px 14px",
                   borderRadius: 99,
-                  background: "var(--ciano-suave)",
-                  border: "1px solid color-mix(in oklab, var(--ciano) 35%, transparent)",
+                  background: "color-mix(in oklab, var(--ciano) 12%, transparent)",
+                  border: "1px solid color-mix(in oklab, var(--ciano) 40%, transparent)",
                   marginBottom: 26,
                 }}
               >
@@ -280,7 +361,7 @@ export default function Page() {
                     height: 7,
                     borderRadius: "50%",
                     background: "var(--ciano)",
-                    boxShadow: "0 0 0 4px color-mix(in oklab, var(--ciano) 20%, transparent)",
+                    boxShadow: "0 0 0 4px color-mix(in oklab, var(--ciano) 24%, transparent)",
                   }}
                 />
                 <span
@@ -289,7 +370,7 @@ export default function Page() {
                     fontSize: 12,
                     fontWeight: 600,
                     letterSpacing: "0.02em",
-                    color: "var(--azul-profundo)",
+                    color: "var(--claro-escuro)",
                   }}
                 >
                   {slotsBadge}
@@ -301,19 +382,23 @@ export default function Page() {
                   lineHeight: 1.02,
                   letterSpacing: "-0.03em",
                   margin: "0 0 22px",
+                  color: "var(--branco)",
                 }}
               >
-                O Hub de agentes de IA que{" "}
+                Agentes de IA que trabalham no seu escritório.{" "}
                 <span
                   className="serif-accent"
-                  style={{ color: "var(--azul-profundo)", fontSize: "1.06em" }}
+                  style={{ color: "var(--ciano)", fontSize: "1.06em" }}
                 >
-                  acha
-                </span>{" "}
-                o dinheiro que o seu escritório deixa na mesa.
+                  De verdade.
+                </span>
               </h1>
-              <p className="lead" style={{ margin: "0 0 32px", maxWidth: 520 }}>
-                Estamos selecionando os escritórios fundadores do Hub. Vagas limitadas.
+              <p
+                className="lead"
+                style={{ margin: "0 0 32px", maxWidth: 520, color: "rgba(234,246,255,0.72)" }}
+              >
+                O Hub de agentes de IA para escritórios contábeis. Cada agente assume um processo
+                inteiro, e a plataforma cresce agente a agente.
               </p>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 14, alignItems: "center" }}>
                 <a
@@ -329,28 +414,36 @@ export default function Page() {
                     style={{
                       fontSize: 14,
                       fontWeight: 500,
-                      color: "var(--cinza-texto)",
+                      color: "rgba(234,246,255,0.7)",
                       textDecoration: "underline",
                       textUnderlineOffset: 3,
                     }}
                   >
-                    Prefiro entrar na lista de espera da 2ª turma
+                    Prefiro entrar na lista de espera
                   </a>
                 )}
               </div>
             </div>
             <div>
-              <RadarCard
-                title="Conciliação de honorários"
-                live="Varredura ativa"
-                rows={RADAR_ROWS}
-                summaryLabel="Receita encontrada / ano"
-                summaryValue="R$ 29 mil"
-              />
+              <div
+                style={{
+                  borderRadius: 22,
+                  boxShadow:
+                    "0 0 0 1px rgba(255,255,255,0.06), 0 40px 90px -40px rgba(0,0,0,0.6)",
+                }}
+              >
+                <RadarCard
+                  title="Conciliação de honorários"
+                  live="Varredura ativa"
+                  rows={RADAR_ROWS}
+                  summaryLabel="Receita encontrada / ano"
+                  summaryValue="R$ 29 mil"
+                />
+              </div>
               <p
                 style={{
                   fontSize: 13,
-                  color: "var(--cinza-texto)",
+                  color: "rgba(234,246,255,0.6)",
                   margin: "14px 4px 0",
                   textAlign: "center",
                 }}
@@ -362,15 +455,19 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 2. TRÊS EIXOS DE BENEFÍCIO */}
-      <section className="lp-section" style={{ background: "var(--cinza-claro)" }}>
+      {/* 2. O QUE É O KONTIVA */}
+      <section className="lp-section" style={{ background: "var(--branco)" }}>
         <div className="lp-shell">
-          <div style={{ maxWidth: 720, marginBottom: 44 }}>
+          <div style={{ maxWidth: 760, marginBottom: 44 }}>
             <div className="eyebrow" style={{ marginBottom: 18 }}>
-              <span className="dot-cyan" /> Por que agora
+              <span className="dot-cyan" /> O que é o Kontiva
             </div>
-            <h2 style={{ fontSize: "clamp(30px, 4.2vw, 46px)" }}>
-              Três coisas que mudam no dia seguinte.
+            <h2 style={{ fontSize: "clamp(28px, 3.8vw, 42px)", lineHeight: 1.12 }}>
+              Um <strong style={{ fontWeight: 700 }}>Hub de agentes de IA</strong> para escritórios
+              contábeis. Cada agente assume um processo inteiro. Uma{" "}
+              <span className="serif-accent" style={{ color: "var(--azul-profundo)" }}>
+                plataforma que cresce agente a agente.
+              </span>
             </h2>
           </div>
           <div className="lp-grid-3">
@@ -384,6 +481,7 @@ export default function Page() {
                   gap: 14,
                   padding: 28,
                   height: "100%",
+                  borderTop: "3px solid var(--ciano)",
                 }}
               >
                 <span
@@ -400,28 +498,188 @@ export default function Page() {
                 >
                   {b.icon}
                 </span>
-                <h3 style={{ fontSize: 20, letterSpacing: "-0.02em" }}>{b.title}</h3>
-                <p style={{ fontSize: 15.5, margin: 0 }}>{b.body}</p>
+                <h3
+                  style={{
+                    fontSize: 15,
+                    fontWeight: 700,
+                    letterSpacing: "0.02em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {b.title}
+                </h3>
+                <p style={{ fontSize: 15, margin: 0 }}>{b.body}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 3. COMO FUNCIONA A VAGA FUNDADORA */}
+      {/* 3. UM AGENTE POR PROCESSO */}
+      <section
+        className="lp-section"
+        id="agentes"
+        style={{
+          background: "var(--azul-profundo)",
+          color: "var(--claro-escuro)",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "radial-gradient(700px circle at 80% 0%, color-mix(in oklab, var(--ciano) 12%, transparent), transparent 60%)",
+            pointerEvents: "none",
+          }}
+        />
+        <div className="lp-shell" style={{ position: "relative" }}>
+          <div style={{ maxWidth: 720, marginBottom: 40 }}>
+            <div
+              className="eyebrow light"
+              style={{ marginBottom: 18, color: "rgba(234,246,255,0.66)" }}
+            >
+              <span className="dot-cyan" /> Agentes do Hub
+            </div>
+            <h2 style={{ fontSize: "clamp(30px, 4.2vw, 46px)", marginBottom: 12 }}>
+              <span style={{ color: "var(--branco)" }}>Um agente por processo.</span>{" "}
+              <span style={{ color: "rgba(234,246,255,0.45)" }}>Dois já rodando hoje.</span>
+            </h2>
+            <p style={{ color: "rgba(234,246,255,0.7)", fontSize: 16, margin: 0 }}>
+              Cada agente faz o processo inteiro, com aprovação humana no que você definir.
+            </p>
+          </div>
+          <div className="lp-grid-2" style={{ alignItems: "stretch" }}>
+            {AGENTS.map((a) => {
+              const on = a.state === "active" || a.state === "beta";
+              const isBeta = a.state === "beta";
+              return (
+                <div
+                  key={a.name}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 16,
+                    padding: 26,
+                    borderRadius: 16,
+                    background: on ? ACTIVE_BG : SOFT_BG,
+                    border: on ? ACTIVE_BORDER : SOFT_BORDER,
+                    opacity: on ? 1 : 0.72,
+                    height: "100%",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      gap: 12,
+                    }}
+                  >
+                    <span
+                      style={{
+                        flex: "none",
+                        width: 44,
+                        height: 44,
+                        borderRadius: 12,
+                        background: on ? "var(--ciano)" : "rgba(255,255,255,0.06)",
+                        color: on ? "var(--azul-profundo)" : "rgba(234,246,255,0.55)",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {a.icon}
+                    </span>
+                    <span
+                      style={{
+                        flex: "none",
+                        fontFamily: "var(--font-mono)",
+                        fontSize: 10,
+                        fontWeight: 700,
+                        letterSpacing: "0.06em",
+                        textTransform: "uppercase",
+                        padding: "5px 10px",
+                        borderRadius: 99,
+                        background: isBeta
+                          ? AMBAR
+                          : a.state === "active"
+                            ? "var(--ciano)"
+                            : "transparent",
+                        color: on ? "var(--azul-profundo)" : "rgba(234,246,255,0.6)",
+                        border: on ? "none" : "1px solid rgba(255,255,255,0.16)",
+                      }}
+                    >
+                      {a.tag}
+                    </span>
+                  </div>
+                  <div>
+                    <div
+                      style={{
+                        fontSize: 18,
+                        fontWeight: 600,
+                        color: on ? "var(--branco)" : "rgba(234,246,255,0.75)",
+                        letterSpacing: "-0.01em",
+                      }}
+                    >
+                      {a.name}
+                    </div>
+                    {a.body && (
+                      <div
+                        style={{
+                          fontSize: 14,
+                          color: "rgba(234,246,255,0.6)",
+                          marginTop: 8,
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        {a.body}
+                      </div>
+                    )}
+                    {a.chips && (
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 14 }}>
+                        {a.chips.map((c) => (
+                          <span
+                            key={c}
+                            style={{
+                              fontFamily: "var(--font-mono)",
+                              fontSize: 11,
+                              letterSpacing: "0.02em",
+                              color: "rgba(234,246,255,0.65)",
+                              padding: "6px 12px",
+                              borderRadius: 99,
+                              border: "1px solid rgba(255,255,255,0.16)",
+                            }}
+                          >
+                            {c}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* 4. VAGA DE LANÇAMENTO DO HUB · 9º EGESCON */}
       <section className="lp-section" id="como-funciona" style={{ background: "var(--branco)" }}>
         <div className="lp-shell">
           <div style={{ maxWidth: 720, marginBottom: 44 }}>
             <div className="eyebrow" style={{ marginBottom: 18 }}>
-              <span className="dot-cyan" /> Como funciona a vaga fundadora
+              <span className="dot-cyan" /> A oferta do evento
             </div>
-            <h2 style={{ fontSize: "clamp(30px, 4.2vw, 46px)" }}>
-              Você{" "}
-              <span className="serif-accent" style={{ color: "var(--azul-profundo)" }}>
-                vê
-              </span>{" "}
-              funcionando antes de pagar.
+            <h2 style={{ fontSize: "clamp(30px, 4.2vw, 46px)", marginBottom: 12 }}>
+              Vaga de lançamento do Hub · 9º EGESCON
             </h2>
+            <p style={{ color: "var(--cinza-texto)", fontSize: 16, margin: 0 }}>
+              Como funciona a vaga de lançamento.
+            </p>
           </div>
           <div className="lp-grid-4">
             {STEPS.map((s) => (
@@ -442,9 +700,12 @@ export default function Page() {
                   style={{
                     width: 40,
                     height: 40,
-                    borderRadius: 10,
-                    background: "var(--azul-profundo)",
-                    color: "var(--ciano)",
+                    borderRadius: "50%",
+                    background: s.dark ? "var(--azul-profundo)" : "var(--ciano-suave)",
+                    color: s.dark ? "var(--ciano)" : "var(--azul-profundo)",
+                    border: s.dark
+                      ? "none"
+                      : "1px solid color-mix(in oklab, var(--ciano) 40%, transparent)",
                     fontFamily: "var(--font-mono)",
                     fontWeight: 700,
                     fontSize: 15,
@@ -456,10 +717,10 @@ export default function Page() {
                   {s.n}
                 </span>
                 <div>
-                  <h3 style={{ fontSize: 17, margin: "0 0 8px", letterSpacing: "-0.02em" }}>
+                  <h3 style={{ fontSize: 16.5, margin: "0 0 8px", letterSpacing: "-0.02em" }}>
                     {s.title}
                   </h3>
-                  <p style={{ fontSize: 14.5, margin: 0 }}>{s.body}</p>
+                  <p style={{ fontSize: 14, margin: 0 }}>{s.body}</p>
                 </div>
               </div>
             ))}
@@ -467,133 +728,85 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 4. ROADMAP DO HUB */}
-      <section
-        className="lp-section"
-        id="roadmap"
-        style={{
-          background: "var(--azul-profundo)",
-          color: "var(--claro-escuro)",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "radial-gradient(700px circle at 80% 0%, color-mix(in oklab, var(--ciano) 12%, transparent), transparent 60%)",
-            pointerEvents: "none",
-          }}
-        />
-        <div className="lp-shell" style={{ position: "relative" }}>
-          <div style={{ maxWidth: 640, marginBottom: 40 }}>
-            <div
-              className="eyebrow light"
-              style={{ marginBottom: 18, color: "rgba(234,246,255,0.66)" }}
-            >
-              <span className="dot-cyan" /> Roadmap do Hub
-            </div>
-            <h2
-              style={{
-                fontSize: "clamp(30px, 4.2vw, 46px)",
-                color: "var(--branco)",
-                marginBottom: 12,
-              }}
-            >
-              Dois agentes rodando hoje. Mais chegando.
-            </h2>
-            <p style={{ color: "rgba(234,246,255,0.7)", fontSize: 16, margin: 0 }}>
-              Quem entra agora influencia quais agentes vêm depois.
-            </p>
+      {/* 5. SUA CONDIÇÃO DE LANÇAMENTO */}
+      <section className="lp-section" id="condicao" style={{ background: "var(--cinza-claro)" }}>
+        <div className="lp-shell">
+          <div className="eyebrow" style={{ marginBottom: 26 }}>
+            <span className="dot-cyan" /> Sua condição de lançamento
           </div>
           <div className="lp-grid-3">
-            {ROADMAP.map((r) => (
+            {PRICING.map((p) => (
               <div
-                key={r.name}
+                key={p.range}
                 style={{
+                  padding: 32,
+                  borderRadius: 18,
+                  minHeight: 168,
                   display: "flex",
                   flexDirection: "column",
-                  gap: 16,
-                  padding: 24,
-                  borderRadius: 16,
-                  background: r.bg,
-                  border: r.border,
-                  opacity: r.opacity,
-                  height: "100%",
+                  justifyContent: "space-between",
+                  gap: 18,
+                  background: p.dark ? "var(--azul-profundo)" : "var(--branco)",
+                  border: p.dark ? "none" : "1px solid var(--border-on-light)",
+                  boxShadow: p.dark ? "var(--shadow-dark)" : "none",
                 }}
               >
                 <div
                   style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    gap: 12,
+                    fontSize: 14,
+                    fontWeight: 500,
+                    color: p.dark ? "rgba(234,246,255,0.7)" : "var(--cinza-texto)",
                   }}
                 >
-                  <span
-                    style={{
-                      flex: "none",
-                      width: 44,
-                      height: 44,
-                      borderRadius: 12,
-                      background: r.iconBg,
-                      color: r.iconColor,
-                      display: "inline-flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    {r.icon}
-                  </span>
-                  <span
-                    style={{
-                      flex: "none",
-                      fontFamily: "var(--font-mono)",
-                      fontSize: 10,
-                      fontWeight: 700,
-                      letterSpacing: "0.06em",
-                      textTransform: "uppercase",
-                      padding: "5px 10px",
-                      borderRadius: 99,
-                      background: r.tagBg,
-                      color: r.tagColor,
-                      border: r.tagBorder,
-                    }}
-                  >
-                    {r.tag}
-                  </span>
+                  {p.range}
                 </div>
-                <div>
-                  <div
+                <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
+                  <span
                     style={{
-                      fontSize: 17,
-                      fontWeight: 600,
-                      color: r.titleColor,
-                      letterSpacing: "-0.01em",
+                      fontSize: p.dark ? 26 : 40,
+                      fontWeight: 700,
+                      letterSpacing: "-0.02em",
+                      lineHeight: 1,
+                      color: p.dark ? "var(--ciano)" : "var(--azul-profundo)",
                     }}
                   >
-                    {r.name}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: 13.5,
-                      color: "rgba(234,246,255,0.55)",
-                      marginTop: 6,
-                      lineHeight: 1.5,
-                    }}
-                  >
-                    {r.desc}
-                  </div>
+                    {p.price}
+                  </span>
+                  {p.per && (
+                    <span
+                      style={{
+                        fontFamily: "var(--font-mono)",
+                        fontSize: 13,
+                        color: "var(--cinza-texto)",
+                      }}
+                    >
+                      {p.per}
+                    </span>
+                  )}
                 </div>
               </div>
             ))}
           </div>
+          <div
+            style={{
+              marginTop: 18,
+              padding: "16px 24px",
+              borderRadius: 14,
+              background: "var(--ciano-suave)",
+              border: "1px solid color-mix(in oklab, var(--ciano) 30%, transparent)",
+              fontFamily: "var(--font-mono)",
+              fontSize: 13,
+              letterSpacing: "0.02em",
+              color: "var(--azul-profundo)",
+              textAlign: "center",
+            }}
+          >
+            Setup de Teste grátis · sem fidelidade · condição travada por 12 meses após o beta
+          </div>
         </div>
       </section>
 
-      {/* 5. PROVA / QUEM SOMOS */}
+      {/* 6. PROVA / QUEM SOMOS */}
       <section className="lp-section" style={{ background: "var(--ciano-suave)" }}>
         <div className="lp-shell">
           <div style={{ maxWidth: 720, marginBottom: 40 }}>
@@ -616,7 +829,7 @@ export default function Page() {
                 <div
                   style={{
                     fontFamily: "var(--font-mono)",
-                    fontSize: 24,
+                    fontSize: 22,
                     fontWeight: 700,
                     color: "var(--azul-profundo)",
                     letterSpacing: "-0.02em",
@@ -679,14 +892,19 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 6. DOIS CAMINHOS: Agendador (A) + Lista de espera (B) */}
+      {/* 7. DOIS CAMINHOS: Agendador (A) + Lista de espera (B) */}
       <section className="lp-section" style={{ background: "var(--branco)" }}>
         <div className="lp-shell">
           <div style={{ maxWidth: 720, marginBottom: 40 }}>
             <div className="eyebrow" style={{ marginBottom: 18 }}>
-              <span className="dot-cyan" /> Dois caminhos
+              <span className="dot-cyan" /> Reserve agora
             </div>
-            <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)" }}>{pathsHeadline}</h2>
+            <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)", marginBottom: 12 }}>{pathsHeadline}</h2>
+            <p style={{ color: "var(--cinza-escuro)", fontSize: 16, margin: 0 }}>
+              Grupo de lançamento limitado a{" "}
+              <strong style={{ color: "var(--azul-profundo)" }}>15 escritórios</strong>. Os demais
+              entram por lista de espera.
+            </p>
           </div>
           <div className="lp-paths">
             {/* Caminho A · Agendador — STUB.
@@ -772,7 +990,7 @@ export default function Page() {
                     <path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z" />
                   </svg>
                   <div style={{ fontSize: 14, color: "var(--antes-tag-fg)", fontWeight: 600 }}>
-                    Turma fundadora completa — entre na fila da 2ª turma.
+                    Grupo de lançamento completo, entre na lista de espera.
                   </div>
                 </div>
               )}
@@ -831,7 +1049,7 @@ export default function Page() {
                     border: "1px solid var(--border-on-light)",
                   }}
                 >
-                  [ Agendador HubSpot — integração na fase Code ]
+                  [ Agendador HubSpot: integração na fase Code ]
                 </div>
                 <div style={{ fontSize: 13, color: "var(--cinza-texto)", maxWidth: 320 }}>
                   Seleção de dia e horário aparece aqui quando o embed for conectado.
@@ -878,7 +1096,7 @@ export default function Page() {
                     color: "var(--cinza-texto)",
                   }}
                 >
-                  Caminho B · 2ª turma
+                  Caminho B · Lista de espera
                 </span>
                 {schedulerClosed && (
                   <span
@@ -894,7 +1112,7 @@ export default function Page() {
                       color: "var(--azul-profundo)",
                     }}
                   >
-                    Vagas abertas
+                    Aberta
                   </span>
                 )}
               </div>
@@ -902,7 +1120,7 @@ export default function Page() {
                 {waitlistHeadline}
               </h3>
               <p style={{ fontSize: 14.5, color: "var(--cinza-escuro)", margin: "0 0 20px" }}>
-                Garanta seu lugar na 2ª turma. A gente avisa quando abrir.
+                Garanta seu lugar no próximo grupo. A gente avisa quando abrir.
               </p>
               <form onSubmit={onWaitlistSubmit}>
                 <div className="f-field">
@@ -933,10 +1151,9 @@ export default function Page() {
                   <label htmlFor="wl-clientes">Quantos clientes ativos?</label>
                   <select id="wl-clientes" defaultValue="">
                     <option value="">Selecione</option>
-                    <option value="ate-30">até 30</option>
-                    <option value="31-100">31–100</option>
-                    <option value="101-300">101–300</option>
-                    <option value="300+">300+</option>
+                    <option value="ate-100">até 100</option>
+                    <option value="101-300">101 a 300</option>
+                    <option value="300+">acima de 300</option>
                   </select>
                 </div>
                 <button
@@ -952,7 +1169,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 7. FAQ */}
+      {/* 8. FAQ */}
       <section className="lp-section" id="faq" style={{ background: "var(--cinza-claro)" }}>
         <div className="lp-shell lp-narrow">
           <div className="eyebrow" style={{ marginBottom: 18 }}>
@@ -1039,7 +1256,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 8. RODAPÉ */}
+      {/* 9. RODAPÉ */}
       <footer
         style={{
           background: "var(--azul-profundo)",
@@ -1070,7 +1287,7 @@ export default function Page() {
               </span>
             </span>
             <div style={{ fontSize: 14, color: "rgba(234,246,255,0.7)" }}>
-              Kontiva by BlueMetrics
+              Kontiva é uma solução BlueMetrics
             </div>
             <div style={{ fontSize: 13, color: "rgba(234,246,255,0.55)", maxWidth: 320 }}>
               LGPD by design · dados no seu ambiente de nuvem
@@ -1088,11 +1305,24 @@ export default function Page() {
         <div
           className="lp-shell"
           style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: 12.5,
+            letterSpacing: "0.02em",
+            color: "rgba(234,246,255,0.6)",
+            borderTop: "1px solid rgba(255,255,255,0.08)",
+            paddingTop: 24,
+            marginTop: 36,
+          }}
+        >
+          10 anos · 200+ projetos de IA · AWS Advanced Partner · Claude Partner · Sisense Gold
+          Partner
+        </div>
+        <div
+          className="lp-shell"
+          style={{
             fontSize: 12,
             color: "rgba(234,246,255,0.4)",
-            borderTop: "1px solid rgba(255,255,255,0.08)",
-            paddingTop: 20,
-            marginTop: 36,
+            paddingTop: 16,
           }}
         >
           © 2026 Kontiva.ai · 9º EGESCON

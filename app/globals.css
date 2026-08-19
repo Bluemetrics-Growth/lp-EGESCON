@@ -10,6 +10,15 @@
 a { color: var(--azul-profundo); }
 a:hover { color: var(--ciano); }
 
+/* Header escuro: acompanha o hero na comunicação do 9º EGESCON.
+   Fica legível sobre o hero escuro e sobre as seções claras abaixo. */
+.nav--dark {
+  background: rgba(10,31,63,0.72);
+  backdrop-filter: saturate(1.2) blur(14px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.nav--dark .brand-lockup .k { color: #EAF6FF; }
+
 .lp-section { padding: 88px 0; }
 @media (max-width: 720px) { .lp-section { padding: 56px 0; } }
 
