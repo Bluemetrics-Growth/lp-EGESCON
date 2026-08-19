@@ -9,6 +9,11 @@
 /* Page-specific (ported from the prototype's <helmet> block) */
 a { color: var(--azul-profundo); }
 a:hover { color: var(--ciano); }
+/* Botões são <a>: preservam o texto no hover (o a:hover global os apagava). */
+.btn-primary,
+.btn-primary:hover { color: var(--azul-profundo); }
+.btn-dark,
+.btn-dark:hover { color: var(--branco); }
 
 /* Header escuro, fixo ao rolar. Fica legível sobre o hero escuro e sobre
    as seções claras abaixo, com um leve realce em ciano. */
