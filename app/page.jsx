@@ -11,9 +11,6 @@ const WHATS_URL =
 const INSTA_URL = "https://www.instagram.com/kontiva.ai?igsh=MWo4N3ZuMW55Ymlncg%3D%3D";
 const LINKEDIN_URL = "https://www.linkedin.com/company/kontivaai/";
 
-/* Cor de acento do selo beta (dourado do material do evento). */
-const AMBAR = "#F5C451";
-
 const svgProps = {
   width: 22,
   height: 22,
@@ -81,8 +78,8 @@ const BENEFITS = [
 const AGENTS = [
   {
     name: "Agente Tributário (reforma)",
-    tag: "Ativo · Beta",
-    state: "beta",
+    tag: "Ativo",
+    state: "active",
     body: "É o agente da reforma tributária. Simula os cenários de IBS e CBS ano a ano, o regime atual e os créditos recuperáveis, com relatório da sua marca pronto para levar ao cliente.",
     icon: (
       <svg {...svgProps}>
@@ -172,8 +169,8 @@ const STEPS = [
     title: "Você entra como membro de lançamento",
     body: (
       <>
-        Condição de preço <strong>travada por 12 meses</strong> após o beta, e influência direta
-        nos próximos agentes do Hub.
+        Condição de preço <strong>travada por 12 meses</strong> e influência direta nos próximos
+        agentes do Hub.
       </>
     ),
     dark: true,
@@ -198,7 +195,7 @@ const FAQ = [
   },
   {
     q: "Quanto custa a condição de lançamento?",
-    a: "R$ 497/mês até 100 clientes e R$ 797/mês de 101 a 300. Acima disso, condição Enterprise. Quem entra no grupo de lançamento mantém o preço travado por 12 meses após o beta.",
+    a: "R$ 497/mês até 100 clientes e R$ 797/mês de 101 a 300. Acima disso, condição Enterprise. Quem entra no grupo de lançamento mantém o preço travado por 12 meses.",
   },
   {
     q: "Preciso pagar ou assinar algo agora?",
@@ -679,8 +676,7 @@ export default function Page() {
           </div>
           <div className="lp-grid-2" style={{ alignItems: "stretch" }}>
             {AGENTS.map((a) => {
-              const on = a.state === "active" || a.state === "beta";
-              const isBeta = a.state === "beta";
+              const on = a.state === "active";
               return (
                 <div
                   key={a.name}
@@ -729,11 +725,7 @@ export default function Page() {
                         textTransform: "uppercase",
                         padding: "5px 10px",
                         borderRadius: 99,
-                        background: isBeta
-                          ? AMBAR
-                          : a.state === "active"
-                            ? "var(--ciano)"
-                            : "transparent",
+                        background: a.state === "active" ? "var(--ciano)" : "transparent",
                         color: on ? "var(--azul-profundo)" : "rgba(234,246,255,0.6)",
                         border: on ? "none" : "1px solid rgba(255,255,255,0.16)",
                       }}
@@ -926,7 +918,7 @@ export default function Page() {
               textAlign: "center",
             }}
           >
-            Setup de Teste grátis · sem fidelidade · condição travada por 12 meses após o beta
+            Setup de Teste grátis · sem fidelidade · condição travada por 12 meses
           </div>
         </div>
       </section>
