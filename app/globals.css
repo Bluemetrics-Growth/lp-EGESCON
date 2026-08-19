@@ -60,6 +60,19 @@ body { padding-top: 72px; }
   .fab { padding: 14px; }
 }
 
+/* Spinner de carregamento do popup da agenda */
+.gcal-spinner {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 3px solid color-mix(in oklab, var(--ciano) 22%, transparent);
+  border-top-color: var(--ciano);
+  animation: gcal-spin 0.8s linear infinite;
+}
+@keyframes gcal-spin {
+  to { transform: rotate(360deg); }
+}
+
 .lp-section { padding: 88px 0; }
 @media (max-width: 720px) { .lp-section { padding: 56px 0; } }
 

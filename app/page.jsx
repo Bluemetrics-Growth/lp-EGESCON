@@ -232,8 +232,10 @@ export default function Page() {
 
   // Agendador: abre em um popup (modal com iframe) dentro da própria LP.
   const [schedOpen, setSchedOpen] = useState(false);
+  const [schedLoaded, setSchedLoaded] = useState(false);
   const openScheduler = (e) => {
     if (e) e.preventDefault();
+    setSchedLoaded(false);
     setSchedOpen(true);
   };
   useEffect(() => {
@@ -1174,8 +1176,8 @@ export default function Page() {
             style={{
               position: "relative",
               width: "100%",
-              maxWidth: 460,
-              height: "min(720px, 88vh)",
+              maxWidth: 760,
+              height: "min(880px, 92vh)",
               background: "var(--branco)",
               borderRadius: 18,
               overflow: "hidden",
@@ -1190,7 +1192,7 @@ export default function Page() {
                 position: "absolute",
                 top: 10,
                 right: 10,
-                zIndex: 2,
+                zIndex: 3,
                 width: 34,
                 height: 34,
                 borderRadius: "50%",
@@ -1201,16 +1203,54 @@ export default function Page() {
                 display: "inline-flex",
                 alignItems: "center",
                 justifyContent: "center",
+                boxShadow: "0 2px 10px rgba(10,31,63,0.35)",
               }}
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M18 6 6 18M6 6l12 12" />
               </svg>
             </button>
+            {!schedLoaded && (
+              <div
+                aria-hidden
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  zIndex: 2,
+                  background: "var(--branco)",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 16,
+                }}
+              >
+                <span className="gcal-spinner" />
+                <span
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: 12,
+                    letterSpacing: "0.06em",
+                    textTransform: "uppercase",
+                    color: "var(--cinza-texto)",
+                  }}
+                >
+                  Carregando agenda...
+                </span>
+              </div>
+            )}
             <iframe
               src={SCHED_URL}
               title="Agendar Setup Kontiva"
-              style={{ border: 0, width: "100%", height: "100%" }}
+              loading="eager"
+              onLoad={() => setSchedLoaded(true)}
+              style={{
+                border: 0,
+                width: "100%",
+                height: "100%",
+                opacity: schedLoaded ? 1 : 0,
+                transition: "opacity .3s ease",
+              }}
             />
           </div>
         </div>
