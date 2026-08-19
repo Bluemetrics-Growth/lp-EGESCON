@@ -1,7 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import RadarCard from "./components/RadarCard";
+
+/* Links oficiais (iguais à versão no ar) */
+const SCHED_URL =
+  "https://calendar.google.com/calendar/appointments/schedules/AcZssZ0kpfY8t-ZWwCKHVpHAGk5otbhfpSBn1QUCMWT6L9Xy9EPHfAlONkyfJfR2wb1hLoHgpaH8F1L0?gv=true";
+const WHATS_URL = "https://wa.me/5551926343014";
+const INSTA_URL = "https://www.instagram.com/kontiva.ai?igsh=MWo4N3ZuMW55Ymlncg%3D%3D";
+const LINKEDIN_URL = "https://www.linkedin.com/company/kontivaai/";
 
 /* Cor de acento do selo beta (dourado do material do evento). */
 const AMBAR = "#F5C451";
@@ -179,14 +186,6 @@ const PRICING = [
   { range: "acima de 300 clientes", price: "condição Enterprise", dark: true },
 ];
 
-const PROOF = [
-  { stat: "10 anos", label: "de estrada em IA aplicada" },
-  { stat: "200+", label: "projetos de IA entregues" },
-  { stat: "AWS", label: "Advanced Partner" },
-  { stat: "Claude", label: "Partner" },
-  { stat: "Sisense", label: "Gold Partner" },
-];
-
 const FAQ = [
   {
     q: "Como o Kontiva ajuda na reforma tributária?",
@@ -226,11 +225,49 @@ export default function Page() {
   const [openFaq, setOpenFaq] = useState(0);
   const toggleFaq = (i) => setOpenFaq((cur) => (cur === i ? null : i));
 
-  const heroCtaLabel = "Reservar minha vaga de lançamento";
-  const heroCtaHref = "#agendador";
+  const heroCtaLabel = "Agende seu setup sem custo";
   const headerCtaLabel = "Reservar vaga";
-  const slotsBadge = "Reforma tributária · 2026 a 2033";
-  const pathsHeadline = "Reserve sua vaga de lançamento.";
+  const slotsBadge = "Vagas limitadas · Setup EGESCON";
+
+  // Agendador Google Calendar: botão flutuante + popup ao clicar.
+  const fabRef = useRef(null);
+  useEffect(() => {
+    const CSS_ID = "gcal-sched-css";
+    if (!document.getElementById(CSS_ID)) {
+      const link = document.createElement("link");
+      link.id = CSS_ID;
+      link.rel = "stylesheet";
+      link.href = "https://calendar.google.com/calendar/scheduling-button-script.css";
+      document.head.appendChild(link);
+    }
+    const loadButton = () => {
+      const api = window.calendar && window.calendar.schedulingButton;
+      if (!api || !fabRef.current || fabRef.current.dataset.loaded === "1") return;
+      api.load({ url: SCHED_URL, color: "#00D4FF", label: "Setup Kontiva", target: fabRef.current });
+      fabRef.current.dataset.loaded = "1";
+    };
+    const JS_ID = "gcal-sched-js";
+    const existing = document.getElementById(JS_ID);
+    if (existing) {
+      loadButton();
+    } else {
+      const s = document.createElement("script");
+      s.id = JS_ID;
+      s.async = true;
+      s.src = "https://calendar.google.com/calendar/scheduling-button-script.js";
+      s.addEventListener("load", loadButton);
+      document.body.appendChild(s);
+    }
+  }, []);
+
+  // CTAs abrem o popup do agendador quando disponível; senão, a página de reserva.
+  const openScheduler = (e) => {
+    const btn = fabRef.current && fabRef.current.querySelector("button");
+    if (btn) {
+      e.preventDefault();
+      btn.click();
+    }
+  };
 
   return (
     <div
@@ -252,7 +289,10 @@ export default function Page() {
           <a
             className="btn btn-primary"
             style={{ padding: "10px 16px", fontSize: 14 }}
-            href={heroCtaHref}
+            href={SCHED_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={openScheduler}
           >
             {headerCtaLabel}
           </a>
@@ -351,22 +391,25 @@ export default function Page() {
                   color: "var(--branco)",
                 }}
               >
-                Chegue na reforma tributária com a simulação pronta na mão.{" "}
+                Agentes de IA que trabalham no seu escritório.{" "}
                 <span style={{ color: "var(--ciano)" }}>De verdade.</span>
               </h1>
               <p
                 className="lead"
                 style={{ margin: "0 0 32px", maxWidth: 540, color: "rgba(234,246,255,0.72)" }}
               >
-                Entre 2026 e 2033, cada cliente vai repensar regime, créditos e caixa. O Kontiva é o
-                Hub de agentes de IA que roda essa simulação, com a sua marca. Quem chega com número
-                na mão conquista os clientes de quem não chega.
+                A Kontiva já nasce com dois agentes: um acha os honorários que você deixa de cobrar,
+                o outro simula os tributos e a reforma dos seus clientes, com relatório da sua marca.
+                E o Hub está só começando.
               </p>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 14, alignItems: "center" }}>
                 <a
                   className="btn btn-primary"
                   style={{ padding: "17px 26px", fontSize: 16 }}
-                  href={heroCtaHref}
+                  href={SCHED_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={openScheduler}
                 >
                   {heroCtaLabel}
                 </a>
@@ -513,9 +556,12 @@ export default function Page() {
             <a
               className="btn btn-primary"
               style={{ padding: "15px 24px", fontSize: 15 }}
-              href="#agendador"
+              href={SCHED_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={openScheduler}
             >
-              Reservar minha vaga de lançamento
+              Agende seu setup sem custo
             </a>
           </div>
         </div>
@@ -871,220 +917,6 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 6. PROVA / QUEM SOMOS */}
-      <section className="lp-section" style={{ background: "var(--ciano-suave)" }}>
-        <div className="lp-shell">
-          <div style={{ maxWidth: 720, marginBottom: 40 }}>
-            <div className="eyebrow" style={{ marginBottom: 18 }}>
-              <span className="dot-cyan" /> Quem está por trás
-            </div>
-            <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)" }}>Kontiva é da BlueMetrics.</h2>
-          </div>
-          <div className="lp-grid-stat" style={{ marginBottom: 20 }}>
-            {PROOF.map((p) => (
-              <div
-                key={p.label}
-                style={{
-                  padding: 24,
-                  border: "1px solid var(--border-on-light)",
-                  borderRadius: 14,
-                  background: "var(--branco)",
-                }}
-              >
-                <div
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: 22,
-                    fontWeight: 700,
-                    color: "var(--azul-profundo)",
-                    letterSpacing: "-0.02em",
-                  }}
-                >
-                  {p.stat}
-                </div>
-                <div style={{ fontSize: 13, color: "var(--cinza-texto)", marginTop: 6 }}>
-                  {p.label}
-                </div>
-              </div>
-            ))}
-          </div>
-          <div
-            style={{
-              padding: 28,
-              borderRadius: 18,
-              background: "var(--azul-profundo)",
-              position: "relative",
-              overflow: "hidden",
-            }}
-          >
-            <div
-              style={{
-                position: "absolute",
-                inset: 0,
-                background:
-                  "radial-gradient(420px circle at 100% 0%, color-mix(in oklab, var(--ciano) 18%, transparent), transparent 65%)",
-                pointerEvents: "none",
-              }}
-            />
-            <div style={{ position: "relative", maxWidth: 720 }}>
-              <div
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: 11,
-                  letterSpacing: "0.08em",
-                  textTransform: "uppercase",
-                  color: "var(--ciano)",
-                  marginBottom: 12,
-                }}
-              >
-                Resultado real
-              </div>
-              <p
-                style={{
-                  margin: 0,
-                  fontSize: "clamp(19px, 2.4vw, 26px)",
-                  lineHeight: 1.4,
-                  color: "var(--branco)",
-                  letterSpacing: "-0.01em",
-                }}
-              >
-                Num escritório de 20 clientes no Sul, achamos{" "}
-                <strong style={{ color: "var(--ciano)" }}>R$ 29 mil por ano</strong> em honorário
-                não cobrado.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 7. RESERVE AGORA: Agendador do Setup de Teste */}
-      <section className="lp-section" style={{ background: "var(--branco)" }}>
-        <div className="lp-shell">
-          <div style={{ maxWidth: 720, marginBottom: 40 }}>
-            <div className="eyebrow" style={{ marginBottom: 18 }}>
-              <span className="dot-cyan" /> Reserve agora
-            </div>
-            <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)", marginBottom: 12 }}>{pathsHeadline}</h2>
-            <p style={{ color: "var(--cinza-escuro)", fontSize: 16, margin: 0 }}>
-              Grupo de lançamento limitado a{" "}
-              <strong style={{ color: "var(--azul-profundo)" }}>15 escritórios</strong>. Reserve a
-              sua e marque o Setup de Teste no evento.
-            </p>
-          </div>
-          {/* Agendador (STUB).
-              HOOK (fase Code): substituir o card stub abaixo pelo embed do
-              HubSpot Meetings via next/script. Não carregar script externo aqui. */}
-          <div
-            id="agendador"
-            style={{
-              maxWidth: 640,
-              margin: "0 auto",
-              padding: 28,
-              borderRadius: 20,
-              background: "var(--cinza-claro)",
-              border: "1px solid var(--border-on-light)",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                gap: 12,
-                marginBottom: 20,
-              }}
-            >
-              <span
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: 11,
-                  fontWeight: 700,
-                  letterSpacing: "0.08em",
-                  textTransform: "uppercase",
-                  color: "var(--cinza-texto)",
-                }}
-              >
-                Reservar vaga
-              </span>
-            </div>
-            <h3 style={{ fontSize: 22, letterSpacing: "-0.02em", marginBottom: 18 }}>
-              Escolha o horário do seu Setup de Teste.
-            </h3>
-
-            <div
-              style={{
-                position: "relative",
-                border: "1.5px dashed color-mix(in oklab, var(--ciano) 55%, var(--border-on-light-strong))",
-                borderRadius: 16,
-                background: "linear-gradient(135deg, var(--ciano-suave), var(--branco))",
-                minHeight: 260,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 16,
-                padding: "36px 20px",
-                textAlign: "center",
-              }}
-            >
-              <span
-                style={{
-                  width: 52,
-                  height: 52,
-                  borderRadius: 14,
-                  background: "var(--azul-profundo)",
-                  color: "var(--ciano)",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <svg
-                  width="26"
-                  height="26"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <rect x="3" y="4" width="18" height="18" rx="2" />
-                  <path d="M16 2v4M8 2v4M3 10h18" />
-                </svg>
-              </span>
-              <div
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: 13,
-                  color: "var(--azul-profundo)",
-                  fontWeight: 600,
-                  background: "var(--branco)",
-                  padding: "8px 14px",
-                  borderRadius: 8,
-                  border: "1px solid var(--border-on-light)",
-                }}
-              >
-                [ Agendador HubSpot: integração na fase Code ]
-              </div>
-              <div style={{ fontSize: 13, color: "var(--cinza-texto)", maxWidth: 320 }}>
-                Seleção de dia e horário aparece aqui quando o embed for conectado.
-              </div>
-            </div>
-            <p
-              style={{
-                fontSize: 14,
-                color: "var(--cinza-texto)",
-                margin: "16px 4px 0",
-                textAlign: "center",
-              }}
-            >
-              Sem cartão. Você só decide pagar depois de ver funcionando.
-            </p>
-          </div>
-        </div>
-      </section>
-
       {/* 8. FAQ */}
       <section className="lp-section" id="faq" style={{ background: "var(--cinza-claro)" }}>
         <div className="lp-shell lp-narrow">
@@ -1172,12 +1004,12 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 9. RODAPÉ */}
+      {/* 9. RODAPÉ (igual à versão no ar) */}
       <footer
         style={{
           background: "var(--azul-profundo)",
           color: "rgba(234,246,255,0.65)",
-          padding: "56px 0 48px",
+          padding: "56px 0 44px",
         }}
       >
         <div
@@ -1202,18 +1034,69 @@ export default function Page() {
                 ai
               </span>
             </span>
-            <div style={{ fontSize: 14, color: "rgba(234,246,255,0.7)" }}>
-              Kontiva é uma solução BlueMetrics
-            </div>
+            <div style={{ fontSize: 14, color: "rgba(234,246,255,0.7)" }}>Kontiva by BlueMetrics</div>
             <div style={{ fontSize: 13, color: "rgba(234,246,255,0.55)", maxWidth: 320 }}>
               LGPD by design · dados no seu ambiente de nuvem
             </div>
+            <div style={{ display: "flex", gap: 10, marginTop: 6 }}>
+              {[
+                { href: INSTA_URL, label: "Instagram", icon: (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="5" />
+                    <circle cx="12" cy="12" r="4" />
+                    <circle cx="17.5" cy="6.5" r="0.6" fill="currentColor" />
+                  </svg>
+                ) },
+                { href: LINKEDIN_URL, label: "LinkedIn", icon: (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="3" />
+                    <path d="M7 10v7M7 7v.01M11 17v-4a2 2 0 0 1 4 0v4M11 13v4" />
+                  </svg>
+                ) },
+                { href: WHATS_URL, label: "WhatsApp", icon: (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 21l2.2-5.2A8.5 8.5 0 1 1 21 11.5z" />
+                    <path d="M9 9.5c0 3 2.5 5.5 5.5 5.5.6 0 1-.5 1-1s-1.2-1-1.7-1.2c-.4-.1-.6.4-.9.6-.9-.4-1.6-1.1-2-2 .2-.3.7-.5.6-.9C10.4 10 10 8.8 9.5 8.8s-.5.4-.5 .7z" />
+                  </svg>
+                ) },
+              ].map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={s.label}
+                  style={{
+                    width: 38,
+                    height: 38,
+                    borderRadius: 10,
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "var(--claro-escuro)",
+                    border: "1px solid rgba(255,255,255,0.14)",
+                  }}
+                >
+                  {s.icon}
+                </a>
+              ))}
+            </div>
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 10, fontSize: 14 }}>
-            <a href="mailto:contato@kontiva.ai" style={{ color: "rgba(234,246,255,0.8)" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12, alignItems: "flex-start" }}>
+            <a
+              className="btn btn-primary"
+              style={{ padding: "12px 20px", fontSize: 14 }}
+              href={SCHED_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={openScheduler}
+            >
+              Reservar vaga
+            </a>
+            <a href="mailto:contato@kontiva.ai" style={{ color: "rgba(234,246,255,0.8)", fontSize: 14 }}>
               contato@kontiva.ai
             </a>
-            <a href="https://wa.me/5551926343014" style={{ color: "rgba(234,246,255,0.8)" }}>
+            <a href={WHATS_URL} target="_blank" rel="noopener noreferrer" style={{ color: "rgba(234,246,255,0.8)", fontSize: 14 }}>
               WhatsApp
             </a>
           </div>
@@ -1244,6 +1127,28 @@ export default function Page() {
           © 2026 Kontiva.ai · 9º EGESCON
         </div>
       </footer>
+
+      {/* Host oculto do agendador Google (o popup abre a partir dele) */}
+      <div
+        ref={fabRef}
+        aria-hidden
+        style={{ position: "fixed", left: -9999, top: 0, width: 0, height: 0, overflow: "hidden" }}
+      />
+      {/* Botão flutuante: abre o agendador (popup) ou a página de reserva */}
+      <a
+        className="fab"
+        href={SCHED_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={openScheduler}
+        aria-label="Agende seu setup"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2" />
+          <path d="M16 2v4M8 2v4M3 10h18" />
+        </svg>
+        <span>Agende seu setup</span>
+      </a>
     </div>
   );
 }

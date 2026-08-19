@@ -41,9 +41,14 @@ agentes do Hub (Honorários e Tributário da reforma), a vaga de lançamento e a
 condição de preço. As vagas são comunicadas como limitadas, sem contagem
 exposta e sem lista de espera.
 
-## Integrações (fase Code)
+## Integrações
 
-- **Agendador HubSpot Meetings** — card placeholder em `app/page.jsx` (seção
-  "Reserve agora"). Substituir pelo embed via `next/script`.
+- **Agendamento** — botão flutuante "Setup Kontiva" via Google Calendar
+  Appointment Scheduling, carregado em `app/page.jsx` (`SCHED_URL`). Abre o
+  popup ao clicar; os CTAs do topo, do hero e da seção da reforma disparam o
+  mesmo popup (com fallback para a página de reserva). Trocar a `SCHED_URL`
+  para apontar para outra agenda.
+- **Rodapé** alinhado à versão no ar (egescon.kontiva.ai): Kontiva by
+  BlueMetrics, redes (Instagram, LinkedIn, WhatsApp), selos e copyright.
 
 GTM / GA4 / UTM ainda a instrumentar.
