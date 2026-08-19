@@ -6,7 +6,8 @@ import RadarCard from "./components/RadarCard";
 /* Links oficiais (iguais à versão no ar) */
 const SCHED_URL =
   "https://calendar.google.com/calendar/appointments/schedules/AcZssZ0kpfY8t-ZWwCKHVpHAGk5otbhfpSBn1QUCMWT6L9Xy9EPHfAlONkyfJfR2wb1hLoHgpaH8F1L0?gv=true";
-const WHATS_URL = "https://wa.me/5551926343014";
+const WHATS_URL =
+  "https://wa.me/5551926343014?text=" + encodeURIComponent("Quero saber mais sobre o Kontiva");
 const INSTA_URL = "https://www.instagram.com/kontiva.ai?igsh=MWo4N3ZuMW55Ymlncg%3D%3D";
 const LINKEDIN_URL = "https://www.linkedin.com/company/kontivaai/";
 
@@ -398,9 +399,9 @@ export default function Page() {
                 className="lead"
                 style={{ margin: "0 0 32px", maxWidth: 540, color: "rgba(234,246,255,0.72)" }}
               >
-                A Kontiva já nasce com dois agentes: um acha os honorários que você deixa de cobrar,
-                o outro simula os tributos e a reforma dos seus clientes, com relatório da sua marca.
-                E o Hub está só começando.
+                O Hub já nasce com dois agentes: um roda a simulação da reforma tributária (IBS e
+                CBS) dos seus clientes, o outro acha os honorários que você deixa de cobrar. Tudo com
+                relatório da sua marca. E o Hub está só começando.
               </p>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 14, alignItems: "center" }}>
                 <a
@@ -454,10 +455,42 @@ export default function Page() {
                     <path d="M20 6 9 17l-5-5" />
                   </svg>
                 </span>
-                <div style={{ fontSize: 14, lineHeight: 1.5, color: "rgba(234,246,255,0.82)" }}>
+                <div style={{ fontSize: 14, lineHeight: 1.55, color: "rgba(234,246,255,0.82)" }}>
                   <strong style={{ color: "var(--branco)" }}>Exclusivo do 9º EGESCON:</strong>{" "}
-                  montamos seu Setup de Teste com uma amostra dos seus próprios dados, grátis. Valor
-                  de tabela R$ 1.500.
+                  montamos seu Setup de Teste com uma amostra dos seus próprios dados.{" "}
+                  <span
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "baseline",
+                      gap: 8,
+                      marginTop: 6,
+                    }}
+                  >
+                    <span
+                      style={{
+                        color: "rgba(234,246,255,0.55)",
+                        textDecoration: "line-through",
+                        textDecorationColor: "var(--ciano)",
+                      }}
+                    >
+                      R$ 1.500,00
+                    </span>
+                    <strong
+                      style={{
+                        color: "var(--azul-profundo)",
+                        background: "var(--ciano)",
+                        padding: "2px 10px",
+                        borderRadius: 999,
+                        fontFamily: "var(--font-mono)",
+                        fontSize: 12,
+                        fontWeight: 700,
+                        letterSpacing: "0.04em",
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      Grátis no evento
+                    </strong>
+                  </span>
                 </div>
               </div>
             </div>
@@ -1035,9 +1068,6 @@ export default function Page() {
               </span>
             </span>
             <div style={{ fontSize: 14, color: "rgba(234,246,255,0.7)" }}>Kontiva by BlueMetrics</div>
-            <div style={{ fontSize: 13, color: "rgba(234,246,255,0.55)", maxWidth: 320 }}>
-              LGPD by design · dados no seu ambiente de nuvem
-            </div>
             <div style={{ display: "flex", gap: 10, marginTop: 6 }}>
               {[
                 { href: INSTA_URL, label: "Instagram", icon: (
@@ -1092,9 +1122,6 @@ export default function Page() {
               onClick={openScheduler}
             >
               Reservar vaga
-            </a>
-            <a href="mailto:contato@kontiva.ai" style={{ color: "rgba(234,246,255,0.8)", fontSize: 14 }}>
-              contato@kontiva.ai
             </a>
             <a href={WHATS_URL} target="_blank" rel="noopener noreferrer" style={{ color: "rgba(234,246,255,0.8)", fontSize: 14 }}>
               WhatsApp
