@@ -386,12 +386,7 @@ export default function Page() {
                 }}
               >
                 Agentes de IA que trabalham no seu escritório.{" "}
-                <span
-                  className="serif-accent"
-                  style={{ color: "var(--ciano)", fontSize: "1.06em" }}
-                >
-                  De verdade.
-                </span>
+                <span style={{ color: "var(--ciano)" }}>De verdade.</span>
               </h1>
               <p
                 className="lead"
@@ -464,10 +459,8 @@ export default function Page() {
             </div>
             <h2 style={{ fontSize: "clamp(28px, 3.8vw, 42px)", lineHeight: 1.12 }}>
               Um <strong style={{ fontWeight: 700 }}>Hub de agentes de IA</strong> para escritórios
-              contábeis. Cada agente assume um processo inteiro. Uma{" "}
-              <span className="serif-accent" style={{ color: "var(--azul-profundo)" }}>
-                plataforma que cresce agente a agente.
-              </span>
+              contábeis. Cada agente assume um processo inteiro. Uma plataforma que cresce agente
+              a agente.
             </h2>
           </div>
           <div className="lp-grid-3">
