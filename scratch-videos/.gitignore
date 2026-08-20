@@ -1,0 +1,5 @@
+# Frames temporários (regeneráveis via card.mjs)
+frames/
+# ProRes em resolução cheia (~75 MB cada; grande demais para o git — regenerável)
+kontiva-simulacao.mov
+kontiva-conciliacao.mov
